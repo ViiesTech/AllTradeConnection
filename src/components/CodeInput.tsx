@@ -1,19 +1,19 @@
 import React from 'react';
-import {Text, StyleSheet} from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import {
   CodeField,
   useBlurOnFulfill,
 } from 'react-native-confirmation-code-field';
-import {colors} from '../assets/colors';
-import {responsiveHeight, responsiveWidth} from '../utils';
+import { colors } from '../assets/colors';
+import { responsiveHeight, responsiveWidth } from '../utils';
 
 interface inputProps {
   value: string;
   setValue: () => void;
 }
 
-const CodeInput = ({value, setValue}: inputProps) => {
-  const ref = useBlurOnFulfill({value, cellCount: 4});
+const CodeInput = ({ value, setValue }: inputProps) => {
+  const ref = useBlurOnFulfill({ value, cellCount: 4 });
 
   return (
     <CodeField
@@ -27,11 +27,11 @@ const CodeInput = ({value, setValue}: inputProps) => {
       keyboardType="number-pad"
       textContentType="oneTimeCode"
       clearTextOnFocus
-      renderCell={({index, symbol, isFocused}) => (
+      renderCell={({ index, symbol, isFocused }) => (
         <Text
           key={index}
           style={[styles.cell, isFocused && styles.focusCell]}
-          // onLayout={getCellOnLayoutHandler(index)}
+        // onLayout={getCellOnLayoutHandler(index)}
         >
           {isFocused || !symbol ? symbol : '*'}
         </Text>
@@ -51,9 +51,19 @@ const styles = StyleSheet.create({
     fontSize: responsiveHeight(4),
     borderRadius: responsiveHeight(1),
     color: colors.dark_purple,
+    borderWidth: 0.3,
+    borderColor: colors.black
   },
   focusCell: {
-    borderColor: colors.primary,
+    borderColor: colors.dark_purple,
+    shadowColor: colors.primary,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 20,
     borderWidth: 2,
   },
   root: {

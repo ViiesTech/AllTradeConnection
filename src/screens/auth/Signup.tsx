@@ -24,7 +24,7 @@ const Signup = () => {
   const nav = useNavigation();
 
   const handleSignup = (values: string) => {
-    nav.navigate(ROUTES.OTP);
+    nav.navigate(ROUTES.OTP,{type: 'signup'});
   };
 
   return (

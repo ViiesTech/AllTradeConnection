@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,10 @@ interface InputFieldProps extends TextInputProps {
   inputStyle?: object;
   secureTextEntry?: boolean;
   iconWidth?: number | string;
+  textAlign: string;
+  line: boolean;
+  inputHeight: number;
+  multiline: boolean;
 }
 
 const InputField = ({
@@ -29,35 +33,42 @@ const InputField = ({
   placeholder,
   icon,
   iconWidth,
+  textAlign,
+  line,
+  inputHeight,
+  multiline,
   secureTextEntry = false,
   ...props
 }: InputFieldProps) => {
   const [field, meta] = useField(name);
   const hasError = meta.touched && meta.error;
 
-  const [isSecure, setIsSecure] = useState(secureTextEntry);
 
   return (
     <View style={[styles.inputContainerWrapper]}>
-      <View style={[styles.inputContainer]}>
+      <View style={[styles.inputContainer, hasError && styles.errorInput]}>
         <SVGXml icon={icon} width={iconWidth || 20} />
+        {!line &&
         <View style={styles.verticalLine} />
+      }
         <TextInput
-          style={[styles.input, hasError && styles.errorInput, inputStyle]}
+          style={[styles.input, inputStyle,{height: inputHeight}]}
           placeholder={placeholder}
           placeholderTextColor={colors.dark_purple}
           value={field.value}
+          multiline={multiline}
+          textAlignVertical={textAlign}
           onChangeText={field.onChange(name)}
-          secureTextEntry={isSecure}
+          secureTextEntry={secureTextEntry}
           onBlur={field.onBlur(name)}
           {...props}
         />
         {secureTextEntry && (
           <SVGXml
-            icon={isSecure ? svgIcons.eyeClosed : svgIcons.eye}
+            icon={svgIcons.eye}
             width={15}
             style={styles.eyeIcon}
-            onPress={() => setIsSecure(!isSecure)}
+            // onPress={() => setIsSecure(!isSecure)}
           />
         )}
       </View>
@@ -82,6 +93,7 @@ interface CustomInputFormProps {
   inputStyle?: object;
   buttonStyle: ViewStyle;
   children?: ReactNode;
+  childrenStyle: ViewStyle;
 }
 
 const CustomInputForm = ({
@@ -94,6 +106,7 @@ const CustomInputForm = ({
   children,
   buttonStyle,
   inputContainerStyle,
+  childrenStyle,
 }: CustomInputFormProps) => {
   return (
     <Formik
@@ -113,10 +126,14 @@ const CustomInputForm = ({
               inputStyle={inputStyle}
               secureTextEntry={field.secureTextEntry}
               keyboardType={field.keyboardType}
+              line={field.line}
+              multiline={field.multiline}
+              inputHeight={field.height}
+              textAlign={field.textAlign}
               autoCapitalize="none"
             />
           ))}
-          {children && <View style={{width: responsiveWidth(95)}}>{children}</View>}
+          {children && <View style={childrenStyle}>{children}</View>}
           <Button  style={buttonStyle} buttonText={buttonText} onPress={handleSubmit} />
         </View>
       )}
@@ -137,8 +154,13 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
+    borderWidth: 0.1,
+    borderRadius: 10,
+    paddingHorizontal: responsiveHeight(2),
+    backgroundColor: colors.secondary,
+    borderColor: colors.black,
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
   },
   input: {
     flex: 1,

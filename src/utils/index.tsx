@@ -1,19 +1,31 @@
-import {Dimensions} from 'react-native';
+import { Dimensions, ImageSourcePropType } from 'react-native';
 import * as Yup from 'yup';
 import svgIcons from '../assets/icons';
-
+import { images } from '../assets/images';
 interface RoutePaths {
-  AUTHSTACK: string;
-  SIGNUP: string;
-  LOGIN: string;
-  OTP: string;
+  AUTHSTACK: string,
+  SIGNUP: string,
+  LOGIN: string,
+  OTP: string,
+  FORGOT_PASSWORD: string;
+  RESET_PASSWORD: string;
+  SELECT_EXPERIENCE: string;
+  CREATE_PROFILE: string;
+  SELECT_GENDER: string;
+  ADD_LOCATION: string;
 }
 
 export const ROUTES: RoutePaths = {
   AUTHSTACK: 'AuthStack',
   SIGNUP: 'Signup',
   LOGIN: 'Login',
-  OTP: 'OTP'
+  OTP: 'OTP',
+  FORGOT_PASSWORD: 'ForgotPassword',
+  RESET_PASSWORD: 'ResetPassword',
+  SELECT_EXPERIENCE: 'SelectExperience',
+  CREATE_PROFILE: 'CreateProfile',
+  SELECT_GENDER: 'SelectGender',
+  ADD_LOCATION: 'AddLocation'
 };
 
 const percentageCalculation = (max: number, val: number): number =>
@@ -34,15 +46,15 @@ const fontCalculation = (
   );
 };
 export const responsiveFontSize = (f: number): number => {
-  const {height, width} = Dimensions.get('window');
+  const { height, width } = Dimensions.get('window');
   return fontCalculation(height, width, f);
 };
 export const responsiveHeight = (h: number): number => {
-  const {height} = Dimensions.get('window');
+  const { height } = Dimensions.get('window');
   return height * (h / 100);
 };
 export const responsiveWidth = (w: number): number => {
-  const {width} = Dimensions.get('window');
+  const { width } = Dimensions.get('window');
   return width * (w / 100);
 };
 
@@ -112,4 +124,117 @@ export const loginFields: signupFieldsTypes[] = [
     secureTextEntry: true,
     icon: svgIcons.lock,
   },
+]
+
+export const forgotFields: signupFieldsTypes = [
+  {
+      name: 'email',
+      placeholder: 'Exampleemail@gmail.com',
+      keyboardType: 'email-address',
+      icon: svgIcons.email,
+    },
+]
+
+export const resetPasswordFields: signupFieldsTypes = [
+  {
+      name: 'password',
+      placeholder: '*********',
+      keyboardType: 'default',
+      icon: svgIcons.lock,
+      secureTextEntry: true,
+    },
+    {
+      name: 'cPassword',
+      placeholder: '*********',
+      keyboardType: 'default',
+      icon: svgIcons.lock,
+      secureTextEntry: true,
+    },
+]
+
+interface experienceTypes {
+  id: number,
+  image: ImageSourcePropType;
+  text: string;
+};
+
+export const AllExperiences: experienceTypes[] = [
+  {
+    id: 1,
+    image: images.exp1,
+    text: 'User'
+  },{
+    id: 2,
+    image: images.exp2,
+    text: 'Pro'
+  },
 ];
+
+interface createTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  icon: string;
+  textAlign: string;
+  line: boolean;
+  height: number;
+  multiline: boolean;
+}
+
+export const createProfileFields: createTypes[] = [
+  {
+    name: 'fullname',
+    placeholder: 'Full Name',
+    icon: svgIcons.user
+  },
+  {
+    name: 'number',
+    placeholder: 'Contact Number',
+    keyboardType: 'numeric',
+    icon: svgIcons.call,
+  },
+  {
+    name: 'bio',
+    placeholder: 'Bio',
+    textAlign: 'top',
+    line: true,
+    multiline: true,
+    height: responsiveHeight(20)
+  }
+]
+
+interface genderTypes {
+  id: number,
+  image: ImageSourcePropType;
+  text: string;
+};
+
+export const Genders: genderTypes[] = [
+  {
+    id: 1,
+    image: images.exp1,
+    text: 'Male'
+  },{
+    id: 2,
+    image: images.female,
+    text: 'Female'
+  },
+];
+
+interface locationTypes {
+  name: string;
+  placeholder: string;
+  icon: string;
+}
+
+export const locationField: locationTypes[] = [
+  {
+    name: 'location',
+    placeholder: 'Search Location',
+    icon: svgIcons.search,
+  }
+]
+
+
+
+

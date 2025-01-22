@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   logoStyle: {
     height: responsiveHeight(25),
-    width: responsiveWidth(60),
+    width: responsiveWidth(62),
   },
   endImage: {
     height: responsiveHeight(31),

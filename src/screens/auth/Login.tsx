@@ -29,12 +29,13 @@ const Login = () => {
           onSubmit={values => handleLogin(values)}
           initialValues={initialValues}
           fields={loginFields}
+          childrenStyle={{width: responsiveWidth(95)}}
           buttonStyle={{marginTop: responsiveHeight(3)}}
           validationSchema={validationSchema}>
           <View style={styles.checkboxForgotContainer}>
             <CheckBoxText text="Remember me" />
             <TouchableOpacity
-              onPress={() => alert('working in progress')}
+              onPress={() => nav.navigate(ROUTES.FORGOT_PASSWORD)}
               style={styles.forgotPasswordContainer}>
               <Text style={styles.textStyle}>Forgot Password</Text>
             </TouchableOpacity>

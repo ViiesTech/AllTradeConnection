@@ -1,6 +1,5 @@
-import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import React from 'react';
-import {images} from '../assets/images';
 import SVGXml from './SVGXml';
 import svgIcons from '../assets/icons';
 import {responsiveFontSize, responsiveHeight, responsiveWidth} from '../utils';
@@ -11,9 +10,10 @@ interface Headerprops {
   image: ImageSourcePropType;
   text: string;
   desc: string;
+  contentStyle: ViewStyle
 }
 
-const AuthHeader = ({image, text, desc}: Headerprops) => {
+const AuthHeader = ({image, text, desc,contentStyle}: Headerprops) => {
 
   const nav = useNavigation()
 
@@ -22,13 +22,16 @@ const AuthHeader = ({image, text, desc}: Headerprops) => {
      <TouchableOpacity onPress={() => nav.goBack()}> 
       <SVGXml icon={svgIcons.arrowleft} width={'12'} />
       </TouchableOpacity>
-      <View style={styles.contentWrapper}>
-        <Image source={images.otp} style={styles.logoStyle} />
-        <Text style={styles.headingStyle}>Enter OTP</Text>
-        <Text style={styles.desc}>
-          We have sent you an email containing 6 digits verification code.
-          Please enter the code to verify your identity
-        </Text>
+      <View style={[styles.contentWrapper,contentStyle]}>
+        {image &&
+        <Image source={image} style={styles.logoStyle} />
+      }
+      {text &&
+        <Text style={styles.headingStyle}>{text}</Text>
+      }
+      {desc &&
+        <Text style={styles.desc}>{desc}</Text>
+      }
       </View>
     </View>
   );
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     alignItems: 'center',
-    paddingTop: responsiveHeight(3),
+    // paddingTop: responsiveHeight(3),
   },
   logoStyle: {
     height: responsiveHeight(20),

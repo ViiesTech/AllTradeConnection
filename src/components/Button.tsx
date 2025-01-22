@@ -1,8 +1,8 @@
-import {StyleSheet, Text, TouchableOpacity, ViewStyle} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {colors} from '../assets/colors';
-import {responsiveHeight, responsiveWidth} from '../utils';
+import { colors } from '../assets/colors';
+import { responsiveHeight, responsiveWidth } from '../utils';
 
 interface ButtonProps {
   buttonText: string;
@@ -10,17 +10,17 @@ interface ButtonProps {
   onPress: () => void;
 }
 
-const Button = ({buttonText, onPress,style}: ButtonProps) => {
+const Button = ({ buttonText, onPress, style }: ButtonProps) => {
   return (
     <TouchableOpacity
-      style={{alignItems: 'center'}}
+      style={{ alignItems: 'center' }}
       onPress={onPress}
       activeOpacity={0.7}>
       <LinearGradient
-        start={{x: 0.1, y: 1}}
-        end={{x: 0.8, y: 0.7}}
+        start={{ x: 0.1, y: 1 }}
+        end={{ x: 0.7, y: 0.5 }}
         colors={['rgba(2, 104, 188, 1)', colors.primary]}
-        style={[styles.buttonStyle,style]}>
+        style={[styles.buttonStyle, style]}>
         <Text style={styles.textStyle}>{buttonText}</Text>
       </LinearGradient>
     </TouchableOpacity>
@@ -36,6 +36,15 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     width: responsiveWidth(82),
     justifyContent: 'center',
+    shadowColor: colors.primary,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 10,
+
   },
   textStyle: {
     color: colors.secondary,
