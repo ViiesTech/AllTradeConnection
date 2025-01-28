@@ -7,22 +7,30 @@ import { responsiveHeight, responsiveWidth } from '../utils';
 interface ButtonProps {
   buttonText: string;
   style: ViewStyle;
+  textStyle: ViewStyle;
   onPress: () => void;
+  gradient: boolean;
 }
 
-const Button = ({ buttonText, onPress, style }: ButtonProps) => {
+const Button = ({ buttonText, onPress, style, textStyle,gradient }: ButtonProps) => {
   return (
     <TouchableOpacity
       style={{ alignItems: 'center' }}
       onPress={onPress}
       activeOpacity={0.7}>
+     {!gradient ?
       <LinearGradient
         start={{ x: 0.1, y: 1 }}
         end={{ x: 0.7, y: 0.5 }}
         colors={['rgba(2, 104, 188, 1)', colors.primary]}
-        style={[styles.buttonStyle, style]}>
-        <Text style={styles.textStyle}>{buttonText}</Text>
+        style={[styles.buttonStyle,style]}>
+        <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
       </LinearGradient>
+      :
+      <TouchableOpacity style={[styles.buttonStyle,style]}>
+               <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
+      </TouchableOpacity>
+      }
     </TouchableOpacity>
   );
 };
@@ -44,7 +52,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.44,
     shadowRadius: 10.32,
     elevation: 10,
-
   },
   textStyle: {
     color: colors.secondary,
