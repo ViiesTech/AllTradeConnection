@@ -9,6 +9,7 @@ import { images } from '../../assets/images'
 import { colors } from '../../assets/colors'
 import SVGXml from '../../components/SVGXml'
 import svgIcons from '../../assets/icons'
+import { Text } from 'react-native-svg'
 
 const locationValidationSchema = Yup.object().shape({
   location: Yup.string()
