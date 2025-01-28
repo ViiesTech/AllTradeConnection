@@ -1,16 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Routes from './routes';
 import Container from './components/Container';
-import {Image, StyleSheet, View} from 'react-native';
-import {images} from './assets/images';
-import {responsiveHeight, responsiveWidth} from './utils';
-
-interface loadingType {
-  loading: boolean;
-}
+import { Image, StyleSheet, View } from 'react-native';
+import { images } from './assets/images';
+import { responsiveHeight, responsiveWidth } from './utils';
 
 const App = () => {
-  const [loading, setLoading] = useState<loadingType>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setTimeout(() => {
@@ -25,7 +21,7 @@ const App = () => {
         <View style={styles.logoWrapper}>
           <Image source={images.logo} style={styles.logoStyle} />
         </View>
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
+        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
           <Image style={styles.endImage} source={images.splash_background2} />
         </View>
       </Container>

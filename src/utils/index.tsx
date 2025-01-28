@@ -13,6 +13,8 @@ interface RoutePaths {
   CREATE_PROFILE: string;
   SELECT_GENDER: string;
   ADD_LOCATION: string;
+  AUTH_INTRO: string;
+  AUTH_PROFILE_COMPLETE: string;
 }
 
 export const ROUTES: RoutePaths = {
@@ -25,7 +27,9 @@ export const ROUTES: RoutePaths = {
   SELECT_EXPERIENCE: 'SelectExperience',
   CREATE_PROFILE: 'CreateProfile',
   SELECT_GENDER: 'SelectGender',
-  ADD_LOCATION: 'AddLocation'
+  ADD_LOCATION: 'AddLocation',
+  AUTH_INTRO: 'AuthIntro',
+  AUTH_PROFILE_COMPLETE: 'AuthProfileComplete',
 };
 
 const percentageCalculation = (max: number, val: number): number =>
@@ -128,28 +132,28 @@ export const loginFields: signupFieldsTypes[] = [
 
 export const forgotFields: signupFieldsTypes = [
   {
-      name: 'email',
-      placeholder: 'Exampleemail@gmail.com',
-      keyboardType: 'email-address',
-      icon: svgIcons.email,
-    },
+    name: 'email',
+    placeholder: 'Exampleemail@gmail.com',
+    keyboardType: 'email-address',
+    icon: svgIcons.email,
+  },
 ]
 
 export const resetPasswordFields: signupFieldsTypes = [
   {
-      name: 'password',
-      placeholder: '*********',
-      keyboardType: 'default',
-      icon: svgIcons.lock,
-      secureTextEntry: true,
-    },
-    {
-      name: 'cPassword',
-      placeholder: '*********',
-      keyboardType: 'default',
-      icon: svgIcons.lock,
-      secureTextEntry: true,
-    },
+    name: 'password',
+    placeholder: '*********',
+    keyboardType: 'default',
+    icon: svgIcons.lock,
+    secureTextEntry: true,
+  },
+  {
+    name: 'cPassword',
+    placeholder: '*********',
+    keyboardType: 'default',
+    icon: svgIcons.lock,
+    secureTextEntry: true,
+  },
 ]
 
 interface experienceTypes {
@@ -163,7 +167,7 @@ export const AllExperiences: experienceTypes[] = [
     id: 1,
     image: images.exp1,
     text: 'User'
-  },{
+  }, {
     id: 2,
     image: images.exp2,
     text: 'Pro'
@@ -214,7 +218,7 @@ export const Genders: genderTypes[] = [
     id: 1,
     image: images.exp1,
     text: 'Male'
-  },{
+  }, {
     id: 2,
     image: images.female,
     text: 'Female'
@@ -234,6 +238,64 @@ export const locationField: locationTypes[] = [
     icon: svgIcons.search,
   }
 ]
+
+interface locationInfoTypes {
+  id: number;
+  heading: string;
+  text: string;
+}
+
+export const locationData: locationInfoTypes[] = [
+  {
+    id: 1,
+    heading: 'Location Name',
+    text: 'Home'
+  },
+  {
+    id: 2,
+    heading: 'Complete Address',
+    text: 'Street lorem ispum'
+  }, 
+  {
+    id: 3,
+    heading: 'Zip Code',
+    text: '1234567890'
+  },
+  {
+    id: 4,
+    heading: 'City',
+    text: 'New York'
+  }
+]
+
+interface slideTypes {
+  key: number;
+  title: string;
+  text: string;
+  image: ImageSourcePropType;
+};
+
+export const slides: slideTypes = [
+  {
+    key: 1,
+    title: 'How To Use',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation.',
+    image: images.slide1,
+  },
+  {
+    key: 2,
+    title: 'Instructions',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation.',
+    image: images.slide2,
+  },
+  {
+    key: 3,
+    title: 'Features',
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation.',
+    image: images.slide3,
+  },
+];
+
 
 
 

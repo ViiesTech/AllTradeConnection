@@ -4,6 +4,7 @@ interface ColorType {
   dark_purple: string;
   black: string;
   red: string;
+  textColor: string;
 }
 
 export const colors: ColorType = {
@@ -13,4 +14,5 @@ export const colors: ColorType = {
   dark_purple: 'rgba(4, 30, 94, 1)',
   black: '#000',
   red: 'red',
+  textColor: '#808CA0',
 };

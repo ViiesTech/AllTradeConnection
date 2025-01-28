@@ -1,19 +1,6 @@
 import { ImageSourcePropType } from 'react-native';
 
-interface ImageTypes {
-  logo: ImageSourcePropType;
-  splash_background: ImageSourcePropType;
-  splash_background2: ImageSourcePropType;
-  otp: ImageSourcePropType;
-  forgot: ImageSourcePropType;
-  exp1: ImageSourcePropType;
-  exp2: ImageSourcePropType;
-  background: ImageSourcePropType;
-  female: ImageSourcePropType;
-  map: ImageSourcePropType;
-}
-
-export const images: ImageTypes = {
+export const images: {[key: string]: ImageSourcePropType} = {
   logo: require('../images/logo.png'),
   splash_background: require('../images/splash_background.png'),
   splash_background2: require('../images/splash_background2.png'),
@@ -24,4 +11,7 @@ export const images: ImageTypes = {
   female: require('../images/female.png'),
   background: require('../images/background.png'),
   map: require('../images/map.png'),
+  slide1: require('../images/slidebackground1.png'),
+  slide2: require('../images/slidebackground2.png'),
+  slide3: require('../images/slidebackground3.png')
 };

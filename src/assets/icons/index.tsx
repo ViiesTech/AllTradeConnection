@@ -65,6 +65,19 @@ export const gps = `
 <path d="M26.667 16H29.3337" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
+
+export const arrownext = `
+<svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.465521 0.448963C0.167357 0.733341 -6.50512e-07 1.11803 -6.32984e-07 1.51901C-6.15457e-07 1.91999 0.167357 2.30468 0.465521 2.58906L6.13261 8.03795L0.465522 13.4109C0.167358 13.6953 -8.39254e-08 14.08 -6.6398e-08 14.481C-4.88706e-08 14.882 0.167358 15.2667 0.465522 15.551C0.614344 15.6933 0.791402 15.8062 0.986483 15.8833C1.18156 15.9603 1.39081 16 1.60214 16C1.81348 16 2.02272 15.9603 2.2178 15.8833C2.41288 15.8062 2.58994 15.6933 2.73876 15.551L9.52647 9.11558C9.67651 8.97448 9.79561 8.80661 9.87688 8.62165C9.95816 8.4367 10 8.23831 10 8.03795C10 7.83758 9.95816 7.63919 9.87688 7.45424C9.79561 7.26928 9.67651 7.10141 9.52647 6.96031L2.73876 0.448963C2.58994 0.306703 2.41288 0.193787 2.2178 0.116731C2.02272 0.0396747 1.81348 -7.92696e-08 1.60214 -7.00319e-08C1.39081 -6.07941e-08 1.18156 0.0396747 0.986483 0.116731C0.791401 0.193788 0.614343 0.306703 0.465521 0.448963Z" fill="#FFF8EF"/>
+</svg>
+`;
+
+export const checkmark = `
+<svg width="124" height="124" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="62" cy="62" r="62" fill="white"/>
+<path d="M42 64.2353C46.0631 67.2157 54.1892 75.4118 57.5135 81C61.5766 72.0588 71.9189 51.9412 83 43" stroke="#1E1E1E" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+`;
 interface svgTypes {
   email: string;
   call: string;
@@ -72,10 +85,12 @@ interface svgTypes {
   eye: string;
   arrowleft: string;
   check: string;
-  upload:string;
+  upload: string;
   user: string;
   search: string;
   gps: string;
+  arrownext: string;
+  checkmark: string;
 }
 
 const svgIcons: svgTypes = {
@@ -89,6 +104,8 @@ const svgIcons: svgTypes = {
   user,
   search,
   gps,
+  arrownext,
+  checkmark,
 };
 
 export default svgIcons;
