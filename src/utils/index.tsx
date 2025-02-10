@@ -3,18 +3,7 @@ import * as Yup from 'yup';
 import svgIcons from '../assets/icons';
 import { images } from '../assets/images';
 interface RoutePaths {
-  AUTHSTACK: string,
-  SIGNUP: string,
-  LOGIN: string,
-  OTP: string,
-  FORGOT_PASSWORD: string;
-  RESET_PASSWORD: string;
-  SELECT_EXPERIENCE: string;
-  CREATE_PROFILE: string;
-  SELECT_GENDER: string;
-  ADD_LOCATION: string;
-  AUTH_INTRO: string;
-  AUTH_PROFILE_COMPLETE: string;
+  [key: string]: string;
 }
 
 export const ROUTES: RoutePaths = {
@@ -30,7 +19,13 @@ export const ROUTES: RoutePaths = {
   ADD_LOCATION: 'AddLocation',
   AUTH_INTRO: 'AuthIntro',
   AUTH_PROFILE_COMPLETE: 'AuthProfileComplete',
+  USER_STACK: 'UserStack',
+  HOME: 'Home',
+  HOME2: 'Home2',
+  PROJECT: 'Project',
+  PROFILE: 'Profile',
 };
+
 
 const percentageCalculation = (max: number, val: number): number =>
   max * (val / 100);

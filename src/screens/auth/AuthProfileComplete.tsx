@@ -1,19 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Container from '../../components/Container'
-import AuthHeader from '../../components/AuthHeader'
 import Modal from "react-native-modal";
 import { colors } from '../../assets/colors';
 import LinearGradient from 'react-native-linear-gradient';
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from '../../utils';
+import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../../utils';
 import SVGXml from '../../components/SVGXml';
 import svgIcons from '../../assets/icons';
 import Button from '../../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 const AuthProfileComplete = () => {
+
+  const nav = useNavigation()
+
   return (
     <Container>
-      <AuthHeader />
       <Modal animationIn={'bounce'} backdropOpacity={0} isVisible={true}>
         <View style={styles.modalStyle}>
           <Text style={styles.heading}>All Set</Text>
@@ -28,14 +30,14 @@ const AuthProfileComplete = () => {
             </View>
           </LinearGradient>
                 <Text style={styles.welcomeText}>Welcome To The All Trades Connection</Text>
-                <Button gradient={true} buttonText='Get Started' textStyle={{color: colors.dark_purple}} style={{backgroundColor: colors.secondary,marginTop: responsiveHeight(3)}} />
+                <Button onPress={() => nav.navigate(ROUTES.USER_STACK)} gradient={true} buttonText='Get Started' textStyle={{color: colors.dark_purple}} style={{backgroundColor: colors.secondary,marginTop: responsiveHeight(3)}} />
         </View>
       </Modal>
     </Container>
   )
 }
 
-export default AuthProfileComplete
+export default AuthProfileComplete;
 
 const styles = StyleSheet.create({
   modalStyle: {

@@ -10,16 +10,16 @@ interface Headerprops {
   image: ImageSourcePropType;
   text: string;
   desc: string;
-  contentStyle: ViewStyle
+  contentStyle: ViewStyle,
 }
 
 const AuthHeader = ({image, text, desc,contentStyle}: Headerprops) => {
 
-  const nav = useNavigation()
+  const nav = useNavigation();
 
   return (
     <View style={styles.mainContainer}>
-     <TouchableOpacity onPress={() => nav.goBack()}> 
+     <TouchableOpacity onPress={() =>  nav.goBack()}> 
       <SVGXml icon={svgIcons.arrowleft} width={'12'} />
       </TouchableOpacity>
       <View style={[styles.contentWrapper,contentStyle]}>

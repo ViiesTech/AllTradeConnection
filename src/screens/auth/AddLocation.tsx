@@ -1,16 +1,16 @@
-import { Image, StyleSheet, TouchableOpacity, View, } from 'react-native'
-import React from 'react'
-import Container from '../../components/Container'
-import AuthHeader from '../../components/AuthHeader'
-import CustomInputForm from '../../components/InputField'
+import { Image, StyleSheet, TouchableOpacity, View, } from 'react-native';
+import React from 'react';
+import Container from '../../components/Container';
+import AuthHeader from '../../components/AuthHeader';
+import CustomInputForm from '../../components/InputField';
 import * as Yup from 'yup';
-import { locationData, locationField, responsiveHeight, responsiveWidth, ROUTES } from '../../utils'
-import { images } from '../../assets/images'
-import { colors } from '../../assets/colors'
-import SVGXml from '../../components/SVGXml'
-import svgIcons from '../../assets/icons'
-import LocationCard from '../../components/LocationCard'
-import { useNavigation } from '@react-navigation/native'
+import { locationData, locationField, responsiveHeight, responsiveWidth, ROUTES } from '../../utils';
+import { images } from '../../assets/images';
+import { colors } from '../../assets/colors';
+import SVGXml from '../../components/SVGXml';
+import svgIcons from '../../assets/icons';
+import LocationCard from '../../components/LocationCard';
+import { useNavigation } from '@react-navigation/native';
 
 const locationValidationSchema = Yup.object().shape({
   location: Yup.string()
@@ -25,7 +25,7 @@ const locationValidationSchema = Yup.object().shape({
 
 const AddLocation = () => {
 
-  const nav = useNavigation()
+  const nav = useNavigation();
 
   const onSaveLocation = (values: string) => {
     nav.navigate(ROUTES.AUTH_INTRO)

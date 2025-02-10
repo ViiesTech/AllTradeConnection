@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {ROUTES} from '../utils';
 import AuthStack from './AuthStack';
 import AppStatusBar from '../components/AppStatusBar';
+import UserStack from './UserStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,9 +14,10 @@ const Routes: React.FC = () => {
     <AppStatusBar />
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
-        headerShown: false
+        headerShown: false,
       }}>
-        <Stack.Screen name={ROUTES.AUTHSTACK} component={AuthStack} />
+        {/* <Stack.Screen name={ROUTES.AUTHSTACK} component={AuthStack} /> */}
+        <Stack.Screen name={ROUTES.USER_STACK} component={UserStack} />
       </Stack.Navigator>
     </NavigationContainer>
     </>
