@@ -21,7 +21,7 @@ export const ROUTES: RoutePaths = {
   AUTH_PROFILE_COMPLETE: 'AuthProfileComplete',
   USER_STACK: 'UserStack',
   HOME: 'Home',
-  HOME2: 'Home2',
+  MESSAGE: 'Message',
   PROJECT: 'Project',
   PROFILE: 'Profile',
 };

@@ -1,17 +1,27 @@
-import {Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { responsiveHeight, ROUTES } from '../utils';
+import { responsiveHeight, responsiveWidth, ROUTES } from '../utils';
 import Home from '../screens/main/User/Home';
 import Project from '../screens/main/User/Project';
-import Home2 from '../screens/main/User/Home2';
 import Profile from '../screens/main/User/Profile';
 import SVGXml from '../components/SVGXml';
 import svgIcons from '../assets/icons';
+import { colors } from '../assets/colors';
+import Message from '../screens/main/User/Message';
 
 
 const Tab = createBottomTabNavigator();
 // const Stack = createNativeStackNavigator();
+
+const CustomTabIcon = ({ icon, activeIcon, focused }) => {
+  return (
+    <View style={styles.tabContainer}>
+      {focused && <View style={styles.activeIndicator} />}
+      <SVGXml icon={focused ? activeIcon : icon} />
+    </View>
+  );
+};
 
 const UserStack = () => {
   return (
@@ -31,26 +41,17 @@ const UserStack = () => {
           height: responsiveHeight(10),
           backgroundColor: 'transparent',
         },
-        // tabBarItemStyle: {
-        //   justifyContent: 'center',
-        //   alignItems: 'center',
-        // },
       }}>
       <Tab.Screen
         name={ROUTES.HOME}
         component={Home}
         options={{
           tabBarIcon: ({focused}) =>
-            focused ? (
-              <>
-              </>
-              // <View style={styles.iconView}>
-              // </View>
-            ) : (
-              <SVGXml icon={svgIcons.home} />
-
-              // <SVGImage image={icons.home_inactive} />
-            ),
+            <CustomTabIcon 
+            icon={svgIcons.home} 
+            activeIcon={svgIcons.house_active} 
+            focused={focused} 
+        />
           }}
       />
       <Tab.Screen
@@ -58,33 +59,23 @@ const UserStack = () => {
         component={Project}
         options={{
           tabBarIcon: ({focused}) =>
-            focused ? (
-              <>
-              </>
-              // <View style={styles.iconView}>
-              // </View>
-            ) : (
-              <SVGXml icon={svgIcons.project} />
-
-              // <SVGImage image={icons.home_inactive} />
-            ),
+            <CustomTabIcon 
+            icon={svgIcons.project} 
+            activeIcon={svgIcons.project_active} 
+            focused={focused} 
+        />
           }}
       />
       <Tab.Screen
-        name={ROUTES.HOME2}
-        component={Home2}
+        name={ROUTES.MESSAGE}
+        component={Message}
         options={{
           tabBarIcon: ({focused}) =>
-            focused ? (
-              <>
-              </>
-              // <View style={styles.iconView}>
-              // </View>
-            ) : (
-              <SVGXml icon={svgIcons.message} />
-
-              // <SVGImage image={icons.home_inactive} />
-            ),
+            <CustomTabIcon 
+            icon={svgIcons.message} 
+            activeIcon={svgIcons.message_active} 
+            focused={focused} 
+        />
           }}
       />
       <Tab.Screen
@@ -92,16 +83,11 @@ const UserStack = () => {
         component={Profile}
         options={{
           tabBarIcon: ({focused}) =>
-            focused ? (
-              <>
-              </>
-              // <View style={styles.iconView}>
-              // </View>
-            ) : (
-              <SVGXml icon={svgIcons.profile} />
-
-              // <SVGImage image={icons.home_inactive} />
-            ),
+            <CustomTabIcon 
+          icon={svgIcons.profile} 
+          activeIcon={svgIcons.profile_active} 
+          focused={focused} 
+      />
           }}
       />
     </Tab.Navigator>
@@ -164,10 +150,18 @@ export default UserStack;
 const styles = StyleSheet.create({
   iconView: {
     backgroundColor: '#373636',
-    // height:  hp('6.5%'),
     alignItems: 'center',
     borderRadius: 100,
     justifyContent: 'center',
-    // width: hp('6.5%'),
+  },
+  tabContainer: {
+    alignItems: 'center',
+  },
+  activeIndicator: {
+    height: 3,
+    position: 'absolute',
+    width: responsiveWidth(25),
+    bottom: responsiveHeight(6.4),
+    backgroundColor: colors.primary,
   },
 });
