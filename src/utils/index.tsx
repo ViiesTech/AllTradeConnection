@@ -8,6 +8,7 @@ interface RoutePaths {
 
 export const ROUTES: RoutePaths = {
   AUTHSTACK: 'AuthStack',
+  DRAWER_STACK: 'DrawerStack',
   SIGNUP: 'Signup',
   LOGIN: 'Login',
   OTP: 'OTP',
@@ -24,6 +25,9 @@ export const ROUTES: RoutePaths = {
   MESSAGE: 'Message',
   PROJECT: 'Project',
   PROFILE: 'Profile',
+  TASK_DETAIL: 'TaskDetail',
+  TERMS_CONDITIONS: 'TermsConditions',
+  PRIVACY_POLICY: 'PrivacyPolicy',
 };
 
 
@@ -290,6 +294,132 @@ export const slides: slideTypes = [
     image: images.slide3,
   },
 ];
+
+interface taskDetailTypes {
+  id: number,
+  title: string,
+  icon: string,
+};
+
+export const taskDetails:  taskDetailTypes[] = [
+  {
+    id: 1,
+    title: 'August/24/24',
+    icon:  svgIcons.calendar,
+   },
+   {
+    id: 2,
+    title: '9:00 PM',
+    icon:  svgIcons.clock,
+   },
+   {
+    id: 3,
+    title: 'Los Angeles',
+    icon:  svgIcons.location,
+   },
+];
+
+interface Tasktypes {
+  id: number,
+  title: string,
+  image: ImageSourcePropType,
+  price: string,
+  desc: string,
+};
+
+export const multipleTasks: Tasktypes[] = [
+  {
+    id: 1,
+    image: images.task1,
+    title: 'Task Name',
+    desc: 'We are looking for a Senior Plumber • Install, repair, and maintain pipes, valves, fittings, drainage systems, and fixtures.',
+    price: '$455',
+  },
+  {
+    id: 2,
+    image: images.task1,
+    title: 'Task Name',
+    desc: 'We are looking for a Senior Plumber • Install, repair, and maintain pipes, valves, fittings, drainage systems, and fixtures.',
+    price: '$455',
+  },
+  {
+    id: 3,
+    image: images.task1,
+    title: 'Task Name',
+    desc: 'We are looking for a Senior Plumber • Install, repair, and maintain pipes, valves, fittings, drainage systems, and fixtures.',
+    price: '$455',
+  },
+];
+
+interface drawerItemsTypes {
+  id: 1,
+  icon: string,
+  title: string,
+  navTo: string;
+};
+
+export const drawerItems: drawerItemsTypes[] = [
+  {
+    id: 1,
+    title: 'Home',
+    icon: svgIcons.drawer_home,
+    navTo: 'Home',
+  },
+  {
+    id: 2,
+    title: 'Profile',
+    icon: svgIcons.drawer_profile,
+    navTo: '',
+  }, 
+   {
+    id: 3,
+    title: 'My Jobs',
+    icon: svgIcons.drawer_jobs,
+    navTo: '',
+  },
+  {
+    id: 4,
+    title: 'Wallet',
+    icon: svgIcons.drawer_wallet,
+    navTo: '',
+  },
+  {
+    id: 5,
+    title: 'Chat',
+    icon: svgIcons.drawer_chat,
+    navTo: '',
+  },
+  {
+    id: 6,
+    title: 'Privacy Policy',
+    icon: svgIcons.drawer_privacy,
+    navTo: ROUTES.PRIVACY_POLICY,
+  },
+  {
+    id: 7,
+    title: 'Terms & Conditions',
+    icon: svgIcons.drawer_terms,
+    navTo: ROUTES.TERMS_CONDITIONS,
+  },
+  {
+    id: 8,
+    title: 'Report a Problem',
+    icon: svgIcons.drawer_report,
+    navTo: '',
+  },
+  {
+    id: 9,
+    title: 'Change Password',
+    icon: svgIcons.drawer_password,
+    navTo: '',
+  },
+  {
+    id: 10,
+    title: 'Logout',
+    icon: svgIcons.drawer_logout,
+  }
+];
+
 
 
 

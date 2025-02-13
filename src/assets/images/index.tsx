@@ -13,5 +13,8 @@ export const images: {[key: string]: ImageSourcePropType} = {
   map: require('../images/map.png'),
   slide1: require('../images/slidebackground1.png'),
   slide2: require('../images/slidebackground2.png'),
-  slide3: require('../images/slidebackground3.png')
+  slide3: require('../images/slidebackground3.png'),
+  task1: require('../images/task1.png'),
+  taskdetail1: require('../images/taskdetail1.png'),
+  profile: require('../images/profilepicture.png'),
 };

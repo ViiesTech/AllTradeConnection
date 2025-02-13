@@ -1,14 +1,16 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { ScrollView, StyleSheet,  ViewStyle } from 'react-native'
 import React, { ReactNode } from 'react'
 import { colors } from '../assets/colors'
 
 interface containerprops {
   children: ReactNode,
+  style: ViewStyle,
+  scrollEnabled: boolean,
 }
 
 const MainContainer = (props: containerprops) => {
   return (
-    <ScrollView contentContainerStyle={styles.contentStyle}>
+    <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={props.scrollEnabled} contentContainerStyle={[styles.containerStyle,props?.style]}>
         {props?.children}
     </ScrollView>
   )
@@ -17,8 +19,8 @@ const MainContainer = (props: containerprops) => {
 export default MainContainer
 
 const styles = StyleSheet.create({
-  contentStyle:{
-    flex: 1,
+  containerStyle:{
+    flexGrow: 1,
     backgroundColor: colors.secondary
   }
 })

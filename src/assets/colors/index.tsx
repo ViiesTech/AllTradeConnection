@@ -5,6 +5,8 @@ interface ColorType {
   black: string;
   red: string;
   textColor: string;
+  textColor2: string;
+  textColor3: string;
 }
 
 export const colors: ColorType = {
@@ -12,7 +14,9 @@ export const colors: ColorType = {
   primary: '#026BBE',
   secondary: 'rgba(255, 255, 255, 1)',
   dark_purple: 'rgba(4, 30, 94, 1)',
+  textColor2: '#041E5E',
   black: '#000',
   red: 'red',
   textColor: '#808CA0',
+  textColor3: '#3B4C68',
 };
