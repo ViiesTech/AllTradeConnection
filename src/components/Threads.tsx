@@ -13,12 +13,12 @@ interface threadsProps {
 const Threads = (props: threadsProps) => {
   return (
     <TouchableOpacity style={styles.threadsView}>
-      <View style={{flexDirection: 'row', alignItems: 'center',gap: 0}}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image source={props?.image} style={styles.imageStyle} />
         <View>
       <Text>{props?.name}</Text>
-      <View style={{flexDirection: 'row',gap: 10,alignItems: 'center'}}>
-        <SVGXml width={'20'} height={'20'} icon={props?.icon} />
+      <View style={{flexDirection: 'row',gap: 2,alignItems: 'center'}}>
+        <SVGXml  icon={props?.icon} />
       <Text>{props?.message}</Text>
       </View>
       </View>

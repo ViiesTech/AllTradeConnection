@@ -30,6 +30,7 @@ const Message = () => {
     return (
         <FlatList 
           renderItem={renderItem}
+          contentContainerStyle={{paddingBottom: responsiveHeight(10)}}
           data={chatThreads}
         />
     )
