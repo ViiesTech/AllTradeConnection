@@ -16,6 +16,7 @@ import Project from '../screens/main/User/Project';
 import Profile from '../screens/main/User/Profile';
 import Message from '../screens/main/User/Message';
 import TaskDetail from '../screens/main/User/TaskDetail';
+import ReportJob from '../screens/main/User/ReportJob';
 
 
 const Tab = createBottomTabNavigator();
@@ -101,18 +102,6 @@ const BottomStack = () => {
   );
 };
 
-// const MerchandiseStack = () => {
-//   return (
-//     <Stack.Navigator
-//     screenOptions={{
-//         headerShown: false,
-//       }}>
-//       <Tab.Screen name="FreeStuff" component={FreeStuff} />
-//       <Tab.Screen name="MerchandiseDetails" component={MerchandiseDetails} />
-//     </Stack.Navigator>
-//   );
-// };
-
 
 const SecondaryStack = () => {
   return (
@@ -123,6 +112,8 @@ const SecondaryStack = () => {
       <Stack.Screen name={ROUTES.TASK_DETAIL} component={TaskDetail} />
       <Stack.Screen name={ROUTES.TERMS_CONDITIONS} component={TermsConditions} />
       <Stack.Screen name={ROUTES.PRIVACY_POLICY} component={PrivacyPolicy} />
+      <Stack.Screen name={ROUTES.REPORT_JOB} component={ReportJob} />
+
     </Stack.Navigator>
   );
 };
@@ -135,7 +126,7 @@ const MainStack = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="BottomStack" component={BottomStack} />
-      <Stack.Screen name="SecondaryStack" component={SecondaryStack} />
+      {/* <Stack.Screen name="SecondaryStack" component={SecondaryStack} /> */}
     </Stack.Navigator>
   );
 };
@@ -153,7 +144,8 @@ const DrawerStack = () => {
         return <CustomDrawerContent {...props} />
       }}
     >
-      <Drawer.Screen name="UserStack" component={MainStack} />
+      <Drawer.Screen name="MainStack" component={MainStack} />
+      <Drawer.Screen name="SecondaryStack" component={SecondaryStack} />
     </Drawer.Navigator>
   );
 }
@@ -164,6 +156,8 @@ const CustomDrawerContent = () => {
 
 
   const navigation = useNavigation();
+
+  console.log(navigation.getState());
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.mainContainer}>

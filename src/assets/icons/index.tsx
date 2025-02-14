@@ -260,9 +260,16 @@ const arrow_red = `
 <path d="M13.2691 10.2916L0.0832609 10.2917L0.0832534 8.125L13.2691 8.12499L7.45817 2.31405L8.99023 0.781981L17.4166 9.20831L8.99021 17.6347L7.45815 16.1026L13.2691 10.2916Z" fill="#FF0000"/>
 </svg>
 `;
+
+
+const modal_bar = `
+<svg width="70" height="3" viewBox="0 0 70 3" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="70" height="3" rx="1.5" fill="black"/>
+</svg>
+`;
 interface SvgTypes {
   [key: string]: string;
-}
+};
 
 const svgIcons: SvgTypes = {
   email,
@@ -304,6 +311,7 @@ const svgIcons: SvgTypes = {
   drawer_chat,
   arrow,
   arrow_red,
+  modal_bar,
 };
 
 

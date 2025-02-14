@@ -3,16 +3,20 @@ import React from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header2 from '../../../components/Header2'
 import { images } from '../../../assets/images'
-import { responsiveFontSize, responsiveHeight, responsiveWidth, taskDetails } from '../../../utils'
+import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES, taskDetails } from '../../../utils'
 import { colors } from '../../../assets/colors'
 import SVGXml from '../../../components/SVGXml'
 import svgIcons from '../../../assets/icons'
 import Button from '../../../components/Button'
+import { useNavigation } from '@react-navigation/native'
 
 const TaskDetail = () => {
+
+  const nav = useNavigation();
+
   return (
     <MainContainer>
-      <Header2 />
+      <Header2  text='Open Project'/>
       <View style={styles.subContainer}>
         <Image style={styles.taskImage} source={images.taskdetail1} />
         <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingTop: responsiveHeight(1.5) }}>
@@ -46,7 +50,9 @@ const TaskDetail = () => {
             <SVGXml icon={svgIcons.clock} />
                 <Text style={styles.time}>Posted 3 days ago</Text>
                 </View>
+                <TouchableOpacity onPress={() => nav.navigate('SecondaryStack',{screen: ROUTES.REPORT_JOB})}>
                 <Text style={styles.reportText}>Report</Text>
+                </TouchableOpacity>
         </View>
         <Button style={{marginTop: responsiveHeight(4),width: responsiveWidth(90)}} buttonText='Get Job' />
       </View>

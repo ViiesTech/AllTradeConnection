@@ -24,7 +24,6 @@ const validationSchema = Yup.object().shape({
   bio: Yup.string()
   .max(200, "Bio must not exceed 200 characters")
   .notRequired(),
-
 })
 
 const CreateProfile = () => {

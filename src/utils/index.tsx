@@ -28,6 +28,9 @@ export const ROUTES: RoutePaths = {
   TASK_DETAIL: 'TaskDetail',
   TERMS_CONDITIONS: 'TermsConditions',
   PRIVACY_POLICY: 'PrivacyPolicy',
+  SUPPORT: 'Support',
+  REPORT_JOB: 'ReportJob',
+  MAP: 'Map',
 };
 
 
@@ -205,6 +208,42 @@ export const createProfileFields: createTypes[] = [
     height: responsiveHeight(20)
   }
 ]
+
+interface supportTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  textAlign: string;
+  line: boolean;
+  height: number;
+  multiline: boolean;
+}
+
+export const supportFields: supportTypes[] = [
+  {
+    name: 'fullname',
+    placeholder: 'Full Name',
+  },
+  {
+    name: 'email',
+    placeholder: 'Email Address',
+    keyboardType: 'email-address',
+  },
+  {
+    name: 'number',
+    placeholder: 'Phone Number',
+    keyboardType: 'numeric',
+  },
+  {
+    name: 'message',
+    placeholder: 'Your Message',
+    textAlign: 'top',
+    line: true,
+    multiline: true,
+    height: responsiveHeight(20)
+  }
+]
+
 
 interface genderTypes {
   id: number,
@@ -417,8 +456,33 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 10,
     title: 'Logout',
     icon: svgIcons.drawer_logout,
-  }
+    navTo: ROUTES.AUTH_PROFILE_COMPLETE,
+  },
 ];
+
+interface reportListtypes {
+  id: number,
+  text: string,
+};
+
+export const reportList: reportListtypes[] = [
+  {
+    id: 1,
+    text: `I'm Not Interested`,
+  },
+  {
+    id: 2,
+    text: `Fake Profile`,
+  },
+  {
+    id: 3,
+    text: `Spam`,
+  },
+  {
+    id: 4,
+    text: `Inappropriate Prompts`
+  },
+]
 
 
 

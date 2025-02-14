@@ -17,4 +17,5 @@ export const images: {[key: string]: ImageSourcePropType} = {
   task1: require('../images/task1.png'),
   taskdetail1: require('../images/taskdetail1.png'),
   profile: require('../images/profilepicture.png'),
+  map2: require('../images/map2.png'),
 };

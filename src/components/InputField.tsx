@@ -24,6 +24,7 @@ interface InputFieldProps extends TextInputProps {
   textAlign: string;
   line: boolean;
   inputHeight: number;
+  inputContainer: ViewStyle;
   multiline: boolean;
 }
 
@@ -37,6 +38,7 @@ const InputField = ({
   line,
   inputHeight,
   multiline,
+  inputContainer,
   secureTextEntry = false,
   ...props
 }: InputFieldProps) => {
@@ -45,7 +47,7 @@ const InputField = ({
 
 
   return (
-    <View style={[styles.inputContainerWrapper]}>
+    <View style={[styles.inputContainerWrapper,inputContainer]}>
       <View style={[styles.inputContainer, hasError && styles.errorInput]}>
         <SVGXml icon={icon} width={iconWidth || 20} />
         {!line &&
@@ -93,6 +95,7 @@ interface CustomInputFormProps {
   inputStyle?: object;
   buttonStyle: ViewStyle;
   children?: ReactNode;
+  inputContainer: ViewStyle;
   childrenStyle: ViewStyle;
 }
 
@@ -107,6 +110,7 @@ const CustomInputForm = ({
   buttonStyle,
   inputContainerStyle,
   childrenStyle,
+  inputContainer,
 }: CustomInputFormProps) => {
   return (
     <Formik
@@ -127,6 +131,7 @@ const CustomInputForm = ({
               secureTextEntry={field.secureTextEntry}
               keyboardType={field.keyboardType}
               line={field.line}
+              inputContainer={inputContainer}
               multiline={field.multiline}
               inputHeight={field.height}
               textAlign={field.textAlign}
