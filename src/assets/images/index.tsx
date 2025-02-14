@@ -18,4 +18,12 @@ export const images: {[key: string]: ImageSourcePropType} = {
   taskdetail1: require('../images/taskdetail1.png'),
   profile: require('../images/profilepicture.png'),
   map2: require('../images/map2.png'),
+  thread1: require('../images/thread1.png'),
+  thread2: require('../images/thread2.png'),
+  thread3: require('../images/thread3.png'),
+  thread4: require('../images/thread4.png'),
+  thread5: require('../images/thread5.png'),
+  thread6: require('../images/thread6.png'),
+  thread7: require('../images/thread7.png'),
+
 };

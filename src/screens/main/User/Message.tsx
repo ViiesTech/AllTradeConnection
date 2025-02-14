@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import React from 'react'
 import MainContainer from '../../../components/MainContainer';
 import Header from '../../../components/Header';
 import CustomInputForm from '../../../components/InputField';
-import { responsiveHeight, responsiveWidth, searchField } from '../../../utils';
+import { chatThreads, responsiveHeight, responsiveWidth, searchField } from '../../../utils';
 import * as Yup from 'yup';
+import Threads from '../../../components/Threads';
 
 const searchValidationSchema = Yup.object().shape({
   search: Yup.string()
@@ -18,11 +19,28 @@ const Message = () => {
 
   }
 
+  const renderThreads = () => {
+
+    const renderItem = ({item}) => {
+      return (
+            <Threads icon={item.icon} image={item.image} name={item.name} message={item.message} />
+      )
+    }
+
+    return (
+        <FlatList 
+          renderItem={renderItem}
+          data={chatThreads}
+        />
+    )
+  }
+
   return (
    <MainContainer>
       <Header hideNotification />
       <View style={styles.subContainer}>
-      <CustomInputForm hideButton inputContainer={{width: responsiveWidth(92),marginTop: responsiveHeight(2)}} inputContainerStyle={{ padding: 0 }} childrenStyle={{ marginBottom: responsiveHeight(3) }} onSubmit={(values) => onSaveLocation(values)}  fields={searchField} validationSchema={searchValidationSchema} initialValues={{ search: 'Search' }} />
+      <CustomInputForm hideButton inputContainer={{width: responsiveWidth(92)}} inputContainerStyle={{ padding: 0 }} childrenStyle={{ marginBottom: responsiveHeight(3) }} onSubmit={(values) => onSaveLocation(values)}  fields={searchField} validationSchema={searchValidationSchema} initialValues={{ search: 'Search' }} />
+        {renderThreads()}
       </View>
    </MainContainer>
   )
@@ -32,6 +50,6 @@ export default Message;
 
 const styles = StyleSheet.create({
   subContainer: {
-
+    padding: responsiveHeight(2),
   }
 })

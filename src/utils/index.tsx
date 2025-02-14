@@ -496,7 +496,63 @@ export const reportList: reportListtypes[] = [
     id: 4,
     text: `Inappropriate Prompts`
   },
-]
+];
+
+
+interface threadsTypes {
+  id: number,
+  image: ImageSourcePropType,
+  name: string,
+  icon: string,
+  message: string,
+};
+
+export const chatThreads: threadsTypes[] = [
+  {
+    id: 1,
+    name: `Michael John`,
+    image: images.thread1,
+    message: 'I’ll check it for a moment, please wait',
+  },
+  {
+    id: 2,
+    name: `Jonathan`,
+    image: images.thread2,
+    message: 'Ok will talk to you soon.',
+    icon: svgIcons.check2,
+  },
+  {
+    id: 3,
+    name: `Lord Justin`,
+    image: images.thread3,
+    message: 'Thank you, I’ll make it up soon',
+  },
+  {
+    id: 4,
+    name: `Michael John`,
+    image: images.thread4,
+    message: 'I’ll check it for a moment, please wait',
+  },
+  {
+    id: 5,
+    name: `Jonathan`,
+    image: images.thread5,
+    message: 'Ok will talk to you soon.',
+    icon: svgIcons.check2,
+  },
+  {
+    id: 6,
+    name: `Lord Justin`,
+    image: images.thread6,
+    message: 'Thank you, I’ll make it up soon',
+  },
+  {
+    id: 7,
+    name: `Michael John`,
+    image: images.thread7,
+    message: 'I’ll check it for a moment, please wait',
+  },
+];
 
 
 
