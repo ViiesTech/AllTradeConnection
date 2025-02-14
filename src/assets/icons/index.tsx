@@ -267,6 +267,12 @@ const modal_bar = `
 <rect width="70" height="3" rx="1.5" fill="black"/>
 </svg>
 `;
+
+const check2 = `
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.66697 10.1141L12.7952 3.98584L13.738 4.92865L6.66697 11.9997L2.42432 7.75709L3.36712 6.81429L6.66697 10.1141Z" fill="#4646B6"/>
+</svg>
+`;
 interface SvgTypes {
   [key: string]: string;
 };
@@ -312,6 +318,7 @@ const svgIcons: SvgTypes = {
   arrow,
   arrow_red,
   modal_bar,
+  check2,
 };
 
 

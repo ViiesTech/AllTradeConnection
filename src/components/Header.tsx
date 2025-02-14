@@ -6,7 +6,7 @@ import { responsiveHeight } from '../utils';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 interface headerprops {
-
+hideNotification: boolean;
 }
 
 const Header = (props: headerprops) => {
@@ -18,9 +18,11 @@ const Header = (props: headerprops) => {
       <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
         <SVGXml icon={svgIcons.bars} />
         </TouchableOpacity>
+        {!props?.hideNotification &&
         <TouchableOpacity>
         <SVGXml icon={svgIcons.notification} />
         </TouchableOpacity>
+        }
     </View>
   )
 }

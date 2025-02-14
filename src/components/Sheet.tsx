@@ -6,10 +6,11 @@ import { colors } from '../assets/colors';
 import SVGXml from './SVGXml';
 import svgIcons from '../assets/icons';
 import Button from './Button';
+import { useNavigation } from '@react-navigation/native';
 
 
 function ModalComponent({ isModalVisible, backdropPress, cartConfirmation, totalPrice, total_quantity, onOrderPress }) {
-
+const nav = useNavigation();
 
   return (
     <Modal
@@ -31,7 +32,7 @@ function ModalComponent({ isModalVisible, backdropPress, cartConfirmation, total
                       </>
                     ))}
                   </View>
-                  <Button buttonText='Submit' style={{marginTop: responsiveHeight(3),marginBottom: responsiveHeight(2)}} />
+                  <Button onPress={() => nav.navigate('MainStack')} buttonText='Submit' style={{marginTop: responsiveHeight(3),marginBottom: responsiveHeight(2)}} />
           </View>
     </Modal>
   );

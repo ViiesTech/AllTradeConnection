@@ -96,6 +96,7 @@ interface CustomInputFormProps {
   buttonStyle: ViewStyle;
   children?: ReactNode;
   inputContainer: ViewStyle;
+  hideButton: boolean;
   childrenStyle: ViewStyle;
 }
 
@@ -111,6 +112,7 @@ const CustomInputForm = ({
   inputContainerStyle,
   childrenStyle,
   inputContainer,
+  hideButton,
 }: CustomInputFormProps) => {
   return (
     <Formik
@@ -139,7 +141,9 @@ const CustomInputForm = ({
             />
           ))}
           {children && <View style={childrenStyle}>{children}</View>}
+          {!hideButton &&
           <Button  style={buttonStyle} buttonText={buttonText} onPress={handleSubmit} />
+        }
         </View>
       )}
     </Formik>

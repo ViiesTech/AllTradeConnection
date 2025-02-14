@@ -277,6 +277,20 @@ export const locationField: locationTypes[] = [
   }
 ]
 
+interface searchTypes {
+  name: string;
+  placeholder: string;
+  icon: string;
+}
+
+export const searchField: searchTypes[] = [
+  {
+    name: 'search',
+    placeholder: 'Search...',
+    icon: svgIcons.search,
+  }
+]
+
 interface locationInfoTypes {
   id: number;
   heading: string;
