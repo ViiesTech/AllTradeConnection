@@ -6,6 +6,7 @@ import CustomInputForm from '../../../components/InputField';
 import { chatThreads, responsiveHeight, responsiveWidth, searchField } from '../../../utils';
 import * as Yup from 'yup';
 import Threads from '../../../components/Threads';
+import { colors } from '../../../assets/colors';
 
 const searchValidationSchema = Yup.object().shape({
   search: Yup.string()
@@ -23,7 +24,10 @@ const Message = () => {
 
     const renderItem = ({item}) => {
       return (
+        <>
             <Threads icon={item.icon} image={item.image} name={item.name} message={item.message} />
+            <View style={styles.horizontalLine} />
+            </>
       )
     }
 
@@ -52,5 +56,10 @@ export default Message;
 const styles = StyleSheet.create({
   subContainer: {
     padding: responsiveHeight(2),
+  },
+  horizontalLine: {
+    borderBottomColor: colors.black,
+    marginBottom: responsiveHeight(2),
+    borderBottomWidth: 0.3,
   }
 })

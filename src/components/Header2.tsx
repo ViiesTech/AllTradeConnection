@@ -10,6 +10,8 @@ interface headerprops {
   text: string,
   hideCancel: boolean,
   subHeading: boolean;
+  onCancel: () => void;
+  headerText2: string;
 }
 
 const Header2 = (props: headerprops) => {
@@ -26,8 +28,8 @@ const Header2 = (props: headerprops) => {
           <Text style={styles.subHeadingStyle}>Details</Text>
       }
       {!props?.hideCancel &&
-      <TouchableOpacity onPress={() => nav.goBack()}>
-        <Text style={[styles.textStyle,{fontWeight: 'thin',fontSize: responsiveFontSize(2.5)}]}>Cancel</Text>
+      <TouchableOpacity onPress={props?.onCancel}>
+        <Text style={[styles.textStyle,{fontWeight: 'thin',fontSize: responsiveFontSize(2.5)}]}>{props?.headerText2}</Text>
         </TouchableOpacity>
         }
     </View>

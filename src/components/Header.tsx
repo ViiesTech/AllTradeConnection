@@ -2,7 +2,7 @@ import { StyleSheet,TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import SVGXml from './SVGXml';
 import svgIcons from '../assets/icons';
-import { responsiveHeight } from '../utils';
+import { responsiveHeight, ROUTES } from '../utils';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 interface headerprops {
@@ -19,7 +19,7 @@ const Header = (props: headerprops) => {
         <SVGXml icon={svgIcons.bars} />
         </TouchableOpacity>
         {!props?.hideNotification &&
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('SecondaryStack',{screen:ROUTES.NOTIFICATION})}>
         <SVGXml icon={svgIcons.notification} />
         </TouchableOpacity>
         }

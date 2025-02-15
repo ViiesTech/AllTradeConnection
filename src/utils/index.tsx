@@ -31,6 +31,7 @@ export const ROUTES: RoutePaths = {
   SUPPORT: 'Support',
   REPORT_JOB: 'ReportJob',
   MAP: 'Map',
+  NOTIFICATION: 'Notificatio',
 };
 
 
@@ -416,7 +417,7 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 1,
     title: 'Home',
     icon: svgIcons.drawer_home,
-    navTo: 'Home',
+    navTo: 'MainStack',
   },
   {
     id: 2,
@@ -517,40 +518,116 @@ export const chatThreads: threadsTypes[] = [
   {
     id: 2,
     name: `Jonathan`,
-    image: images.thread2,
+    image: images.thread1,
     message: 'Ok will talk to you soon.',
     icon: svgIcons.check2,
   },
   {
     id: 3,
     name: `Lord Justin`,
-    image: images.thread3,
+    image: images.thread1,
     message: 'Thank you, I’ll make it up soon',
   },
   {
     id: 4,
     name: `Michael John`,
-    image: images.thread4,
+    image: images.thread1,
     message: 'I’ll check it for a moment, please wait',
   },
   {
     id: 5,
     name: `Jonathan`,
-    image: images.thread5,
+    image: images.thread1,
     message: 'Ok will talk to you soon.',
     icon: svgIcons.check2,
   },
   {
     id: 6,
     name: `Lord Justin`,
-    image: images.thread6,
+    image: images.thread1,
     message: 'Thank you, I’ll make it up soon',
   },
   {
     id: 7,
     name: `Michael John`,
-    image: images.thread7,
+    image: images.thread1,
     message: 'I’ll check it for a moment, please wait',
+  },
+];
+
+interface notificationTypes {
+  id: number,
+  title: string,
+  desc: string,
+  time: string,
+}
+
+export const notificationsData: notificationTypes[] = [
+  {
+    id: 1,
+    title: 'Congratulation',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+  {
+    id: 2,
+    title: 'Task Completed',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+  {
+    id: 3,
+    title: 'Task Completed',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+  {
+    id: 4,
+    title: 'Task Completed',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+  {
+    id: 5,
+    title: 'Task Completed',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+  {
+    id: 6,
+    title: 'Task Completed',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+  {
+    id: 7,
+    title: 'Task Completed',
+    time: '12:44 am',
+    desc: 'You have earned 1000 Points',
+  },
+];
+
+interface categoryTypes {
+  id: number;
+  text: string;
+};
+
+export const categoryData: categoryTypes[] = [
+  {
+    id: 1,
+    text: 'In Discussion',
+  },
+  {
+    id: 2,
+    text: 'Hired',
+  },
+  {
+    id: 3,
+    text: 'Done',
+  },
+  {
+    id: 4,
+    text: 'Reject',
   },
 ];
 

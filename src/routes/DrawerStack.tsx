@@ -17,6 +17,7 @@ import Profile from '../screens/main/User/Profile';
 import Message from '../screens/main/User/Message';
 import TaskDetail from '../screens/main/User/TaskDetail';
 import ReportJob from '../screens/main/User/ReportJob';
+import Notification from '../screens/main/User/Notification';
 
 
 const Tab = createBottomTabNavigator();
@@ -113,6 +114,8 @@ const SecondaryStack = () => {
       <Stack.Screen name={ROUTES.TERMS_CONDITIONS} component={TermsConditions} />
       <Stack.Screen name={ROUTES.PRIVACY_POLICY} component={PrivacyPolicy} />
       <Stack.Screen name={ROUTES.REPORT_JOB} component={ReportJob} />
+      <Stack.Screen name={ROUTES.NOTIFICATION} component={Notification} />
+
 
     </Stack.Navigator>
   );
@@ -126,7 +129,7 @@ const MainStack = () => {
         headerShown: false,
       }}>
       <Stack.Screen name="BottomStack" component={BottomStack} />
-      {/* <Stack.Screen name="SecondaryStack" component={SecondaryStack} /> */}
+      <Stack.Screen name="SecondaryStack" component={SecondaryStack} />
     </Stack.Navigator>
   );
 };
@@ -145,7 +148,7 @@ const DrawerStack = () => {
       }}
     >
       <Drawer.Screen name="MainStack" component={MainStack} />
-      <Drawer.Screen name="SecondaryStack" component={SecondaryStack} />
+      {/* <Drawer.Screen name="SecondaryStack" component={SecondaryStack} /> */}
     </Drawer.Navigator>
   );
 }
@@ -175,7 +178,7 @@ const CustomDrawerContent = () => {
                             if(!item.navTo) {
                                   alert('working in progress')
                             } else {
-                              navigation.navigate('SecondaryStack',{screen: item.navTo});
+                              navigation.navigate(item.navTo);
                             }
                        }} style={{flexDirection: 'row', justifyContent: 'space-between',marginBottom: responsiveHeight(3)}}>
                         <View style={{flexDirection: 'row',alignItems: 'center',gap: 20}}>
