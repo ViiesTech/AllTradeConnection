@@ -12,6 +12,8 @@ interface headerprops {
   subHeading: boolean;
   onCancel: () => void;
   headerText2: string;
+  hideBack: boolean;
+  headerText3: string;
 }
 
 const Header2 = (props: headerprops) => {
@@ -20,12 +22,17 @@ const Header2 = (props: headerprops) => {
 
   return (
     <View style={[styles.headerView,!props?.hideCancel && {flexDirection: 'row', justifyContent: 'space-between',alignItems: 'center'}]}>
+      {!props?.hideBack &&
       <TouchableOpacity onPress={() => nav.goBack()}>
             <SVGXml width={'25'} height={'25'} icon={svgIcons.arrowleft} />
       </TouchableOpacity>
+      }
       <Text style={[styles.textStyle,{marginTop: props?.hideCancel && responsiveHeight(4)}]}>{props?.text}</Text>
       {props?.subHeading &&
           <Text style={styles.subHeadingStyle}>Details</Text>
+      }
+      {props?.headerText3 &&
+        <Text style={[styles.textStyle,{marginTop:responsiveHeight(2)}]}>{props?.headerText3}</Text>
       }
       {!props?.hideCancel &&
       <TouchableOpacity onPress={props?.onCancel}>

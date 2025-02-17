@@ -1,21 +1,18 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import MainContainer from '../../../components/MainContainer';
 import Header from '../../../components/Header';
-import { categoryData, multipleTasks, responsiveFontSize, responsiveHeight, ROUTES } from '../../../utils';
+import { multipleTasks, responsiveFontSize, responsiveHeight, ROUTES } from '../../../utils';
 import { colors } from '../../../assets/colors';
 import TaskCard from '../../../components/TaskCard';
 import SVGXml from '../../../components/SVGXml';
 import svgIcons from '../../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
-import JobsCategory from '../../../components/JobsCategory';
 
 
 const Home = () => {
-  const [chooseCategory,setChooseCategory] = useState<number>(0);
-
-  const screenType = 'MyJobs';
-
+  const nav = useNavigation();
+ 
   const renderTasks = () => {
     const navigation = useNavigation();
   
@@ -35,45 +32,22 @@ const Home = () => {
     )
   };
 
-  const renderCategory = () => {
-    const renderItem = ({item,index}) => {
-      return (
-        <JobsCategory textColor={index == chooseCategory ? colors.secondary : colors.primary} backgroundColor={index == chooseCategory ? colors.primary : 'rgb(211, 229, 242)'} text={item.text} onPress={() => setChooseCategory(index)} />
-      )
-    }
-    return (
-        <FlatList 
-          data={categoryData}
-          horizontal
-          style={{marginHorizontal: responsiveHeight(-3)}}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{flexDirection: 'row',gap: 10,paddingHorizontal: responsiveHeight(3)}}
-          renderItem={renderItem}
-        />
-    )
-  }
-  
 
   return (
     <View>
       <MainContainer style={{ paddingBottom: responsiveHeight(6) }}>
-        <Header hideNotification={screenType === 'MyJobs' ? true : false} />
+        <Header />
         <View style={styles.subContainer}>
-         {screenType != 'MyJobs' && 
           <View style={styles.textView}>
             <Text style={styles.welcomeText}>Welcome Back</Text>
             <Text style={styles.nameText}>John Smith</Text>
           </View>
-              }
-            {screenType === 'MyJobs' && renderCategory()}
           {renderTasks()}
         </View>
       </MainContainer>
-      {screenType != 'MyJobs' &&
-      <TouchableOpacity style={styles.plusView}>
+      <TouchableOpacity onPress={() => nav.navigate('SecondaryStack',{screen: ROUTES.POST_JOB})} style={styles.plusView}>
         <SVGXml icon={svgIcons.plus} />
       </TouchableOpacity>
-      }
     </View>
   )
 };

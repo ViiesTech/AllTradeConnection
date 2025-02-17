@@ -9,7 +9,7 @@ import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
 
 
-function ModalComponent({ isModalVisible, backdropPress, cartConfirmation, totalPrice, total_quantity, onOrderPress }) {
+function ModalComponent({ isModalVisible, backdropPress }) {
 const nav = useNavigation();
 
   return (
@@ -32,7 +32,7 @@ const nav = useNavigation();
                       </>
                     ))}
                   </View>
-                  <Button onPress={() => nav.navigate('MainStack')} buttonText='Submit' style={{marginTop: responsiveHeight(3),marginBottom: responsiveHeight(2)}} />
+                  <Button onPress={() => nav.goBack()} buttonText='Submit' style={{marginTop: responsiveHeight(3),marginBottom: responsiveHeight(2)}} />
           </View>
     </Modal>
   );

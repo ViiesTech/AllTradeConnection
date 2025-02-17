@@ -7,21 +7,27 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 interface headerprops {
 hideNotification: boolean;
-}
+showEdit: boolean;
+};
 
 const Header = (props: headerprops) => {
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
     return (
     <View style={styles.headerView}>
       <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
         <SVGXml icon={svgIcons.bars} />
         </TouchableOpacity>
-        {!props?.hideNotification &&
+        {!props?.hideNotification  &&
         <TouchableOpacity onPress={() => navigation.navigate('SecondaryStack',{screen:ROUTES.NOTIFICATION})}>
         <SVGXml icon={svgIcons.notification} />
         </TouchableOpacity>
+        }
+        {props?.showEdit &&
+            <TouchableOpacity>
+              <SVGXml icon={svgIcons.edit2} />
+            </TouchableOpacity>
         }
     </View>
   )

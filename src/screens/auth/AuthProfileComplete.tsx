@@ -14,13 +14,23 @@ const AuthProfileComplete = ({route}) => {
 
   const nav = useNavigation();
 
-  const screenType = route?.params?.type;
+  const {type} = route?.params || {};
+  console.log('data',type)
+
+  const onCompleteButtonPress = () => {
+    if (type === 'logout') {
+      nav.navigate(ROUTES.AUTHSTACK);
+    } else {
+      nav.navigate(ROUTES.DRAWER_STACK);
+    }
+  };
+  
 
   return (
     <Container>
       <Modal animationIn={'bounce'} backdropOpacity={0} isVisible={true}>
         <View style={styles.modalStyle}>
-          <Text style={styles.heading}>{screenType === 'logout' ? 'Logout' : 'All Set'}</Text>
+          <Text style={styles.heading}>{type === 'logout' ? 'Logout' : 'All Set'}</Text>
           <View style={styles.border} />
           <LinearGradient
             start={{ x: 1, y: 2 }}
@@ -31,8 +41,8 @@ const AuthProfileComplete = ({route}) => {
                   <SVGXml icon={svgIcons.checkmark} width={'100'} height={'120'} />
             </View>
           </LinearGradient>
-                <Text style={styles.welcomeText}>{screenType === 'logout' ?  'Are you sure you want to logout' :  'Welcome To The All Trades Connection'}</Text>
-                <Button onPress={() => nav.navigate(ROUTES.USER_STACK)} gradient={true} buttonText={screenType === 'logout' ? 'Logout' : 'Get Started' }textStyle={{color: colors.dark_purple}} style={{backgroundColor: colors.secondary,marginTop: responsiveHeight(3)}} />
+                <Text style={styles.welcomeText}>{type === 'logout' ?  'Are you sure you want to logout' :  'Welcome To The All Trades Connection'}</Text>
+                <Button onPress={() => onCompleteButtonPress()} gradient={true} buttonText={type === 'logout' ? 'Logout' : 'Get Started' }textStyle={{color: colors.dark_purple}} style={{backgroundColor: colors.secondary,marginTop: responsiveHeight(3)}} />
         </View>
       </Modal>
     </Container>

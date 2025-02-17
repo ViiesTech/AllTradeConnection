@@ -20,4 +20,9 @@ export const images: {[key: string]: ImageSourcePropType} = {
   map2: require('../images/map2.png'),
   thread1: require('../images/thread1.jpg'),
   professional: require('../images/professional.png'),
+  review1: require('../images/reviewImage.png'),
+  certificate1: require('../images/certificate1.png'),
+  certificate2: require('../images/certificate2.png'),
+
+
 };

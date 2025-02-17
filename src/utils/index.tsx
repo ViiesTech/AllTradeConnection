@@ -9,6 +9,7 @@ interface RoutePaths {
 export const ROUTES: RoutePaths = {
   AUTHSTACK: 'AuthStack',
   DRAWER_STACK: 'DrawerStack',
+  MAIN_STACK: 'MainStack',
   SIGNUP: 'Signup',
   LOGIN: 'Login',
   OTP: 'OTP',
@@ -31,7 +32,10 @@ export const ROUTES: RoutePaths = {
   SUPPORT: 'Support',
   REPORT_JOB: 'ReportJob',
   MAP: 'Map',
-  NOTIFICATION: 'Notificatio',
+  MY_JOBS: 'MyJobs',
+  NOTIFICATION: 'Notification',
+  PROFILE: 'Profile',
+  POST_JOB: 'PostJob',
 };
 
 
@@ -210,6 +214,33 @@ export const createProfileFields: createTypes[] = [
   }
 ]
 
+interface postTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const postJobFields: postTypes[] = [
+  {
+    name: 'fullname',
+    placeholder: 'Name',
+    line: true,
+  },
+  {
+    name: 'email',
+    placeholder: 'Email',
+    keyboardType: 'email-address',
+    line: true
+  },
+  {
+    name: 'number',
+    placeholder: 'Phone Number',
+    line: true,
+    keyboardType: 'numeric',
+  }
+]
+
 interface supportTypes {
   name: string;
   placeholder: string;
@@ -308,7 +339,7 @@ export const locationData: locationInfoTypes[] = [
     id: 2,
     heading: 'Complete Address',
     text: 'Street lorem ispum'
-  }, 
+  },
   {
     id: 3,
     heading: 'Zip Code',
@@ -355,22 +386,22 @@ interface taskDetailTypes {
   icon: string,
 };
 
-export const taskDetails:  taskDetailTypes[] = [
+export const taskDetails: taskDetailTypes[] = [
   {
     id: 1,
     title: 'August/24/24',
-    icon:  svgIcons.calendar,
-   },
-   {
+    icon: svgIcons.calendar,
+  },
+  {
     id: 2,
     title: '9:00 PM',
-    icon:  svgIcons.clock,
-   },
-   {
+    icon: svgIcons.clock,
+  },
+  {
     id: 3,
     title: 'Los Angeles',
-    icon:  svgIcons.location,
-   },
+    icon: svgIcons.location,
+  },
 ];
 
 interface Tasktypes {
@@ -417,19 +448,19 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 1,
     title: 'Home',
     icon: svgIcons.drawer_home,
-    navTo: 'MainStack',
+    navTo: ROUTES.MAIN_STACK,
   },
   {
     id: 2,
     title: 'Profile',
     icon: svgIcons.drawer_profile,
-    navTo: '',
-  }, 
-   {
+    navTo: ROUTES.PROFILE,
+  },
+  {
     id: 3,
     title: 'My Jobs',
     icon: svgIcons.drawer_jobs,
-    navTo: '',
+    navTo: ROUTES.MY_JOBS,
   },
   {
     id: 4,
@@ -459,7 +490,7 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 8,
     title: 'Report a Problem',
     icon: svgIcons.drawer_report,
-    navTo: '',
+    navTo: ROUTES.SUPPORT,
   },
   {
     id: 9,
@@ -630,6 +661,58 @@ export const categoryData: categoryTypes[] = [
     text: 'Reject',
   },
 ];
+
+interface reviewTypes {
+  id: number,
+  image: ImageSourcePropType,
+  name: string;
+  desc: string;
+  rating: string;
+  days: string;
+};
+
+export const reviews: reviewTypes[] = [
+  {
+    id: 1,
+    image: images.review1,
+    name: 'James Andrew',
+    desc: 'Many thanks to james he is professional, Cleaner..',
+    rating: '5.0',
+    days: '1 day ago',
+  },
+  {
+    id: 2,
+    image: images.review1,
+    name: 'James Andrew',
+    desc: 'Many thanks to james he is professional, Cleaner..',
+    rating: '5.0',
+    days: '1 day ago',
+  },
+  {
+    id: 3,
+    image: images.review1,
+    name: 'James Andrew',
+    desc: 'Many thanks to james he is professional, Cleaner..',
+    rating: '5.0',
+    days: '1 day ago',
+  }
+];
+
+interface postJobTypes {
+  id: number;
+  image: ImageSourcePropType;
+}
+
+export const PostJobImages: postJobTypes[] = [
+  {
+    id: 1,
+    image: images.certificate1,
+  },
+  {
+    id: 2,
+    image: images.certificate2,
+  }
+]
 
 
 

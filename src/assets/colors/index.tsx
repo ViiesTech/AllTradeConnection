@@ -7,7 +7,8 @@ interface ColorType {
   textColor: string;
   textColor2: string;
   textColor3: string;
-}
+  red2: string;
+};
 
 export const colors: ColorType = {
   // primary: 'rgba(4, 155, 223, 1)',
@@ -19,4 +20,5 @@ export const colors: ColorType = {
   red: 'red',
   textColor: '#808CA0',
   textColor3: '#3B4C68',
+  red2: '#B10101',
 };

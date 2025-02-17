@@ -27,7 +27,7 @@ const Button = ({ buttonText, onPress, style, textStyle,gradient }: ButtonProps)
         <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
       </LinearGradient>
       :
-      <TouchableOpacity style={[styles.buttonStyle,style]}>
+      <TouchableOpacity onPress={onPress} style={[styles.buttonStyle,style]}>
                <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
       </TouchableOpacity>
       }

@@ -1,30 +1,63 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { createDrawerNavigator} from '@react-navigation/drawer';
-import { drawerItems, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../utils';
-import { useNavigation } from '@react-navigation/native';
-import { images } from '../assets/images';
-import { colors } from '../assets/colors';
-import SVGXml from '../components/SVGXml';
-import svgIcons from '../assets/icons';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import TermsConditions from '../screens/main/User/TermsConditions';
-import PrivacyPolicy from '../screens/main/User/PrivacyPolicy';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from '../screens/main/User/Home';
-import Project from '../screens/main/User/Project';
-import Profile from '../screens/main/User/Profile';
-import Message from '../screens/main/User/Message';
-import TaskDetail from '../screens/main/User/TaskDetail';
-import ReportJob from '../screens/main/User/ReportJob';
-import Notification from '../screens/main/User/Notification';
+import React from "react";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {
+  createDrawerNavigator,
+  DrawerContentComponentProps,
+} from "@react-navigation/drawer";
+import {
+  drawerItems,
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  ROUTES,
+} from "../utils";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { images } from "../assets/images";
+import { colors } from "../assets/colors";
+import SVGXml from "../components/SVGXml";
+import svgIcons from "../assets/icons";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import TermsConditions from "../screens/main/User/TermsConditions";
+import PrivacyPolicy from "../screens/main/User/PrivacyPolicy";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Home from "../screens/main/User/Home";
+import Project from "../screens/main/User/Project";
+import Profile from "../screens/main/User/Profile";
+import Message from "../screens/main/User/Message";
+import TaskDetail from "../screens/main/User/TaskDetail";
+import ReportJob from "../screens/main/User/ReportJob";
+import Notification from "../screens/main/User/Notification";
+import Support from "../screens/main/User/Support";
+import MyJobs from "../screens/main/User/MyJobs";
+import AuthProfileComplete from "../screens/auth/AuthProfileComplete";
+import PostJob from "../screens/main/User/PostJob";
 
+type RootStackParamList = {
+  BottomStack: undefined;
+  SecondaryStack: undefined;
+  MainStack: undefined;
+  Home: { type: string };
+  [key: string]: undefined;
+};
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const CustomTabIcon = ({ icon, activeIcon, focused }) => {
+interface CustomTabIconProps {
+  icon: string;
+  activeIcon: string;
+  focused: boolean;
+}
+
+const CustomTabIcon: React.FC<CustomTabIconProps> = ({ icon, activeIcon, focused }) => {
   return (
     <View style={styles.tabContainer}>
       {focused && <View style={styles.activeIndicator} />}
@@ -33,14 +66,14 @@ const CustomTabIcon = ({ icon, activeIcon, focused }) => {
   );
 };
 
-const BottomStack = () => {
+const BottomStack: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
-          position: 'absolute',
+          position: "absolute",
           bottom: 0,
           left: 0,
           elevation: 0,
@@ -50,152 +83,151 @@ const BottomStack = () => {
           height: responsiveHeight(10),
           backgroundColor: colors.secondary,
         },
-      }}>
+      }}
+    >
       <Tab.Screen
         name={ROUTES.HOME}
         component={Home}
         options={{
-          tabBarIcon: ({focused}) =>
-            <CustomTabIcon 
-            icon={svgIcons.home} 
-            activeIcon={svgIcons.house_active} 
-            focused={focused} 
-        />
-          }}
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon icon={svgIcons.home} activeIcon={svgIcons.house_active} focused={focused} />
+          ),
+        }}
       />
       <Tab.Screen
-        name={ROUTES.PROJECT}
-        component={Project}
+        name={ROUTES.MY_JOBS}
+        component={MyJobs}
         options={{
-          tabBarIcon: ({focused}) =>
-            <CustomTabIcon 
-            icon={svgIcons.project} 
-            activeIcon={svgIcons.project_active} 
-            focused={focused} 
-        />
-          }}
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon icon={svgIcons.project} activeIcon={svgIcons.project_active} focused={focused} />
+          ),
+        }}
       />
       <Tab.Screen
         name={ROUTES.MESSAGE}
         component={Message}
         options={{
-          tabBarIcon: ({focused}) =>
-            <CustomTabIcon 
-            icon={svgIcons.message} 
-            activeIcon={svgIcons.message_active} 
-            focused={focused} 
-        />
-          }}
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon icon={svgIcons.message} activeIcon={svgIcons.message_active} focused={focused} />
+          ),
+        }}
       />
       <Tab.Screen
         name={ROUTES.PROFILE}
         component={Profile}
         options={{
-          tabBarIcon: ({focused}) =>
-            <CustomTabIcon 
-          icon={svgIcons.profile} 
-          activeIcon={svgIcons.profile_active} 
-          focused={focused} 
-      />
-          }}
+          tabBarIcon: ({ focused }) => (
+            <CustomTabIcon icon={svgIcons.profile} activeIcon={svgIcons.profile_active} focused={focused} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );
 };
 
-
-const SecondaryStack = () => {
+const SecondaryStack: React.FC = () => {
   return (
     <Stack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}>
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Stack.Screen name={ROUTES.TASK_DETAIL} component={TaskDetail} />
-      <Stack.Screen name={ROUTES.TERMS_CONDITIONS} component={TermsConditions} />
-      <Stack.Screen name={ROUTES.PRIVACY_POLICY} component={PrivacyPolicy} />
       <Stack.Screen name={ROUTES.REPORT_JOB} component={ReportJob} />
       <Stack.Screen name={ROUTES.NOTIFICATION} component={Notification} />
-
+      <Stack.Screen name={ROUTES.POST_JOB} component={PostJob} />
 
     </Stack.Navigator>
   );
 };
 
-
-const MainStack = () => {
+const MainStack: React.FC = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-      }}>
+      }}
+    >
       <Stack.Screen name="BottomStack" component={BottomStack} />
       <Stack.Screen name="SecondaryStack" component={SecondaryStack} />
     </Stack.Navigator>
   );
 };
 
-
-
-const DrawerStack = () => {
+const DrawerStack: React.FC = () => {
   return (
     <Drawer.Navigator
       screenOptions={{
         headerShown: false,
-        drawerStyle: { width: responsiveWidth(100) }
+        drawerStyle: { width: responsiveWidth(100) },
       }}
-      drawerContent={props => {
-        return <CustomDrawerContent {...props} />
-      }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="MainStack" component={MainStack} />
-      {/* <Drawer.Screen name="SecondaryStack" component={SecondaryStack} /> */}
+      <Drawer.Screen name={ROUTES.MAIN_STACK} component={MainStack} />
+      <Drawer.Screen name={ROUTES.MY_JOBS} component={MyJobs} />
+      <Drawer.Screen name={ROUTES.PRIVACY_POLICY} component={PrivacyPolicy} />
+      <Drawer.Screen name={ROUTES.TERMS_CONDITIONS} component={TermsConditions} />
+      <Drawer.Screen name={ROUTES.SUPPORT} component={Support} />
+      <Drawer.Screen name={ROUTES.TASK_DETAIL} component={TaskDetail} />
+      <Drawer.Screen name={ROUTES.REPORT_JOB} component={ReportJob} />
+      <Drawer.Screen name={ROUTES.AUTH_PROFILE_COMPLETE} component={AuthProfileComplete} />
+      <Drawer.Screen name={ROUTES.PROFILE} component={Profile} />
     </Drawer.Navigator>
   );
-}
+};
 
+const CustomDrawerContent: React.FC<DrawerContentComponentProps> = () => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-
-const CustomDrawerContent = () => {
-
-
-  const navigation = useNavigation();
-
-  console.log(navigation.getState());
+  // console.log(navigation.getState().routes[0].state?.routes);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} style={styles.mainContainer}>
       <View style={styles.profileContainer}>
         <Image style={styles.profileStyle} source={images.profile} />
-        <View style={{ paddingTop: responsiveHeight(2), alignItems: 'center' }}>
+        <View style={{ paddingTop: responsiveHeight(2), alignItems: "center" }}>
           <Text style={styles.name}>John Smith</Text>
           <Text style={styles.email}>john.smith@domain.com</Text>
         </View>
       </View>
       <View style={styles.listContainer}>
-      {drawerItems.map((item) => {
-                    return (
-                       <TouchableOpacity onPress={() => {
-                            if(!item.navTo) {
-                                  alert('working in progress')
-                            } else {
-                              navigation.navigate(item.navTo);
-                            }
-                       }} style={{flexDirection: 'row', justifyContent: 'space-between',marginBottom: responsiveHeight(3)}}>
-                        <View style={{flexDirection: 'row',alignItems: 'center',gap: 20}}>
-                            <SVGXml icon={item.icon} />
-                            <Text style={[styles.labelStyle,item.id == 10 ? {fontWeight: 'bold',color: colors.red} : {color: colors.textColor2}]}>{item.title}</Text>
-                            </View>
-                            <SVGXml icon={item.id == 10 ? svgIcons.arrow_red : svgIcons.arrow} />
-                            </TouchableOpacity>
-                    )
-                })}
+        {drawerItems.map((item) => (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() => {
+              if (!item.navTo) {
+                alert('working in progress')
+              } else if (item.navTo === ROUTES.AUTH_PROFILE_COMPLETE) {
+                navigation.navigate(ROUTES.DRAWER_STACK,{screen: item.navTo,params: {type: 'logout'}})
+              }
+              else {
+                navigation.navigate(ROUTES.DRAWER_STACK, { screen: item.navTo })
+              }
+            }}
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              marginBottom: responsiveHeight(3),
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 20 }}>
+              <SVGXml icon={item.icon} />
+              <Text
+                style={[
+                  styles.labelStyle,
+                  item.id === 10 ? { fontWeight: "bold", color: colors.red } : { color: colors.textColor2 },
+                ]}
+              >
+                {item.title}
+              </Text>
+            </View>
+            <SVGXml icon={item.id === 10 ? svgIcons.arrow_red : svgIcons.arrow} />
+          </TouchableOpacity>
+        ))}
       </View>
     </ScrollView>
   );
-}
-
-
-
+};
 
 export default DrawerStack;
 
@@ -204,24 +236,24 @@ const styles = StyleSheet.create({
     paddingBottom: responsiveHeight(10),
   },
   profileContainer: {
-    alignItems: 'center',
-    paddingTop: responsiveHeight(8)
+    alignItems: "center",
+    paddingTop: responsiveHeight(8),
   },
   profileStyle: {
     height: responsiveHeight(18),
-    width: responsiveHeight(18)
+    width: responsiveHeight(18),
   },
   name: {
     color: colors.textColor2,
     fontSize: responsiveFontSize(2.5),
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   email: {
     color: colors.textColor2,
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
   },
   listContainer: {
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 10,
     padding: responsiveHeight(2),
     width: responsiveWidth(90),
@@ -236,23 +268,17 @@ const styles = StyleSheet.create({
     shadowRadius: 7.49,
     elevation: 10,
   },
-  labelStyle:{
+  labelStyle: {
     fontSize: responsiveFontSize(2.2),
   },
-  iconView: {
-    backgroundColor: '#373636',
-    alignItems: 'center',
-    borderRadius: 100,
-    justifyContent: 'center',
-  },
   tabContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   activeIndicator: {
     height: 3,
-    position: 'absolute',
+    position: "absolute",
     width: responsiveWidth(25),
     bottom: responsiveHeight(6.4),
     backgroundColor: colors.primary,
   },
-})
+});
