@@ -329,6 +329,25 @@ const cross = `
 <path d="M21.2133 21.2132L12.728 12.728" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
 `;
+
+const edit_icon = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6.4739 2.21878H3.15678C2.05758 2.21878 1.1665 3.10983 1.1665 4.20899V10.8431C1.1665 11.9422 2.05758 12.8333 3.15678 12.8333H9.79102C10.8902 12.8333 11.7813 11.9422 11.7813 10.8431L11.7813 7.52604M4.48363 9.51621L6.89738 9.02987C7.02551 9.00406 7.14317 8.94096 7.23557 8.84851L12.639 3.4423C12.8981 3.18311 12.8979 2.76296 12.6386 2.50397L11.494 1.36067C11.2348 1.10179 10.8148 1.10197 10.5559 1.36106L5.15189 6.76783C5.05967 6.8601 4.9967 6.97751 4.97086 7.10538L4.48363 9.51621Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const rounded_border = `<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="8.5" cy="8.5" r="8" stroke="#0268BC"/>
+</svg>`;
+
+const rounded_border_with_bg = `<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="8.5" cy="8.5" r="8" stroke="#0268BC"/>
+<circle cx="8.5" cy="8.5" r="6.375" fill="#0268BC"/>
+</svg>`
+
+const searchInput = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11.01 20.02C15.9861 20.02 20.02 15.9861 20.02 11.01C20.02 6.03391 15.9861 2 11.01 2C6.03391 2 2 6.03391 2 11.01C2 15.9861 6.03391 20.02 11.01 20.02Z" fill="#3B4C68"/>
+<path d="M21.9901 18.95C21.6601 18.34 20.9601 18 20.0201 18C19.3101 18 18.7001 18.29 18.3401 18.79C17.9801 19.29 17.9001 19.96 18.1201 20.63C18.5501 21.93 19.3001 22.22 19.7101 22.27C19.7701 22.28 19.8301 22.28 19.9001 22.28C20.3401 22.28 21.0201 22.09 21.6801 21.1C22.2101 20.33 22.3101 19.56 21.9901 18.95Z" fill="#3B4C68"/>
+</svg>`
+
 interface SvgTypes {
   [key: string]: string;
 };
@@ -382,6 +401,10 @@ const svgIcons: SvgTypes = {
   location2,
   upload2,
   cross,
+  edit_icon,
+  rounded_border,
+  rounded_border_with_bg,
+  searchInput,
 };
 
 

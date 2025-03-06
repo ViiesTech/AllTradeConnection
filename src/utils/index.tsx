@@ -36,6 +36,8 @@ export const ROUTES: RoutePaths = {
   NOTIFICATION: 'Notification',
   PROFILE: 'Profile',
   POST_JOB: 'PostJob',
+  POST_LOCATION_JOB: 'PostLocationJob',
+  MY_LOCATION: 'MyLocation',
 };
 
 
@@ -236,6 +238,39 @@ export const postJobFields: postTypes[] = [
   {
     name: 'number',
     placeholder: 'Phone Number',
+    line: true,
+    keyboardType: 'numeric',
+  }
+]
+
+interface myLocationTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const myLocationFields: myLocationTypes[] = [
+  {
+    name: 'address',
+    placeholder: 'Address',
+    line: true,
+  },
+  {
+    name: 'apartment/Suite#',
+    placeholder: 'Apartment/Suite#',
+    keyboardType: 'text',
+    line: true
+  },
+  {
+    name: 'city',
+    placeholder: 'Now York',
+    line: true,
+    keyboardType: 'text',
+  },
+  {
+    name: 'zip code',
+    placeholder: '1234434322',
     line: true,
     keyboardType: 'numeric',
   }

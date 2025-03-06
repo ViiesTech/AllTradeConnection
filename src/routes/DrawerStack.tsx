@@ -38,6 +38,8 @@ import Support from "../screens/main/User/Support";
 import MyJobs from "../screens/main/User/MyJobs";
 import AuthProfileComplete from "../screens/auth/AuthProfileComplete";
 import PostJob from "../screens/main/User/PostJob";
+import PostLocationJob from "../screens/main/User/PostLocationJob";
+import MyLocation from "../screens/main/User/MyLocation";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -136,6 +138,8 @@ const SecondaryStack: React.FC = () => {
       <Stack.Screen name={ROUTES.REPORT_JOB} component={ReportJob} />
       <Stack.Screen name={ROUTES.NOTIFICATION} component={Notification} />
       <Stack.Screen name={ROUTES.POST_JOB} component={PostJob} />
+      <Stack.Screen name={ROUTES.POST_LOCATION_JOB} component={PostLocationJob} />
+      <Stack.Screen name={ROUTES.MY_LOCATION} component={MyLocation} />
 
     </Stack.Navigator>
   );

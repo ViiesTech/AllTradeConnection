@@ -2,12 +2,13 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header2 from '../../../components/Header2'
-import { postJobFields, PostJobImages, responsiveFontSize, responsiveHeight, responsiveWidth } from '../../../utils'
+import { postJobFields, PostJobImages, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../../../utils'
 import { colors } from '../../../assets/colors'
 import SVGXml from '../../../components/SVGXml'
 import svgIcons from '../../../assets/icons'
 import CustomInputForm from '../../../components/InputField'
 import * as Yup from 'yup';
+import { useNavigation } from '@react-navigation/native'
 
 const validationSchema = Yup.object().shape({
   fullname: Yup.string()
@@ -25,9 +26,11 @@ const validationSchema = Yup.object().shape({
 });
 
 const PostJob = () => {
+    const nav = useNavigation();
+
   return (
     <MainContainer>
-      <Header2 headerText3='Who Are You' hideCancel text='Post A Job' subHeading />
+      <Header2 headerText3='Who Are You' hideCancel text='Post A Job' subHeading={'Enter Your Details'} />
       <View style={styles.subContainer}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         {PostJobImages.map((item) => (
@@ -43,7 +46,7 @@ const PostJob = () => {
               <SVGXml width={'35'} height={'35'} icon={svgIcons.upload2} />
               <Text style={styles.uploadText}>Upload Your File</Text>
         </TouchableOpacity>
-        <CustomInputForm inputContainer={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} onSubmit={(values) => {}} initialValues={{fullname: 'Name',email: 'loremipsum@gmail.com', number: '02302402910'}} validationSchema={validationSchema} buttonText='Next' fields={postJobFields} />
+        <CustomInputForm inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} onSubmit={(values) => nav.navigate(ROUTES.POST_LOCATION_JOB)} initialValues={{fullname: 'Name',email: 'loremipsum@gmail.com', number: '02302402910'}} validationSchema={validationSchema} buttonText='Next' fields={postJobFields} />
 
       </View>
     </MainContainer>

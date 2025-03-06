@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 interface headerprops {
   text: string,
   hideCancel: boolean,
-  subHeading: boolean;
+  subHeading: string;
   onCancel: () => void;
   headerText2: string;
   hideBack: boolean;
@@ -29,7 +29,7 @@ const Header2 = (props: headerprops) => {
       }
       <Text style={[styles.textStyle,{marginTop: props?.hideCancel && responsiveHeight(4)}]}>{props?.text}</Text>
       {props?.subHeading &&
-          <Text style={styles.subHeadingStyle}>Details</Text>
+          <Text style={styles.subHeadingStyle}>{props?.subHeading || 'Details'}</Text>
       }
       {props?.headerText3 &&
         <Text style={[styles.textStyle,{marginTop:responsiveHeight(2)}]}>{props?.headerText3}</Text>

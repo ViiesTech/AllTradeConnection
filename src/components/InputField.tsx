@@ -53,10 +53,12 @@ const InputField = ({
         {!line &&
         <View style={styles.verticalLine} />
       }
+      <View>
+      <Text style={{marginTop: responsiveHeight(1), color: colors.gray, textTransform: 'capitalize'}}>{name === 'fullname' ? 'Full Name' : name}</Text>
         <TextInput
           style={[styles.input, inputStyle,{height: inputHeight}]}
           placeholder={placeholder}
-          placeholderTextColor={colors.dark_purple}
+          placeholderTextColor={colors.black}
           value={field.value}
           multiline={multiline}
           textAlignVertical={textAlign}
@@ -64,7 +66,8 @@ const InputField = ({
           secureTextEntry={secureTextEntry}
           onBlur={field.onBlur(name)}
           {...props}
-        />
+          />
+          </View>
         {secureTextEntry && (
           <SVGXml
             icon={svgIcons.eye}
@@ -176,7 +179,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: responsiveHeight(2),
     fontSize: responsiveFontSize(2),
-    color: colors.dark_purple,
+    color: colors.black,
+    paddingTop: -10,
+    paddingLeft: -5,
   },
   errorInput: {
     borderColor: colors.red,

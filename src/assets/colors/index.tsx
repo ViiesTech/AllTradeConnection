@@ -8,6 +8,8 @@ interface ColorType {
   textColor2: string;
   textColor3: string;
   red2: string;
+  gray: string;
+  line_color: string;
 };
 
 export const colors: ColorType = {
@@ -21,4 +23,6 @@ export const colors: ColorType = {
   textColor: '#808CA0',
   textColor3: '#3B4C68',
   red2: '#B10101',
+  gray: '#3B4C68',
+  line_color: '#DEDEDE',
 };
