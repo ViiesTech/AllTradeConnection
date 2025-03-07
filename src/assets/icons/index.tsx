@@ -346,6 +346,67 @@ const rounded_border_with_bg = `<svg width="17" height="17" viewBox="0 0 17 17" 
 const searchInput = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.01 20.02C15.9861 20.02 20.02 15.9861 20.02 11.01C20.02 6.03391 15.9861 2 11.01 2C6.03391 2 2 6.03391 2 11.01C2 15.9861 6.03391 20.02 11.01 20.02Z" fill="#3B4C68"/>
 <path d="M21.9901 18.95C21.6601 18.34 20.9601 18 20.0201 18C19.3101 18 18.7001 18.29 18.3401 18.79C17.9801 19.29 17.9001 19.96 18.1201 20.63C18.5501 21.93 19.3001 22.22 19.7101 22.27C19.7701 22.28 19.8301 22.28 19.9001 22.28C20.3401 22.28 21.0201 22.09 21.6801 21.1C22.2101 20.33 22.3101 19.56 21.9901 18.95Z" fill="#3B4C68"/>
+</svg>`;
+
+const add = `<svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.9893 18.3154L18.3154 10.9892" stroke="#026DBF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.3154 18.3153L10.9893 10.9892" stroke="#026DBF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
+
+const searchingIcon = `<svg width="21" height="17" viewBox="0 0 21 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path opacity="0.5" d="M0 0.909722C0 0.538194 0.325087 0.166666 0.743056 0.166666H20.0625C20.434 0.166666 20.8056 0.538194 20.8056 0.909722C20.8056 1.32769 20.434 1.65278 20.0625 1.65278H0.743056C0.325087 1.65278 0 1.32769 0 0.909722ZM2.97222 8.34028C2.97222 7.96875 3.29731 7.59722 3.71528 7.59722H17.0903C17.4618 7.59722 17.8333 7.96875 17.8333 8.34028C17.8333 8.75825 17.4618 9.08333 17.0903 9.08333H3.71528C3.29731 9.08333 2.97222 8.75825 2.97222 8.34028ZM12.6319 16.5139H8.17361C7.75564 16.5139 7.43056 16.1888 7.43056 15.7708C7.43056 15.3993 7.75564 15.0278 8.17361 15.0278H12.6319C13.0035 15.0278 13.375 15.3993 13.375 15.7708C13.375 16.1888 13.0035 16.5139 12.6319 16.5139Z" fill="#3B4C68"/>
+</svg>`;
+
+const checkBoxCheck = `<svg width="76" height="75" viewBox="0 0 76 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_28_2912)">
+<rect x="30" y="15" width="16" height="14.5455" rx="4" fill="#026DBF"/>
+</g>
+<path d="M33.6362 22.7005C34.5011 23.2709 36.2308 24.8396 36.9384 25.9091C37.8033 24.1979 40.0048 20.3476 42.3635 18.6364" stroke="#FFF8EF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<filter id="filter0_d_28_2912" x="0" y="0" width="76" height="74.5455" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="15"/>
+<feGaussianBlur stdDeviation="15"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 0.427451 0 0 0 0 0.74902 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_28_2912"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_28_2912" result="shape"/>
+</filter>
+</defs>
+</svg>`;
+
+const checkBoxUnCheck = `<svg width="76" height="75" viewBox="0 0 76 75" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_28_2921)">
+<rect x="30.5" y="15.5" width="15" height="13.5455" rx="3.5" stroke="#026DBF"/>
+</g>
+<defs>
+<filter id="filter0_d_28_2921" x="0" y="0" width="76" height="74.5454" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="15"/>
+<feGaussianBlur stdDeviation="15"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.00784314 0 0 0 0 0.427451 0 0 0 0 0.74902 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_28_2921"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_28_2921" result="shape"/>
+</filter>
+</defs>
+</svg>`
+
+const verifiedBadge = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="7" cy="7" r="7" fill="#026DBF"/>
+<path d="M4 7.79412C4.59459 8.18627 5.78378 9.26471 6.27027 10C6.86486 8.82353 8.37838 6.17647 10 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const checkWhite = `<svg width="12" height="10" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.63623 5.70052C2.5011 6.27093 4.23083 7.83956 4.93844 8.90908C5.80331 7.19785 8.00478 3.34758 10.3635 1.63635" stroke="#FFF8EF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const dropdown = `<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M9.7194 0.275852C9.54166 0.0991705 9.30123 0 9.05062 0C8.80001 0 8.55958 0.0991705 8.38184 0.275852L4.97628 3.63398L1.61816 0.275852C1.44042 0.0991705 1.19999 0 0.94938 0C0.698767 0 0.458337 0.0991705 0.280601 0.275852C0.191688 0.364039 0.121116 0.468958 0.0729554 0.584556C0.0247951 0.700155 0 0.824145 0 0.949375C0 1.0746 0.0247951 1.19859 0.0729554 1.31419C0.121116 1.42979 0.191688 1.53471 0.280601 1.6229L4.30276 5.64506C4.39095 5.73397 4.49587 5.80454 4.61147 5.8527C4.72706 5.90086 4.85105 5.92566 4.97628 5.92566C5.10151 5.92566 5.2255 5.90086 5.3411 5.8527C5.4567 5.80454 5.56162 5.73397 5.64981 5.64506L9.7194 1.6229C9.80831 1.53471 9.87888 1.42979 9.92704 1.31419C9.9752 1.19859 10 1.0746 10 0.949375C10 0.824145 9.9752 0.700155 9.92704 0.584556C9.87888 0.468958 9.80831 0.364039 9.7194 0.275852Z" fill="#026DBF"/>
+</svg>`;
+
+const back_arrow = `<svg width="11" height="19" viewBox="0 0 11 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8.42969 17.832L1.16797 10.1133C0.964844 9.85938 0.8125 9.55469 0.8125 9.25C0.8125 8.99609 0.964844 8.69141 1.16797 8.4375L8.42969 0.71875C8.88672 0.210938 9.64844 0.210938 10.1562 0.667969C10.6641 1.125 10.6641 1.88672 10.207 2.39453L3.65625 9.30078L10.207 16.1562C10.6641 16.6641 10.6641 17.4258 10.1562 17.8828C9.64844 18.3398 8.88672 18.3398 8.42969 17.832Z" fill="#041E5E"/>
 </svg>`
 
 interface SvgTypes {
@@ -405,6 +466,14 @@ const svgIcons: SvgTypes = {
   rounded_border,
   rounded_border_with_bg,
   searchInput,
+  add,
+  searchingIcon,
+  checkBoxCheck,
+  checkBoxUnCheck,
+  verifiedBadge,
+  checkWhite,
+  dropdown,
+  back_arrow,
 };
 
 

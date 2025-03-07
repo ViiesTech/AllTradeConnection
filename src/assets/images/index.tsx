@@ -23,6 +23,6 @@ export const images: {[key: string]: ImageSourcePropType} = {
   review1: require('../images/reviewImage.png'),
   certificate1: require('../images/certificate1.png'),
   certificate2: require('../images/certificate2.png'),
-
-
+  cardBg: require('../images/Rectangle.png'),
+  correct: require('../images/Group2.png'),
 };

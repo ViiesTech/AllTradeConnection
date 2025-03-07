@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInputProps,
   ViewStyle,
+  TouchableOpacity,
 } from 'react-native';
 import { Formik, useField } from 'formik';
 import Button from './Button';
@@ -26,6 +27,8 @@ interface InputFieldProps extends TextInputProps {
   inputHeight: number;
   inputContainer: ViewStyle;
   multiline: boolean;
+  searchIcon?: boolean;
+  dropdownIcon?: boolean;
 }
 
 const InputField = ({
@@ -40,6 +43,8 @@ const InputField = ({
   multiline,
   inputContainer,
   secureTextEntry = false,
+  searchIcon,
+  dropdownIcon,
   ...props
 }: InputFieldProps) => {
   const [field, meta] = useField(name);
@@ -68,14 +73,28 @@ const InputField = ({
           {...props}
           />
           </View>
+          <View style={{flex: 1, alignItems: 'flex-end'}}>
         {secureTextEntry && (
           <SVGXml
-            icon={svgIcons.eye}
-            width={15}
-            style={styles.eyeIcon}
-            // onPress={() => setIsSecure(!isSecure)}
+          icon={svgIcons.eye}
+          width={15}
+          style={styles.eyeIcon}
+          // onPress={() => setIsSecure(!isSecure)}
           />
         )}
+        {searchIcon && <SVGXml
+          icon={svgIcons.searchingIcon}
+          width={25}
+          style={styles.eyeIcon}
+          // onPress={() => setIsSecure(!isSecure)}
+          />}
+          {dropdownIcon && <SVGXml
+          icon={svgIcons.dropdown}
+          width={17}
+          style={styles.eyeIcon}
+          // onPress={() => setIsSecure(!isSecure)}
+          />}
+        </View>
       </View>
       {hasError && <Text style={styles.errorText}>{meta.error}</Text>}
     </View>
@@ -101,6 +120,10 @@ interface CustomInputFormProps {
   inputContainer: ViewStyle;
   hideButton: boolean;
   childrenStyle: ViewStyle;
+  tags?:any;
+  hideTags?: boolean;
+  searchIcon?:boolean;
+  dropdownIcon?:boolean;
 }
 
 const CustomInputForm = ({
@@ -116,6 +139,9 @@ const CustomInputForm = ({
   childrenStyle,
   inputContainer,
   hideButton,
+  hideTags,
+  searchIcon,
+  dropdownIcon,
 }: CustomInputFormProps) => {
   return (
     <Formik
@@ -126,6 +152,7 @@ const CustomInputForm = ({
       {({ handleSubmit }) => (
         <View style={[styles.form, inputContainerStyle]}>
           {fields.map((field,i) => (
+            <>
             <InputField
               key={field.name}
               name={field.name}
@@ -141,7 +168,24 @@ const CustomInputForm = ({
               inputHeight={field.height}
               textAlign={field.textAlign}
               autoCapitalize="none"
-            />
+              searchIcon={searchIcon}
+              dropdownIcon={dropdownIcon}
+              />
+          {!hideTags && <View style={field.tags ? {flexDirection: 'row', gap: 20, paddingBottom: responsiveHeight(3)} : {}}>
+              {field.tags && field.tags?.map((item, ) => {
+                return (
+                  <View>
+                    <View style={{flexDirection: 'row', justifyContent: 'center',alignItems: 'center', borderRadius: 10, backgroundColor: colors.primary}}>
+                    <Text style={{color: colors.secondary, padding: 15, marginHorizontal: 10, fontSize: responsiveFontSize(2)}}>{item.title}</Text>
+                    <TouchableOpacity style={{backgroundColor: colors.secondary, width: 30, height: 30, borderRadius: 100, marginRight: 10}}>
+                    <SVGXml width={'30'} height={'30'} icon={svgIcons.add} />
+                    </TouchableOpacity>
+                    </View>
+              </View>
+            )
+          })}
+              </View>}
+              </>
           ))}
           {children && <View style={childrenStyle}>{children}</View>}
           {!hideButton &&

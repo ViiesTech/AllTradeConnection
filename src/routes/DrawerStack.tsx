@@ -40,6 +40,10 @@ import AuthProfileComplete from "../screens/auth/AuthProfileComplete";
 import PostJob from "../screens/main/User/PostJob";
 import PostLocationJob from "../screens/main/User/PostLocationJob";
 import MyLocation from "../screens/main/User/MyLocation";
+import SelectServiceAddinal from "../screens/main/User/SelectServiceAddinal";
+import Congratulation from "../screens/main/User/Congratulation";
+import ListOfPro from "../screens/main/User/ListOfPro";
+import ChatMessages from "../screens/main/User/ChatMessages";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -140,7 +144,9 @@ const SecondaryStack: React.FC = () => {
       <Stack.Screen name={ROUTES.POST_JOB} component={PostJob} />
       <Stack.Screen name={ROUTES.POST_LOCATION_JOB} component={PostLocationJob} />
       <Stack.Screen name={ROUTES.MY_LOCATION} component={MyLocation} />
-
+      <Stack.Screen name={ROUTES.SElECT_SERVICE_ADDINAL} component={SelectServiceAddinal} />
+      <Stack.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
+      <Stack.Screen name={ROUTES.LIST_OF_PRO} component={ListOfPro} />
     </Stack.Navigator>
   );
 };
@@ -176,6 +182,7 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.REPORT_JOB} component={ReportJob} />
       <Drawer.Screen name={ROUTES.AUTH_PROFILE_COMPLETE} component={AuthProfileComplete} />
       <Drawer.Screen name={ROUTES.PROFILE} component={Profile} />
+      <Drawer.Screen name={ROUTES.CHAT_MESSAGES} component={ChatMessages} />
     </Drawer.Navigator>
   );
 };

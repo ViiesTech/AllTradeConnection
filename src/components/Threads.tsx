@@ -1,8 +1,9 @@
 import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { responsiveFontSize, responsiveHeight } from '../utils';
+import { responsiveFontSize, responsiveHeight, ROUTES } from '../utils';
 import SVGXml from './SVGXml';
 import { colors } from '../assets/colors';
+import { useNavigation } from '@react-navigation/native';
 
 interface threadsProps {
   image: ImageSourcePropType;
@@ -12,8 +13,9 @@ interface threadsProps {
 }
 
 const Threads = (props: threadsProps) => {
+  const nav = useNavigation()
   return (
-    <TouchableOpacity style={styles.threadsView}>
+    <TouchableOpacity style={styles.threadsView} onPress={() => nav.navigate(ROUTES.CHAT_MESSAGES)}>
       <View style={{flexDirection: 'row', alignItems: 'center',gap: 10}}>
         <Image source={props?.image} style={styles.imageStyle} />
         <View>

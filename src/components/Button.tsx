@@ -10,9 +10,10 @@ interface ButtonProps {
   textStyle: ViewStyle;
   onPress: () => void;
   gradient: boolean;
+  isWhiteBtnBG?: boolean;
 }
 
-const Button = ({ buttonText, onPress, style, textStyle,gradient }: ButtonProps) => {
+const Button = ({ buttonText, onPress, style, textStyle,gradient,isWhiteBtnBG }: ButtonProps) => {
   return (
     <TouchableOpacity
       style={{ alignItems: 'center' }}
@@ -22,7 +23,7 @@ const Button = ({ buttonText, onPress, style, textStyle,gradient }: ButtonProps)
       <LinearGradient
         start={{ x: 0.1, y: 1 }}
         end={{ x: 0.7, y: 0.5 }}
-        colors={['rgba(2, 104, 188, 1)', colors.primary]}
+        colors={isWhiteBtnBG ? ['rgb(246, 251, 255)', colors.secondary] : ['rgba(2, 104, 188, 1)', colors.primary]}
         style={[styles.buttonStyle,style]}>
         <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
       </LinearGradient>

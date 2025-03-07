@@ -6,22 +6,23 @@ import {responsiveFontSize, responsiveHeight, responsiveWidth} from '../utils';
 
 interface CheckBoxProps {
   text: string;
-  checkBoxStyle?: ViewStyle; 
+  checkBoxStyle?: ViewStyle;
+  onPress?:any;
+  isChecked?: any; 
 }
 
-const CheckBoxText = ({text, checkBoxStyle}: CheckBoxProps) => {
+const CheckBoxText = ({text,onPress,isChecked, checkBoxStyle}: CheckBoxProps) => {
   return (
     <BouncyCheckbox
       size={25}
       fillColor={colors.primary}
       unFillColor={colors.primary}
       text={text}
+      isChecked={isChecked}
       textStyle={[styles.text, {marginLeft: -5}]}
-      iconStyle={{marginLeft: responsiveHeight(3.5)}}
+      // iconStyle={{marginLeft: responsiveHeight(3.5)}}
       innerIconStyle={{borderWidth: 0}}
-      onPress={(isChecked: boolean) => {
-        console.log(isChecked);
-      }}
+      onPress={onPress}
     />
   );
 };

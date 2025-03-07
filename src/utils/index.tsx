@@ -38,6 +38,10 @@ export const ROUTES: RoutePaths = {
   POST_JOB: 'PostJob',
   POST_LOCATION_JOB: 'PostLocationJob',
   MY_LOCATION: 'MyLocation',
+  SElECT_SERVICE_ADDINAL: 'SelectServiceAddinal',
+  CONGRATULATION: 'Congratulation',
+  LIST_OF_PRO: 'ListOfPro',
+  CHAT_MESSAGES: 'ChatMessages',
 };
 
 
@@ -243,6 +247,71 @@ export const postJobFields: postTypes[] = [
   }
 ]
 
+interface editProjectTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const editProjectFields: editProjectTypes[] = [
+  {
+    name: 'address',
+    placeholder: 'Street no 120 lorem ispum',
+    line: true,
+  },
+  {
+    name: 'apartment',
+    placeholder: 'Apartment/Suite#',
+    keyboardType: 'text',
+    line: true
+  },
+]
+
+interface editProjectCityTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const editProjectCityFields: editProjectCityTypes[] = [
+  {
+    name: 'city',
+    placeholder: 'New York',
+    line: true,
+  },
+  {
+    name: 'state',
+    placeholder: 'California',
+    keyboardType: 'text',
+    line: true
+  },
+]
+
+export const editProjectZipCodFields: editProjectCityTypes[] = [
+  {
+    name: 'zip code',
+    placeholder: '12242354235',
+    line: true,
+  },
+]
+
+export const editProjectSerivceSecFields: editProjectCityTypes[] = [
+  {
+    name: 'price',
+    placeholder: 'price',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'select date',
+    placeholder: 'date',
+    line: true,
+    keyboardType: 'time',
+  },
+]
+
 interface myLocationTypes {
   name: string;
   placeholder: string;
@@ -274,6 +343,37 @@ export const myLocationFields: myLocationTypes[] = [
     line: true,
     keyboardType: 'numeric',
   }
+]
+
+interface selectServiceAddionalTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  tags?: { id: number; title: string }[];
+}
+
+export const selectServiceAddionalFields: selectServiceAddionalTypes[] = [
+  {
+    name: 'add category',
+    placeholder: 'category',
+    line: true,
+    tags: [
+    {id: 1, title: 'Plumbing'}, {id: 2, title: 'Flooring'}
+    ],
+  },
+  {
+    name: 'price',
+    placeholder: 'price',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'select date',
+    placeholder: 'date',
+    line: true,
+    keyboardType: 'time',
+  },
 ]
 
 interface supportTypes {
@@ -354,6 +454,20 @@ export const searchField: searchTypes[] = [
   {
     name: 'search',
     placeholder: 'Search...',
+    icon: svgIcons.search,
+  }
+]
+
+interface listSearchTypes {
+  name: string;
+  placeholder: string;
+  icon: string;
+}
+
+export const listSearchField: listSearchTypes[] = [
+  {
+    name: 'search',
+    placeholder: 'Search Pro...',
     icon: svgIcons.search,
   }
 ]

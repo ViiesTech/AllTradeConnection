@@ -2,13 +2,15 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header2 from '../../../components/Header2'
-import { postJobFields, PostJobImages, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../../../utils'
+import { editProjectCityFields, editProjectFields, editProjectSerivceSecFields, editProjectZipCodFields, postJobFields, PostJobImages, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../../../utils'
 import { colors } from '../../../assets/colors'
 import SVGXml from '../../../components/SVGXml'
 import svgIcons from '../../../assets/icons'
 import CustomInputForm from '../../../components/InputField'
 import * as Yup from 'yup';
 import { useNavigation } from '@react-navigation/native'
+import StartAndEndtimeInput from '../../../components/StartAndEndtimeInput'
+import Button from '../../../components/Button'
 
 const validationSchema = Yup.object().shape({
   fullname: Yup.string()
@@ -25,12 +27,13 @@ const validationSchema = Yup.object().shape({
   .required('Phone number is required'),
 });
 
-const PostJob = () => {
+const PostJob = ({route}: any) => {
     const nav = useNavigation();
+    const screen = route?.params?.screen;
 
   return (
     <MainContainer>
-      <Header2 headerText3='Who Are You' hideCancel text='Post A Job' subHeading={'Enter Your Details'} />
+      <Header2 headerText3='Who Are You' hideCancel text={screen === 'Edit Project' ? screen : 'Post A Job'} subHeading={'Enter Your Details'} />
       <View style={styles.subContainer}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         {PostJobImages.map((item) => (
@@ -46,7 +49,29 @@ const PostJob = () => {
               <SVGXml width={'35'} height={'35'} icon={svgIcons.upload2} />
               <Text style={styles.uploadText}>Upload Your File</Text>
         </TouchableOpacity>
-        <CustomInputForm inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} onSubmit={(values) => nav.navigate(ROUTES.POST_LOCATION_JOB)} initialValues={{fullname: 'Name',email: 'loremipsum@gmail.com', number: '02302402910'}} validationSchema={validationSchema} buttonText='Next' fields={postJobFields} />
+
+        <CustomInputForm hideButton={screen === 'Edit Project' ? true : false} onSubmit={(values) => nav.navigate(ROUTES.POST_LOCATION_JOB)} inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} initialValues={{fullname: 'Name',email: 'loremipsum@gmail.com', number: '02302402910'}} validationSchema={validationSchema} buttonText='Next' fields={postJobFields} />
+
+       {screen === 'Edit Project' &&  <View>
+          <Text style={{fontSize: responsiveFontSize(3), color: colors.dark_purple, fontWeight: 'bold'}}>Your Home</Text>
+          <CustomInputForm hideButton={true} inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} initialValues={{address: 'Street no 120 lorem ispum',apartment: 'Apartment/Suite#'}} validationSchema={validationSchema} fields={editProjectFields} />
+          <View style={{marginTop: responsiveHeight(-4)}}>
+          <CustomInputForm dropdownIcon={true} hideButton={true} inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} initialValues={{city: 'Now York',state: 'California'}} validationSchema={validationSchema} fields={editProjectCityFields} />
+          </View>
+
+          <View style={{marginTop: responsiveHeight(-4)}}>
+          <CustomInputForm hideButton={true} inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} initialValues={{zipCode: '12432432',}} validationSchema={validationSchema} fields={editProjectZipCodFields} />
+          </View>
+
+          <Text style={{fontSize: responsiveFontSize(3), marginBottom: responsiveHeight(4), color: colors.dark_purple, fontWeight: 'bold'}}>Select A Service</Text>
+         <View style={{marginTop: responsiveHeight(-4)}}>
+          <CustomInputForm hideButton={true} inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputContainerStyle={{marginTop: responsiveHeight(3)}} initialValues={{zipCode: '12432432',}} validationSchema={validationSchema} fields={editProjectSerivceSecFields} />
+         </View>
+
+          <StartAndEndtimeInput />
+
+          <Button  style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}} buttonText={'Update'} onPress={() => nav.navigate(ROUTES.MY_LOCATION)} />
+         </View>}
 
       </View>
     </MainContainer>
