@@ -25,7 +25,7 @@ const Header = (props: headerprops) => {
         </TouchableOpacity>
         }
         {props?.showEdit &&
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate(ROUTES.EDIT_PROFILE)}>
               <SVGXml icon={svgIcons.edit2} />
             </TouchableOpacity>
         }

@@ -42,6 +42,9 @@ export const ROUTES: RoutePaths = {
   CONGRATULATION: 'Congratulation',
   LIST_OF_PRO: 'ListOfPro',
   CHAT_MESSAGES: 'ChatMessages',
+  WALLET: 'Wallet',
+  EDIT_PROFILE: 'EditProfile',
+  CHANGE_PASSWORD: 'ChangePassword',
 };
 
 
@@ -345,6 +348,39 @@ export const myLocationFields: myLocationTypes[] = [
   }
 ]
 
+interface editProfileTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  height?: number;
+  multiline?: boolean;
+  textAlign?: string;
+}
+
+export const editProfileFields: editProfileTypes[] = [
+  {
+    name: 'full name',
+    placeholder: 'john smith',
+    line: true,
+  },
+  {
+    name: 'phone number',
+    placeholder: '03234234234',
+    keyboardType: 'text',
+    line: true
+  },
+  {
+    name: 'bio',
+    placeholder: 'Bio',
+    line: true,
+    keyboardType: 'text',
+    multiline: true,
+    textAlign: 'top',
+    height: responsiveHeight(15),
+  },
+]
+
 interface selectServiceAddionalTypes {
   name: string;
   placeholder: string;
@@ -615,7 +651,7 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 4,
     title: 'Wallet',
     icon: svgIcons.drawer_wallet,
-    navTo: '',
+    navTo: ROUTES.WALLET,
   },
   {
     id: 5,
@@ -645,7 +681,7 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 9,
     title: 'Change Password',
     icon: svgIcons.drawer_password,
-    navTo: '',
+    navTo: ROUTES.CHANGE_PASSWORD,
   },
   {
     id: 10,

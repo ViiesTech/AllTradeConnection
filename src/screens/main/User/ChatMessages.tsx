@@ -2,16 +2,19 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import { images } from '../../../assets/images';
-import { responsiveFontSize, responsiveHeight } from '../../../utils';
+import { responsiveFontSize, responsiveHeight, ROUTES } from '../../../utils';
 import SVGXml from '../../../components/SVGXml';
 import svgIcons from '../../../assets/icons';
+import Example  from '../../../components/ChatCom';
+import { useNavigation } from '@react-navigation/native';
 
 const ChatMessages = () => {
+    const nav = useNavigation()
   return (
-    <MainContainer>
-        <View style={{marginTop: responsiveHeight(7), padding: responsiveHeight(2)}}>
+    <MainContainer style={{flex: 1}}>
+        <View style={{marginTop: responsiveHeight(1), padding: responsiveHeight(2)}}>
             <View style={{flexDirection: 'row', gap: 30, alignItems: 'center'}}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => nav.goBack()}>
                 <SVGXml width={'20'} height={'20'} icon={svgIcons.back_arrow} />
                 </TouchableOpacity>
 
@@ -22,10 +25,8 @@ const ChatMessages = () => {
                     <Text style={{fontSize: responsiveFontSize(2)}}>Lord Justin</Text>
             </View>
             </View>
-
-            <Text>ChatMessages</Text>
         </View>
-
+            <Example />
     </MainContainer>
   )
 }

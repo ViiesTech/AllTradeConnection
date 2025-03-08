@@ -44,6 +44,9 @@ import SelectServiceAddinal from "../screens/main/User/SelectServiceAddinal";
 import Congratulation from "../screens/main/User/Congratulation";
 import ListOfPro from "../screens/main/User/ListOfPro";
 import ChatMessages from "../screens/main/User/ChatMessages";
+import Wallet from "../screens/main/User/Wallet";
+import EditProfile from "../screens/main/User/EditProfile";
+import ChangePassword from "../screens/main/User/ChangePassword";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -183,6 +186,9 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.AUTH_PROFILE_COMPLETE} component={AuthProfileComplete} />
       <Drawer.Screen name={ROUTES.PROFILE} component={Profile} />
       <Drawer.Screen name={ROUTES.CHAT_MESSAGES} component={ChatMessages} />
+      <Drawer.Screen name={ROUTES.WALLET} component={Wallet} />
+      <Drawer.Screen name={ROUTES.EDIT_PROFILE} component={EditProfile} />
+      <Drawer.Screen name={ROUTES.CHANGE_PASSWORD} component={ChangePassword} />
     </Drawer.Navigator>
   );
 };
