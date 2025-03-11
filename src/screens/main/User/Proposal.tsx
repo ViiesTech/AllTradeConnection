@@ -3,13 +3,15 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
 import ReviewCard from '../../../components/ReviewCard';
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from '../../../utils';
+import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../../../utils';
 import { images } from '../../../assets/images';
 import StarRating from 'react-native-star-rating-widget';
 import { colors } from '../../../assets/colors';
 import Button from '../../../components/Button';
+import { useNavigation } from '@react-navigation/native';
 
 const Proposal = () => {
+  const nav = useNavigation();
   return (
     <MainContainer>
     <Header2 headerText3='' hideCancel text={'Proposal'} messagingIcon subHeading={''} />
@@ -37,8 +39,8 @@ const Proposal = () => {
     </View>
 
         <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: responsiveHeight(2)}}>
-        <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)} buttonText='Hire Now' />}
-        <Button gradient style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90), backgroundColor: colors.red2 }} onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)} buttonText='Reject' />}
+        <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.MY_JOBS)} buttonText='Hire Now' />}
+        <Button gradient style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90), backgroundColor: colors.red2 }} onPress={() => nav.navigate(ROUTES.CONGRATULATION, {reject: 'reject'})} buttonText='Reject' />
         </View>
     </MainContainer>
   )

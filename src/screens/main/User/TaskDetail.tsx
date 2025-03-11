@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header2 from '../../../components/Header2'
@@ -23,7 +23,9 @@ const TaskDetail = ({ route }) => {
       <Header2 onCancel={() => {
         if (previousData === 'Hired' || previousData === 'In Discussion') {
           nav.navigate(ROUTES.REPORT_JOB);
-        } else {
+        } else if(previousData !== 'In Discussion') {
+          nav.navigate(ROUTES.CONGRATULATION, {cancelJob: 'cancel job'});
+        }else {
           nav.goBack();
         }
       }} headerText2={previousData === 'Hired' || previousData === 'In Discussion' ? 'Report' : 'Cancel'} text={previousData === 'Hired' ? 'Hired Tasks' : previousData === 'Done' ? 'Done Project' : previousData === 'Reject' ? 'Rejected Project' : previousData === 'In Discussion' ? 'In Discussion' : 'Open Project'} />
@@ -32,7 +34,7 @@ const TaskDetail = ({ route }) => {
         <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingTop: responsiveHeight(1.5) }}>
           <Text style={styles.heading}>Project Name</Text>
           {previousData != 'Done' && previousData != 'Reject' && previousData != 'Hired' && previousData != 'In Discussion' &&
-            <TouchableOpacity style={styles.editView}>
+            <TouchableOpacity style={styles.editView} onPress={() => nav.navigate(ROUTES.POST_JOB, {screen: 'Edit Project'})}>
               <SVGXml width={'20'} height={'20'} icon={svgIcons.edit} />
             </TouchableOpacity>
           }
@@ -92,7 +94,7 @@ const TaskDetail = ({ route }) => {
                   <Text style={styles.ratingText}>Rating 4.5</Text>
                 </View>
               </View>
-              <TouchableOpacity style={styles.iconWrapper}>
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => nav.navigate(ROUTES.CHAT_MESSAGES)}>
                 <SVGXml width={'17'} height={'17'} icon={svgIcons.professional} />
               </TouchableOpacity>
             </TouchableOpacity>
@@ -102,7 +104,7 @@ const TaskDetail = ({ route }) => {
                   <Button buttonText='Hire Now' onPress={() => nav.navigate(ROUTES.MY_JOBS)} style={{ width: responsiveWidth(42) }} />
                   <Button buttonText='Proposal' onPress={() => nav.navigate(ROUTES.PROPOSAL)} style={{ width: responsiveWidth(42) }} />
                 </View>
-                <Button gradient style={{ marginTop: responsiveHeight(2), width: responsiveWidth(90), backgroundColor: colors.red2 }} buttonText='Reject' />
+                <Button gradient onPress={() => nav.navigate(ROUTES.CONGRATULATION, {reject: 'reject'})} style={{ marginTop: responsiveHeight(2), width: responsiveWidth(90), backgroundColor: colors.red2 }} buttonText='Reject' />
               </View>
             }
             {previousData === 'Done' &&
@@ -117,6 +119,29 @@ const TaskDetail = ({ route }) => {
               <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)} buttonText='Pay Now' />}
           </>
         }
+
+        {previousData !== 'In Discussion' && <View style={{marginTop: responsiveHeight(2)}}>
+          <Text style={styles.applyTxt}>Apply For This Job</Text>
+
+          <TouchableOpacity style={styles.professionalProfile}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <Image source={images.professional} style={styles.professionalImage} />
+                <View>
+                  <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                  <Text style={styles.name}>James Andrew</Text>
+                  <SVGXml width={'17'} height={'17'} icon={svgIcons.checkmark2} />
+                  </View>
+                  <View style={{flexDirection: 'row', gap: 20}}>
+                  <Text style={styles.ratingText}>Rating 4.5</Text>
+                  <Text style={styles.ratingText}>Waiting</Text>
+                  </View>
+                </View>
+              </View>
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => nav.navigate(ROUTES.CHAT_MESSAGES)}>
+                <SVGXml width={'17'} height={'17'} icon={svgIcons.professional} />
+              </TouchableOpacity>
+            </TouchableOpacity>
+        </View>}
       </View>
     </MainContainer>
   )
@@ -184,6 +209,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: responsiveHeight(3),
     justifyContent: 'space-between',
+  },
+  applyTxt: {
+    color: colors.black,
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(3),
   },
   name: {
     color: colors.black,

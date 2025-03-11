@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import SVGXml from './SVGXml';
 import svgIcons from '../assets/icons';
-import { responsiveFontSize, responsiveHeight } from '../utils';
+import { responsiveFontSize, responsiveHeight, ROUTES } from '../utils';
 import { colors } from '../assets/colors';
 import { useNavigation } from '@react-navigation/native';
 
@@ -28,7 +28,7 @@ const Header2 = (props: headerprops) => {
       <TouchableOpacity onPress={() => nav.goBack()}>
             <SVGXml width={'25'} height={'25'} icon={svgIcons.arrowleft} />
       </TouchableOpacity>
-    {props?.messagingIcon &&  <TouchableOpacity onPress={() => {}} style={{elevation: 5, padding: 10, borderRadius: 10, backgroundColor: '#f6f6f6'}}>
+    {props?.messagingIcon &&  <TouchableOpacity onPress={() => nav.navigate(ROUTES.CHAT_MESSAGES)} style={{elevation: 5, padding: 10, borderRadius: 10, backgroundColor: '#f6f6f6'}}>
             <SVGXml width={'20'} height={'20'} icon={svgIcons.messaging} />
       </TouchableOpacity>}
       </View>
