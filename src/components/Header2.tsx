@@ -14,6 +14,7 @@ interface headerprops {
   headerText2: string;
   hideBack: boolean;
   headerText3: string;
+  messagingIcon?: boolean;
 }
 
 const Header2 = (props: headerprops) => {
@@ -23,9 +24,14 @@ const Header2 = (props: headerprops) => {
   return (
     <View style={[styles.headerView,!props?.hideCancel && {flexDirection: 'row', justifyContent: 'space-between',alignItems: 'center'}]}>
       {!props?.hideBack &&
+      <View style={{flexDirection: 'row', justifyContent: 'space-between',}}>
       <TouchableOpacity onPress={() => nav.goBack()}>
             <SVGXml width={'25'} height={'25'} icon={svgIcons.arrowleft} />
       </TouchableOpacity>
+    {props?.messagingIcon &&  <TouchableOpacity onPress={() => {}} style={{elevation: 5, padding: 10, borderRadius: 10, backgroundColor: '#f6f6f6'}}>
+            <SVGXml width={'20'} height={'20'} icon={svgIcons.messaging} />
+      </TouchableOpacity>}
+      </View>
       }
       <Text style={[styles.textStyle,{marginTop: props?.hideCancel && responsiveHeight(4)}]}>{props?.text}</Text>
       {props?.subHeading &&

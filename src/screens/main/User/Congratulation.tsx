@@ -4,13 +4,15 @@ import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
 import CongratulationCard from '../../../components/CongratulationCard';
 
-const Congratulation = () => {
+const Congratulation = ({route}) => {
+  const changePasswordScreen = route?.params?.changePassword;
+  const review = route?.params?.review;
   return (
     <MainContainer scrollEnabled={false}>
       <Header2 headerText3='' hideCancel text='' subHeading={''} />
 
         <View style={{flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
-            <CongratulationCard />
+            <CongratulationCard changePasswordScreen={changePasswordScreen} review={review} />
         </View>
     </MainContainer>
   )

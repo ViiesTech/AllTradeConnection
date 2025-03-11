@@ -99,8 +99,8 @@ const TaskDetail = ({ route }) => {
             {previousData === 'In Discussion' &&
               <View style={{ paddingTop: responsiveHeight(3) }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Button buttonText='Hire Now' style={{ width: responsiveWidth(42) }} />
-                  <Button buttonText='Proposal' style={{ width: responsiveWidth(42) }} />
+                  <Button buttonText='Hire Now' onPress={() => nav.navigate(ROUTES.MY_JOBS)} style={{ width: responsiveWidth(42) }} />
+                  <Button buttonText='Proposal' onPress={() => nav.navigate(ROUTES.PROPOSAL)} style={{ width: responsiveWidth(42) }} />
                 </View>
                 <Button gradient style={{ marginTop: responsiveHeight(2), width: responsiveWidth(90), backgroundColor: colors.red2 }} buttonText='Reject' />
               </View>
@@ -110,8 +110,11 @@ const TaskDetail = ({ route }) => {
             {/* {status === 'Completed' &&
             <Text style={styles.statusText}>Professional complete the job</Text>
           } */}
+              {previousData === 'Done' &&
+                <Button onPress={() => nav.navigate(ROUTES.GIVE_REVIEW)} style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} buttonText='Give Review' />}
+}
             {previousData === 'Hired' &&
-              <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} buttonText='Pay Now' />}
+              <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)} buttonText='Pay Now' />}
           </>
         }
       </View>

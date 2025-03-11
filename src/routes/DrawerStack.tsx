@@ -47,6 +47,14 @@ import ChatMessages from "../screens/main/User/ChatMessages";
 import Wallet from "../screens/main/User/Wallet";
 import EditProfile from "../screens/main/User/EditProfile";
 import ChangePassword from "../screens/main/User/ChangePassword";
+import SeeAllReviews from "../screens/main/User/SeeAllReviews";
+import GiveReview from "../screens/main/User/GiveReview";
+import PaymentMethods from "../screens/main/User/PaymentMethods";
+import PaymentMethodPay from "../screens/main/User/PaymentMethodPay";
+import ConfirmPayment from "../screens/main/User/ConfirmPayment";
+import Transaction from "../screens/main/User/Transaction";
+import CashInPerson from "../screens/main/User/CashInPerson";
+import Proposal from "../screens/main/User/Proposal";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -189,6 +197,15 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.WALLET} component={Wallet} />
       <Drawer.Screen name={ROUTES.EDIT_PROFILE} component={EditProfile} />
       <Drawer.Screen name={ROUTES.CHANGE_PASSWORD} component={ChangePassword} />
+      <Drawer.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
+      <Drawer.Screen name={ROUTES.SEE_ALL_REVIEWS} component={SeeAllReviews} />
+      <Drawer.Screen name={ROUTES.GIVE_REVIEW} component={GiveReview} />
+      <Drawer.Screen name={ROUTES.PAYMENT_METHODS} component={PaymentMethods} />
+      <Drawer.Screen name={ROUTES.PAYMENT_METHOD_PAY} component={PaymentMethodPay} />
+      <Drawer.Screen name={ROUTES.CONFIRM_PAYMENT} component={ConfirmPayment} />
+      <Drawer.Screen name={ROUTES.TRANSACTION} component={Transaction} />
+      <Drawer.Screen name={ROUTES.CASH_IN_PERSON} component={CashInPerson} />
+      <Drawer.Screen name={ROUTES.PROPOSAL} component={Proposal} />
     </Drawer.Navigator>
   );
 };

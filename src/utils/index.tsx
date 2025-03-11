@@ -45,6 +45,14 @@ export const ROUTES: RoutePaths = {
   WALLET: 'Wallet',
   EDIT_PROFILE: 'EditProfile',
   CHANGE_PASSWORD: 'ChangePassword',
+  SEE_ALL_REVIEWS: 'SeeAllReviews',
+  GIVE_REVIEW: 'GiveReview',
+  PAYMENT_METHODS: 'PaymentMethods',
+  PAYMENT_METHOD_PAY: 'PaymentMethodPay',
+  CONFIRM_PAYMENT: 'ConfirmPayment',
+  TRANSACTION: 'Transaction',
+  CASH_IN_PERSON: 'CashInPerson',
+  PROPOSAL: 'Proposal',
 };
 
 
@@ -348,6 +356,58 @@ export const myLocationFields: myLocationTypes[] = [
   }
 ]
 
+interface giveReviewTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  multiline: boolean;
+  textAlign: string;
+  height: number;
+}
+
+export const giveReviewFields: giveReviewTypes[] = [
+  {
+    name: 'review',
+    placeholder: 'Write a review',
+    line: true,
+    multiline: true,
+    textAlign: 'top',
+    height: responsiveHeight(15),
+  },
+]
+
+interface changePasswordTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  secureTextEntry: boolean;
+}
+
+export const changePasswordFields: changePasswordTypes[] = [
+  {
+    name: 'old password',
+    placeholder: '***********************877',
+    line: true,
+    secureTextEntry: true,
+  },
+  {
+    name: 'new password',
+    placeholder: '***********************877',
+    keyboardType: 'text',
+    line: true,
+    secureTextEntry: true,
+  },
+  {
+    name: 'confirm password',
+    placeholder: '***********************877',
+    line: true,
+    keyboardType: 'text',
+    secureTextEntry: true,
+  },
+]
+
 interface editProfileTypes {
   name: string;
   placeholder: string;
@@ -378,6 +438,72 @@ export const editProfileFields: editProfileTypes[] = [
     multiline: true,
     textAlign: 'top',
     height: responsiveHeight(15),
+  },
+]
+
+interface confirmPaymentTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const confirmPaymentFields: confirmPaymentTypes[] = [
+  {
+    name: 'payment type',
+    placeholder: 'plumbing',
+    line: true,
+  },
+  {
+    name: 'phone number',
+    placeholder: '03234234234',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'name account',
+    placeholder: 'john',
+    keyboardType: 'text',
+    line: true
+  },
+  {
+    name: 'amount',
+    placeholder: '$250.00',
+    keyboardType: 'text',
+    line: true
+  },
+  {
+    name: 'fee',
+    placeholder: '$120.00',
+    keyboardType: 'text',
+    line: true
+  },
+]
+
+interface transactionFirstSectionTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const transactionFirstSectionFields: transactionFirstSectionTypes[] = [
+  {
+    name: 'transaction date',
+    placeholder: '25 Feb 2024, 13:22',
+    line: true,
+  },
+  {
+    name: 'service type',
+    placeholder: 'Plumbing',
+    keyboardType: 'text',
+    line: true
+  },
+  {
+    name: 'transaction iD',
+    placeholder: 'WTR516515651190551',
+    keyboardType: 'text',
+    line: true
   },
 ]
 

@@ -2,7 +2,7 @@ import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react
 import React from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header from '../../../components/Header'
-import { responsiveFontSize, responsiveHeight, responsiveWidth, reviews } from '../../../utils'
+import { responsiveFontSize, responsiveHeight, responsiveWidth, reviews, ROUTES } from '../../../utils'
 import { images } from '../../../assets/images'
 import SVGXml from '../../../components/SVGXml'
 import svgIcons from '../../../assets/icons'
@@ -10,8 +10,10 @@ import { colors } from '../../../assets/colors'
 import ProfileCard from '../../../components/ProfileCard'
 import ReviewCard from '../../../components/ReviewCard'
 import StarRating from 'react-native-star-rating-widget'
+import { useNavigation } from '@react-navigation/native'
 
 const Profile = () => {
+  const nav = useNavigation();
 
   const renderReviews = () => {
 
@@ -36,7 +38,7 @@ const Profile = () => {
             />
             <Text style={styles.ratingText}>4.9 (124)</Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => nav.navigate(ROUTES.SEE_ALL_REVIEWS)}>
             <Text style={[styles.ratingText, { textDecorationLine: 'underline' }]}>See All</Text>
           </TouchableOpacity>
         </View>
