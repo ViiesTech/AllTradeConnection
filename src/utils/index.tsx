@@ -16,6 +16,8 @@ export const ROUTES: RoutePaths = {
   FORGOT_PASSWORD: 'ForgotPassword',
   RESET_PASSWORD: 'ResetPassword',
   SELECT_EXPERIENCE: 'SelectExperience',
+  CREATE_PROFESSIONAL_PROFILE: 'CreateProfessionalProfile',
+  CREATE_PROFILE_YOURSELF: 'CREATE_PROFILE_YOURSELF',
   CREATE_PROFILE: 'CreateProfile',
   SUBSCRIPTION_PACKAGES: 'SubscriptionPackages',
   GET_GOLD: 'GetGold',
@@ -57,6 +59,9 @@ export const ROUTES: RoutePaths = {
   TRANSACTION: 'Transaction',
   CASH_IN_PERSON: 'CashInPerson',
   PROPOSAL: 'Proposal',
+  LOCATION_FILTER: 'LocationFilter',
+  SKILLS: 'Skills',
+  LANGUAGES: 'Languages',
 };
 
 
@@ -224,6 +229,45 @@ export const createProfileFields: createTypes[] = [
     placeholder: 'Contact Number',
     keyboardType: 'numeric',
     icon: svgIcons.call,
+  },
+  {
+    name: 'bio',
+    placeholder: 'Bio',
+    textAlign: 'top',
+    line: true,
+    multiline: true,
+    height: responsiveHeight(20)
+  }
+]
+
+interface createProfileYourSelfTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  textAlign: string;
+  line: boolean;
+  height: number;
+  multiline: boolean;
+  dropdownIcon: boolean;
+  tags?: { id: number; title: string }[];
+}
+
+export const createProfileYourSelfProfileFields: createProfileYourSelfTypes[] = [
+  {
+    name: 'postal code',
+    placeholder: '1242312332',
+    keyboardType: 'numeric',
+    line: true,
+  },
+  {
+    name: 'select service',
+    placeholder: 'Plumbing',
+    keyboardType: 'numeric',
+    line: true,
+    dropdownIcon: true,
+    tags: [
+      {id: 1, title: 'Plumbing'}, {id: 2, title: 'Plumbing'}
+      ],
   },
   {
     name: 'bio',

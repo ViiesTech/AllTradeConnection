@@ -17,6 +17,8 @@ import GetGold from '../screens/main/Professional/GetGold';
 import ProfessionalsPaymentMethod from '../screens/main/Professional/ProfessionalsPaymentMethod';
 import AddNewCard from '../screens/main/Professional/AddNewCard';
 import Congratulation from '../screens/main/User/Congratulation';
+import CreateProfileYourSelf from '../screens/main/Professional/CreateProfileYourSelf';
+import CreateProfessionalProfile from '../screens/main/Professional/CreateProfessionalProfile';
 
 export type AuthParams = {
   Signup: undefined;
@@ -36,8 +38,8 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name={ROUTES.SUBSCRIPTION_PACKAGES} component={SubscriptionPackages} />
-      <Stack.Screen name={ROUTES.GET_GOLD} component={GetGold} />
+      <Stack.Screen name={ROUTES.CREATE_PROFESSIONAL_PROFILE} component={CreateProfessionalProfile} />
+      <Stack.Screen name={ROUTES.CREATE_PROFILE_YOURSELF} component={CreateProfileYourSelf} />
       <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTES.OTP} component={OTP} />
@@ -52,6 +54,8 @@ const AuthStack = () => {
       <Stack.Screen name={ROUTES.PROFESSIONALS_PAYMENTMETHOD} component={ProfessionalsPaymentMethod} />
       <Stack.Screen name={ROUTES.ADD_NEW_CARD} component={AddNewCard} />
       <Stack.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
+      <Stack.Screen name={ROUTES.SUBSCRIPTION_PACKAGES} component={SubscriptionPackages} />
+      <Stack.Screen name={ROUTES.GET_GOLD} component={GetGold} />
     </Stack.Navigator>
   );
 };

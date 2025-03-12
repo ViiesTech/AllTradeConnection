@@ -27,4 +27,8 @@ export const images: {[key: string]: ImageSourcePropType} = {
   correct: require('../images/Group2.png'),
   master: require('../images/MasterCard.png'),
   visa: require('../images/Visa.png'),
+  certi1: require('../images/certi1.png'),
+  certi2: require('../images/certi2.png'),
+  certi3: require('../images/certi3.png'),
+  certi4: require('../images/certi4.png'),
 };

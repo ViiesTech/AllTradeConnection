@@ -465,6 +465,10 @@ const messaging = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" x
 <path d="M4.66667 8.66675H11.3333C11.5101 8.66675 11.6797 8.73699 11.8047 8.86201C11.9298 8.98703 12 9.1566 12 9.33341C12 9.51023 11.9298 9.67979 11.8047 9.80482C11.6797 9.92984 11.5101 10.0001 11.3333 10.0001H4.66667C4.48986 10.0001 4.32029 9.92984 4.19526 9.80482C4.07024 9.67979 4 9.51023 4 9.33341C4 9.1566 4.07024 8.98703 4.19526 8.86201C4.32029 8.73699 4.48986 8.66675 4.66667 8.66675Z" fill="#026ABD"/>
 </svg>`;
 
+const right_arrow = `<svg width="7" height="12" viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.03125 1L6.03125 6L1.03125 11" stroke="#282A37" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`
+
 interface SvgTypes {
   [key: string]: string;
 };
@@ -539,6 +543,7 @@ const svgIcons: SvgTypes = {
   cash_delivery,
   wallet,
   messaging,
+  right_arrow,
 };
 
 

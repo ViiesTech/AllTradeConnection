@@ -12,6 +12,13 @@ import ReviewCard from '../../../components/ReviewCard'
 import StarRating from 'react-native-star-rating-widget'
 import { useNavigation } from '@react-navigation/native'
 
+const certificates = [
+    {id: 1, certicateImg: images.certi1},
+    {id: 2, certicateImg: images.certi2},
+    {id: 3, certicateImg: images.certi3},
+    {id: 4, certicateImg: images.certi4},
+]
+
 const Profile = () => {
   const nav = useNavigation();
 
@@ -72,6 +79,24 @@ const Profile = () => {
           <ProfileCard icon text='Email Address' />
         </View>
         {renderReviews()}
+
+        <View style={{marginTop: responsiveHeight(2)}}>
+        <Text style={styles.reviewHeading}>Certificates</Text>
+
+        <FlatList 
+          data={certificates}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{gap: 20, marginTop: responsiveHeight(2)}}
+          renderItem={({item}) => {
+            return (
+              <View>
+                <Image source={item.certicateImg} style={{width: responsiveWidth(20), height: responsiveHeight(8)}} />
+              </View>
+            )
+          }}
+          />
+        </View>
       </View>
     </MainContainer>
   )

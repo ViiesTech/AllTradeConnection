@@ -55,6 +55,9 @@ import ConfirmPayment from "../screens/main/User/ConfirmPayment";
 import Transaction from "../screens/main/User/Transaction";
 import CashInPerson from "../screens/main/User/CashInPerson";
 import Proposal from "../screens/main/User/Proposal";
+import LocationFilter from "../screens/main/Professional/LocationFilter";
+import Skills from "../screens/main/Professional/Skills";
+import Languages from "../screens/main/Professional/Languages";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -198,6 +201,7 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.EDIT_PROFILE} component={EditProfile} />
       <Drawer.Screen name={ROUTES.CHANGE_PASSWORD} component={ChangePassword} />
       <Drawer.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
+      <Drawer.Screen name={ROUTES.MY_LOCATION} component={MyLocation} />
       <Drawer.Screen name={ROUTES.SEE_ALL_REVIEWS} component={SeeAllReviews} />
       <Drawer.Screen name={ROUTES.GIVE_REVIEW} component={GiveReview} />
       <Drawer.Screen name={ROUTES.PAYMENT_METHODS} component={PaymentMethods} />
@@ -206,6 +210,9 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.TRANSACTION} component={Transaction} />
       <Drawer.Screen name={ROUTES.CASH_IN_PERSON} component={CashInPerson} />
       <Drawer.Screen name={ROUTES.PROPOSAL} component={Proposal} />
+      <Drawer.Screen name={ROUTES.LOCATION_FILTER} component={LocationFilter} />
+      <Drawer.Screen name={ROUTES.SKILLS} component={Skills} />
+      <Drawer.Screen name={ROUTES.LANGUAGES} component={Languages} />
     </Drawer.Navigator>
   );
 };

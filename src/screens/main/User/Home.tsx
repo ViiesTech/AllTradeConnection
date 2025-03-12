@@ -36,7 +36,7 @@ const Home = () => {
   return (
     <View>
       <MainContainer style={{ paddingBottom: responsiveHeight(6) }}>
-        <Header />
+        <Header showMyLocation />
         <View style={styles.subContainer}>
           <View style={styles.textView}>
             <Text style={styles.welcomeText}>Welcome Back</Text>

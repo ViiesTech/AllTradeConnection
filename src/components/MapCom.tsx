@@ -8,9 +8,10 @@ import SVGXml from './SVGXml';
 
 interface MapComProps {
   isShowDirection: boolean;
+  screen?: string;
 }
 
-const MapCom = ({ isShowDirection }: MapComProps) => {
+const MapCom = ({ isShowDirection, screen }: MapComProps) => {
   return (
     <View>
         {isShowDirection && <View style={[styles.inputContainerWrapper]}>
@@ -31,8 +32,8 @@ const MapCom = ({ isShowDirection }: MapComProps) => {
       </View>
       {false && <Text style={styles.errorText}>{'required'}</Text>}
     </View>}
-    <ImageBackground source={images.map} style={styles.map}>
-    {isShowDirection && <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', padding: 15}}><TouchableOpacity style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center',borderRadius: 5, backgroundColor: colors.primary}}>
+    <ImageBackground source={images.map} style={[styles.map, {height: screen ? responsiveHeight(70) : responsiveHeight(50) }]}>
+    {isShowDirection || !screen && <View style={{flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end', padding: 15}}><TouchableOpacity style={{width: 50, height: 50, justifyContent: 'center', alignItems: 'center',borderRadius: 5, backgroundColor: colors.primary}}>
         <SVGXml width={'35'} height={'35'} icon={svgIcons.gps} />
     </TouchableOpacity></View>}
     </ImageBackground>
@@ -43,7 +44,6 @@ const MapCom = ({ isShowDirection }: MapComProps) => {
 const styles = StyleSheet.create({
     map: {
         width: responsiveWidth(90),
-        height: responsiveHeight(50),
     },
     form: {
         padding: responsiveHeight(1),

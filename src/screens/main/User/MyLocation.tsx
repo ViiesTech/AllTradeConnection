@@ -17,17 +17,20 @@ const validationSchema = Yup.object().shape({
   zipCode: Yup.string().required('Zip Code is required'),
 });
 
-const MyLocation = () => {
+const MyLocation = ({route}) => {
       const nav = useNavigation();
+
+  const screen = route?.params?.screen;
+
   return (
     <MainContainer>
-      <Header2 headerText3='' hideCancel text='My Location' subHeading={''} />
+      <Header2 headerText3='' hideCancel text={screen ? '' : 'My Location'} subHeading={''} />
 
         <View style={{padding: responsiveHeight(2.5), paddingTop: 0}}>
-            <MapCom isShowDirection={true} />
-        <CustomInputForm inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputStyle={{color: 'black'}} inputContainerStyle={{marginTop: responsiveHeight(0)}} onSubmit={(values) => nav.navigate(ROUTES.SElECT_SERVICE_ADDINAL)} initialValues={{address: 'Now York',appartment: 'Apartment/Suite#', city: 'Now York', zipCode: '5245242432'}} validationSchema={validationSchema} buttonText='Next' fields={myLocationFields} />
+            <MapCom isShowDirection={true} screen={screen} />
+        {!screen && <CustomInputForm inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputStyle={{color: 'black'}} inputContainerStyle={{marginTop: responsiveHeight(0)}} onSubmit={(values) => nav.navigate(ROUTES.SElECT_SERVICE_ADDINAL)} initialValues={{address: 'Now York',appartment: 'Apartment/Suite#', city: 'Now York', zipCode: '5245242432'}} validationSchema={validationSchema} buttonText='Next' fields={myLocationFields} />}
 
-          {/* <Button  style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}} buttonText={'Next'} onPress={() => {}} /> */}
+         {screen && <Button  style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}} buttonText={'Apply Location'} onPress={() => {}} />}
         </View>
     </MainContainer>
   )
