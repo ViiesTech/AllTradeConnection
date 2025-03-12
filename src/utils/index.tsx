@@ -17,6 +17,8 @@ export const ROUTES: RoutePaths = {
   RESET_PASSWORD: 'ResetPassword',
   SELECT_EXPERIENCE: 'SelectExperience',
   CREATE_PROFILE: 'CreateProfile',
+  SUBSCRIPTION_PACKAGES: 'SubscriptionPackages',
+  GET_GOLD: 'GetGold',
   SELECT_GENDER: 'SelectGender',
   ADD_LOCATION: 'AddLocation',
   AUTH_INTRO: 'AuthIntro',

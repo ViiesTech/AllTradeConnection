@@ -6,6 +6,7 @@ import {images} from '../../assets/images';
 import CustomInputForm from '../../components/InputField';
 import {
   responsiveHeight,
+  responsiveWidth,
   ROUTES,
   signupFields,
   validationSchema,
@@ -43,7 +44,8 @@ const Signup = () => {
           fields={signupFields}
           validationSchema={validationSchema}
         />
-        <View style={{paddingTop: responsiveHeight(2)}}>
+        <View style={{paddingTop: responsiveHeight(2), paddingHorizontal: responsiveWidth(8),
+        }}>
           <CheckBoxText text="By continuing you accept our Privacy Policy and Term of Use" />
         </View>
       </View>

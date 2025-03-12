@@ -33,7 +33,7 @@ const Header2 = (props: headerprops) => {
       </TouchableOpacity>}
       </View>
       }
-      <Text style={[styles.textStyle,{marginTop: props?.hideCancel && responsiveHeight(4)}]}>{props?.text}</Text>
+      {props?.text && <Text style={[styles.textStyle,{marginTop: props?.hideCancel && responsiveHeight(4)}]}>{props?.text}</Text>}
       {props?.subHeading &&
           <Text style={styles.subHeadingStyle}>{props?.subHeading || 'Details'}</Text>
       }

@@ -12,6 +12,8 @@ import SelectGender from '../screens/auth/SelectGender';
 import AddLocation from '../screens/auth/AddLocation';
 import AuthIntro from '../screens/auth/AuthIntro';
 import AuthProfileComplete from '../screens/auth/AuthProfileComplete';
+import SubscriptionPackages from '../screens/main/Professional/SubscriptionPackages';
+import GetGold from '../screens/main/Professional/GetGold';
 
 export type AuthParams = {
   Signup: undefined;
@@ -31,6 +33,8 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name={ROUTES.SUBSCRIPTION_PACKAGES} component={SubscriptionPackages} />
+      <Stack.Screen name={ROUTES.GET_GOLD} component={GetGold} />
       <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTES.OTP} component={OTP} />

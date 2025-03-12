@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     // marginTop: responsiveHeight(2),
+    paddingHorizontal: responsiveWidth(8),
   },
   forgotPasswordContainer:{
     margin: responsiveHeight(0.3),
