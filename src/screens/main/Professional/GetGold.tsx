@@ -12,8 +12,8 @@ const GetGold = () => {
     const nav = useNavigation();
 
     const data = [
-        {id: 1, title: 'Quarterly', numOfUsd: '$50.00', bgColor: '#0272C2'},
-        {id: 2, title: 'Annually', numOfUsd: '$90.00', bgColor: '#b3b3b3'},
+        {id: 1, title: 'Quarterly', numOfUsd: '$50.00', bgColor: '#0272C2', titleStyle: {color: colors.secondary, fontSize: responsiveFontSize(2)}, numOfUsdStyle: {fontSize: responsiveFontSize(2), fontWeight: 'bold', textAlign: 'center', color: colors.secondary}},
+        {id: 2, title: 'Annually', numOfUsd: '$90.00', bgColor: '#b3b3b3', titleStyle: {color: colors.black, fontSize: responsiveFontSize(2)}, numOfUsdStyle: {fontSize: responsiveFontSize(2), fontWeight: 'bold', textAlign: 'center'}},
     ]
     
   return (
@@ -42,17 +42,17 @@ const GetGold = () => {
                             renderItem={({item}) => {
                                 return (
                                     <View style={{padding: responsiveHeight(6), borderRadius: 20, backgroundColor: item.bgColor}}>
-                                        <Text>{item.title}</Text>
-                                        <Text style={{textAlign: 'center'}}>{item.numOfUsd}</Text>
+                                        <Text style={item.titleStyle}>{item.title}</Text>
+                                        <Text style={item.numOfUsdStyle}>{item.numOfUsd}</Text>
                                     </View>
                                 )
                             }}
                             />
 
-                <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90)}} onPress={() => nav.navigate(ROUTES.CASH_IN_PERSON)} buttonText='Continue' />}
+                <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90)}} onPress={() => nav.navigate(ROUTES.PROFESSIONALS_PAYMENTMETHOD)} buttonText='Continue' />}
 
             <View style={{gap: 10, padding: responsiveHeight(3)}}>
-                <Text style={{fontSize: responsiveFontSize(2), fontWeight: 'bold'}}>Recurring billing, cancel anytime</Text>
+                <Text style={{fontSize: responsiveFontSize(2), fontWeight: 'bold', color: colors.dark_purple}}>Recurring billing, cancel anytime</Text>
                 <Text style={{fontSize: responsiveFontSize(1.8), color: colors.gray, lineHeight: responsiveHeight(2.7)}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor exercitation.</Text>
             </View>
         </View>

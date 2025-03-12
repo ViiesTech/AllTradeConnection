@@ -9,13 +9,14 @@ const Congratulation = ({route}) => {
   const review = route?.params?.review;
   const cancelJob = route?.params?.cancelJob;
   const reject = route?.params?.reject;
+  const subscribing = route?.params?.subscribing;
 
   return (
     <MainContainer scrollEnabled={false}>
       <Header2 headerText3='' hideCancel text='' subHeading={''} />
 
         <View style={{flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
-            <CongratulationCard changePasswordScreen={changePasswordScreen} review={review} cancelJob={cancelJob} reject={reject} />
+            <CongratulationCard changePasswordScreen={changePasswordScreen} review={review} cancelJob={cancelJob} reject={reject} subscribing={subscribing} />
         </View>
     </MainContainer>
   )

@@ -14,6 +14,9 @@ import AuthIntro from '../screens/auth/AuthIntro';
 import AuthProfileComplete from '../screens/auth/AuthProfileComplete';
 import SubscriptionPackages from '../screens/main/Professional/SubscriptionPackages';
 import GetGold from '../screens/main/Professional/GetGold';
+import ProfessionalsPaymentMethod from '../screens/main/Professional/ProfessionalsPaymentMethod';
+import AddNewCard from '../screens/main/Professional/AddNewCard';
+import Congratulation from '../screens/main/User/Congratulation';
 
 export type AuthParams = {
   Signup: undefined;
@@ -46,6 +49,9 @@ const AuthStack = () => {
       <Stack.Screen name={ROUTES.ADD_LOCATION} component={AddLocation} />
       <Stack.Screen name={ROUTES.AUTH_INTRO} component={AuthIntro} />
       <Stack.Screen name={ROUTES.AUTH_PROFILE_COMPLETE} component={AuthProfileComplete} />
+      <Stack.Screen name={ROUTES.PROFESSIONALS_PAYMENTMETHOD} component={ProfessionalsPaymentMethod} />
+      <Stack.Screen name={ROUTES.ADD_NEW_CARD} component={AddNewCard} />
+      <Stack.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
     </Stack.Navigator>
   );
 };

@@ -6,13 +6,14 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '.
 import { colors } from '../assets/colors';
 import Button from './Button';
 
-const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject }: any) => {
+const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject, subscribing }: any) => {
     const navigation = useNavigation();
 
     const getTitle = () => {
         if (review) return 'Review';
         if (cancelJob) return 'Cancel Job';
         if (reject) return 'Rejected';
+        if (subscribing) return 'Thank You For Subscribing!';
         return 'Congratulation';
     };
 
@@ -21,6 +22,7 @@ const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject }:
         if (review) return 'Your Review Post Successfully';
         if (cancelJob) return 'Are you sure you want to cancel this job?';
         if (reject) return 'Are you sure you want to reject this professional';
+        if (subscribing) return 'Enjoy your exclusive features and premium content.';
         return 'Job has been posted successfully';
     };
 

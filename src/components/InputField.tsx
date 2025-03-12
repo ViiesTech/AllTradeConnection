@@ -169,7 +169,7 @@ const CustomInputForm = ({
               textAlign={field.textAlign}
               autoCapitalize="none"
               searchIcon={searchIcon}
-              dropdownIcon={dropdownIcon}
+              dropdownIcon={dropdownIcon  || field.dropdownIcon}
               />
           {!hideTags && <View style={field.tags ? {flexDirection: 'row', gap: 20, paddingBottom: responsiveHeight(3)} : {}}>
               {field.tags && field.tags?.map((item, ) => {

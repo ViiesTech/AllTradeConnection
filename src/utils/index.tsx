@@ -19,6 +19,8 @@ export const ROUTES: RoutePaths = {
   CREATE_PROFILE: 'CreateProfile',
   SUBSCRIPTION_PACKAGES: 'SubscriptionPackages',
   GET_GOLD: 'GetGold',
+  PROFESSIONALS_PAYMENTMETHOD: 'ProfessionalsPaymentMethod',
+  ADD_NEW_CARD: 'AddNewCard',
   SELECT_GENDER: 'SelectGender',
   ADD_LOCATION: 'AddLocation',
   AUTH_INTRO: 'AuthIntro',
@@ -505,6 +507,62 @@ export const transactionFirstSectionFields: transactionFirstSectionTypes[] = [
     name: 'transaction iD',
     placeholder: 'WTR516515651190551',
     keyboardType: 'text',
+    line: true
+  },
+]
+
+interface professionalPaymentMethodTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+}
+
+export const professionalPaymentMethodFields: professionalPaymentMethodTypes[] = [
+  {
+    name: 'name',
+    placeholder: 'Jordan Delgado',
+    line: true,
+  },
+  {
+    name: 'card number',
+    placeholder: '***** ***** **** 789',
+    keyboardType: 'numeric',
+    line: true
+  },
+]
+
+interface addNewCardTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  dropdownIcon?: boolean;
+}
+
+export const addNewCardFields: addNewCardTypes[] = [
+  {
+    name: 'select bank',
+    placeholder: 'US bank',
+    line: true,
+    dropdownIcon: true,
+  },
+  {
+    name: 'account number',
+    placeholder: '***** ***** **** 789',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'card number',
+    placeholder: '***** ***** **** 789',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'CCV',
+    placeholder: '***** ***** **** 789',
+    keyboardType: 'numeric',
     line: true
   },
 ]
