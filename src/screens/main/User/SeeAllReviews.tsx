@@ -17,7 +17,7 @@ const SeeAllReviews = () => {
     <MainContainer>
     <Header2 headerText3='' hideCancel text={''} subHeading={''} />
 
-    <View style={{padding: responsiveHeight(3), paddingTop: 0, marginTop: responsiveHeight(-8)}}>
+    <View style={{padding: responsiveHeight(3), paddingTop: 0,}}>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
             <Text style={{fontSize: responsiveFontSize(2.3), fontWeight: 'bold', color: colors.dark_purple}}>Reviews</Text>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -32,7 +32,7 @@ const SeeAllReviews = () => {
         </View>
 
         <View>
-        <FlatList style={{marginHorizontal: -responsiveHeight(3)}} contentContainerStyle={{ gap: 20, paddingHorizontal: responsiveHeight(3), paddingTop: responsiveHeight(2) }} data={reviews} renderItem={renderItem} />
+        <FlatList  contentContainerStyle={{ gap: 20, paddingTop: responsiveHeight(2) }} data={reviews} renderItem={renderItem} />
         </View>
     </View>
     </MainContainer>
