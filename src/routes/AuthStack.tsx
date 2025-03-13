@@ -19,6 +19,7 @@ import AddNewCard from '../screens/main/Professional/AddNewCard';
 import Congratulation from '../screens/main/User/Congratulation';
 import CreateProfileYourSelf from '../screens/main/Professional/CreateProfileYourSelf';
 import CreateProfessionalProfile from '../screens/main/Professional/CreateProfessionalProfile';
+import GetStarted from '../screens/auth/GetStarted';
 
 export type AuthParams = {
   Signup: undefined;
@@ -38,10 +39,8 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name={ROUTES.CREATE_PROFESSIONAL_PROFILE} component={CreateProfessionalProfile} />
-      <Stack.Screen name={ROUTES.CREATE_PROFILE_YOURSELF} component={CreateProfileYourSelf} />
-      <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
+      <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.OTP} component={OTP} />
       <Stack.Screen name={ROUTES.FORGOT_PASSWORD} component={ForgotPassword} />
       <Stack.Screen name={ROUTES.RESET_PASSWORD} component={ResetPassword} />
@@ -56,6 +55,8 @@ const AuthStack = () => {
       <Stack.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
       <Stack.Screen name={ROUTES.SUBSCRIPTION_PACKAGES} component={SubscriptionPackages} />
       <Stack.Screen name={ROUTES.GET_GOLD} component={GetGold} />
+      <Stack.Screen name={ROUTES.CREATE_PROFESSIONAL_PROFILE} component={CreateProfessionalProfile} />
+      <Stack.Screen name={ROUTES.CREATE_PROFILE_YOURSELF} component={CreateProfileYourSelf} />
     </Stack.Navigator>
   );
 };

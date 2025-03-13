@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-const Languages = () => {
+const GetStarted = () => {
   return (
     <View>
-      <Text>Languages</Text>
+      <Text>GetStarted</Text>
     </View>
   );
 };
 
-export default Languages;
+export default GetStarted;

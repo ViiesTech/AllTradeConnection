@@ -19,12 +19,11 @@ const AuthProfileComplete = ({route}) => {
 
   const onCompleteButtonPress = () => {
     if (type === 'logout') {
-      nav.navigate(ROUTES.LOGIN);
+      nav.navigate(ROUTES.AUTHSTACK);
     } else {
       nav.navigate(ROUTES.DRAWER_STACK);
     }
   };
-  
 
   return (
     <Container>

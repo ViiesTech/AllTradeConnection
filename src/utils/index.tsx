@@ -61,7 +61,11 @@ export const ROUTES: RoutePaths = {
   PROPOSAL: 'Proposal',
   LOCATION_FILTER: 'LocationFilter',
   SKILLS: 'Skills',
-  LANGUAGES: 'Languages',
+  FILL_PROPOSAL: 'FillProposal',
+  SUBSCRIBE_PACKAGES: 'SubscribePackages',
+  PAYMENT_CARD: 'PaymentCard',
+  ADD_NEW_BANK: 'AddNewBank',
+  MY_BANK_ACCOUNT: 'MyBankAccount',
 };
 
 
@@ -276,6 +280,38 @@ export const createProfileYourSelfProfileFields: createProfileYourSelfTypes[] = 
     line: true,
     multiline: true,
     height: responsiveHeight(20)
+  }
+]
+
+interface AddNewBankTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  multiline: boolean;
+  dropdownIcon: boolean;
+}
+
+export const AddNewBankFields: AddNewBankTypes[] = [
+  {
+    name: 'bank name',
+    placeholder: 'Dummy Bank',
+    keyboardType: 'text',
+    line: true,
+    dropdownIcon: true,
+  },
+  {
+    name: 'ac tittle',
+    placeholder: 'James john',
+    keyboardType: 'text',
+    line: true,
+    dropdownIcon: true,
+  },
+  {
+    name: 'account number',
+    placeholder: '523423423423',
+    keyboardType: 'numeric',
+    line: true,
   }
 ]
 
@@ -573,6 +609,33 @@ export const professionalPaymentMethodFields: professionalPaymentMethodTypes[] =
     placeholder: '***** ***** **** 789',
     keyboardType: 'numeric',
     line: true
+  },
+]
+
+interface fillProposalTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  textAlign: string;
+  height: number;
+  multiline: boolean;
+}
+
+export const fillProposalFields: fillProposalTypes[] = [
+  {
+    name: 'fixed price',
+    placeholder: '$45.00',
+    line: true,
+  },
+  {
+    name: 'proposal',
+    placeholder: '',
+    keyboardType: 'numeric',
+    line: true,
+    textAlign: 'top',
+    multiline: true,
+    height: responsiveHeight(20),
   },
 ]
 

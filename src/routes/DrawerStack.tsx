@@ -57,7 +57,12 @@ import CashInPerson from "../screens/main/User/CashInPerson";
 import Proposal from "../screens/main/User/Proposal";
 import LocationFilter from "../screens/main/Professional/LocationFilter";
 import Skills from "../screens/main/Professional/Skills";
-import Languages from "../screens/main/Professional/Languages";
+import Languages from "../screens/main/Professional/FillProposal";
+import FillProposal from "../screens/main/Professional/FillProposal";
+import SubscribePackages from "../screens/main/Professional/SubscribePackages";
+import PaymentCard from "../screens/main/Professional/PaymentCard";
+import AddNewBank from "../screens/main/Professional/AddNewBank";
+import MyBankAccount from "../screens/main/Professional/MyBankAccount";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -116,7 +121,7 @@ const BottomStack: React.FC = () => {
       />
       <Tab.Screen
         name={ROUTES.MY_JOBS}
-        component={MyJobs}
+        component={MyBankAccount}
         options={{
           tabBarIcon: ({ focused }) => (
             <CustomTabIcon icon={svgIcons.project} activeIcon={svgIcons.project_active} focused={focused} />
@@ -212,7 +217,11 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.PROPOSAL} component={Proposal} />
       <Drawer.Screen name={ROUTES.LOCATION_FILTER} component={LocationFilter} />
       <Drawer.Screen name={ROUTES.SKILLS} component={Skills} />
-      <Drawer.Screen name={ROUTES.LANGUAGES} component={Languages} />
+      <Drawer.Screen name={ROUTES.FILL_PROPOSAL} component={FillProposal} />
+      <Drawer.Screen name={ROUTES.SUBSCRIBE_PACKAGES} component={SubscribePackages} />
+      <Drawer.Screen name={ROUTES.PAYMENT_CARD} component={PaymentCard} />
+      <Drawer.Screen name={ROUTES.ADD_NEW_BANK} component={AddNewBank} />
+      {/* <Drawer.Screen name={ROUTES.MY_BANK_ACCOUNT} component={MyBankAccount} /> */}
     </Drawer.Navigator>
   );
 };
