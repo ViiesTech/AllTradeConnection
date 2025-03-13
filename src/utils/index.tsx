@@ -11,6 +11,7 @@ export const ROUTES: RoutePaths = {
   DRAWER_STACK: 'DrawerStack',
   MAIN_STACK: 'MainStack',
   SIGNUP: 'Signup',
+  GET_STARTED: 'GetStarted',
   LOGIN: 'Login',
   OTP: 'OTP',
   FORGOT_PASSWORD: 'ForgotPassword',

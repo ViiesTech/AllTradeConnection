@@ -34,4 +34,5 @@ export const images: {[key: string]: ImageSourcePropType} = {
   cardHolder: require('../images/visaCardHolder.png'),
   bankLogo1: require('../images/bankLogo1.png'),
   bankLogo2: require('../images/bankLogo2.png'),
+  logoWithoutBg: require('../images/logoWithoutBg.png'),
 };

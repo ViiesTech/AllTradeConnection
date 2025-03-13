@@ -121,7 +121,7 @@ const BottomStack: React.FC = () => {
       />
       <Tab.Screen
         name={ROUTES.MY_JOBS}
-        component={MyBankAccount}
+        component={MyJobs}
         options={{
           tabBarIcon: ({ focused }) => (
             <CustomTabIcon icon={svgIcons.project} activeIcon={svgIcons.project_active} focused={focused} />
@@ -221,7 +221,7 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.SUBSCRIBE_PACKAGES} component={SubscribePackages} />
       <Drawer.Screen name={ROUTES.PAYMENT_CARD} component={PaymentCard} />
       <Drawer.Screen name={ROUTES.ADD_NEW_BANK} component={AddNewBank} />
-      {/* <Drawer.Screen name={ROUTES.MY_BANK_ACCOUNT} component={MyBankAccount} /> */}
+      <Drawer.Screen name={ROUTES.MY_BANK_ACCOUNT} component={MyBankAccount} />
     </Drawer.Navigator>
   );
 };
