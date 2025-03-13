@@ -106,6 +106,26 @@ const CreateProfessionalProfile = () => {
             marginTop: responsiveHeight(2),
             fontSize: responsiveFontSize(2.3)
         }}>Time Range</Text>
+
+        <FlatList
+        data={times}
+        contentContainerStyle={{marginTop: responsiveHeight(2), flex: 1, justifyContent: 'space-between'}}
+        horizontal
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', padding: 10, gap: 40, borderRadius: 10, borderWidth: 1, borderColor: colors.line_color}}>
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+              <SVGXml width={'17'} height={'17'} icon={svgIcons.time_reverse} />
+              <Text>{item.time}</Text>
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center', gap: 12}}>
+              <Text>{item.time2}</Text>
+              <SVGXml width={'14'} height={'14'} icon={svgIcons.fill_arrow_down} />
+              </View>
+            </TouchableOpacity>
+          )
+        }}
+        />
           
 
         <Button  style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}} buttonText={'Next'} onPress={() => nav.navigate(ROUTES.MY_LOCATION)} />
