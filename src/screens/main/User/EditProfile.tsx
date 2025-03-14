@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList } from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
@@ -36,16 +36,24 @@ const times = [
 
 const EditProfile = () => {
     const nav = useNavigation();
-    const type = AsyncStorage.getItem('type');
+    const [type, setType] = useState('')
+
+    useEffect(async() => {
+      await AsyncStorage.getItem('type').then((res) => {
+        setType(res);
+      }).catch((err) => {
+        console.log(err)
+      })
+      }, [])
 
   return (
     <MainContainer>
         <Header2 headerText3='' hideCancel text={'Edit Profile'} subHeading={'Enter Your Details'} />
 
         <View style={{padding: responsiveHeight(2), paddingTop: 0}}>
-        {type === 'user' && <CustomInputForm inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputStyle={{color: 'black'}} inputContainerStyle={{marginTop: responsiveHeight(0)}} onSubmit={(values) => nav.navigate(ROUTES.PROFILE)} initialValues={{fullname: 'Now York',phonenumber: 'Apartment/Suite#', bio: 'Now York',}} validationSchema={{}} buttonText='Save' fields={editProfileFields} />}
+        {type === 'User' && <CustomInputForm inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(90)}} inputStyle={{color: 'black'}} inputContainerStyle={{marginTop: responsiveHeight(0)}} onSubmit={(values) => nav.navigate(ROUTES.PROFILE)} initialValues={{fullname: 'Now York',phonenumber: 'Apartment/Suite#', bio: 'Now York',}} validationSchema={{}} buttonText='Save' fields={editProfileFields} />}
         
-        <View >
+       {type === 'Pro' && <View >
           <View style={styles.imageWrapper}>
           <View>
               <Image source={images.profile} style={styles.imageStyle} /> 
@@ -140,7 +148,7 @@ const EditProfile = () => {
         />
         <Button  style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}} buttonText={'Update'} onPress={() => nav.navigate(ROUTES.PROFILE)} />
         </View>
-        </View>
+        </View>}
         </View>
     </MainContainer>
   );

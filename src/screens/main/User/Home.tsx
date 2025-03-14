@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainContainer from '../../../components/MainContainer';
 import Header from '../../../components/Header';
 import { multipleTasks, responsiveFontSize, responsiveHeight, ROUTES } from '../../../utils';
@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Home = () => {
   const nav = useNavigation();
-   const type = AsyncStorage.getItem('type');
+  const [type, setType] = useState('')
  
   const renderTasks = () => {
     const navigation = useNavigation();
@@ -34,24 +34,18 @@ const Home = () => {
     )
   };
 
-  useEffect(() => {
-    getType()
+  useEffect(async() => {
+  await AsyncStorage.getItem('type').then((res) => {
+    setType(res);
+  }).catch((err) => {
+    console.log(err)
+  })
   }, [])
-
-  const getType = async () => {
-    try {
-      const type = await AsyncStorage.getItem('type');
-      console.log('Type:', type);
-      return type;
-    } catch (error) {
-      console.error('Error retrieving type:', error);
-    }
-  };
 
   return (
     <View>
       <MainContainer style={{ paddingBottom: responsiveHeight(6) }}>
-        <Header showMyLocation={type !== 'user'} />
+        <Header showMyLocation={type === 'Pro'} />
         <View style={styles.subContainer}>
           <View style={styles.textView}>
             <Text style={styles.welcomeText}>Welcome Back</Text>

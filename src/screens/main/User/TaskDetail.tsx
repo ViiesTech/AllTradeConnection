@@ -1,9 +1,9 @@
 import { Alert, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header2 from '../../../components/Header2'
 import { images } from '../../../assets/images'
-import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES, taskDetails } from '../../../utils'
+import { responsiveFontSize, responsiveHeight, responsiveWidth, reviews, ROUTES, taskDetails } from '../../../utils'
 import { colors } from '../../../assets/colors'
 import SVGXml from '../../../components/SVGXml'
 import svgIcons from '../../../assets/icons'
@@ -11,14 +11,28 @@ import Button from '../../../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import ReviewCard from '../../../components/ReviewCard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import StarRating from 'react-native-star-rating-widget'
 
 const TaskDetail = ({ route }) => {
-
+  const nav = useNavigation();
+  const [type, setType] = useState('')
   const previousData = route?.params?.type || null;
   // const previousData = 'MyJobs';
   // const status = 'Completed';
-  const nav = useNavigation();
-  const type = AsyncStorage.getItem('type');
+
+  const renderItem = ({ item }) => {
+    return (
+      <ReviewCard day={item.days} image={item.image} name={item.name} rating={item.rating} desc={item.desc} />
+    )
+  }
+
+    useEffect(async() => {
+      await AsyncStorage.getItem('type').then((res) => {
+        setType(res);
+      }).catch((err) => {
+        console.log(err)
+      })
+      }, [])
 
   return (
     <MainContainer>
@@ -30,12 +44,12 @@ const TaskDetail = ({ route }) => {
         }else {
           nav.goBack();
         }
-      }} headerText2={previousData === 'Hired' || previousData === 'In Discussion' ? 'Report' : type === 'user' && 'Cancel'} text={previousData === 'Hired' ? 'Hired Tasks' : previousData === 'Done' ? 'Done Project' : previousData === 'Reject' ? 'Rejected Project' : previousData === 'In Discussion' ? 'In Discussion' : 'Open Project'} />
+      }} headerText2={previousData === 'Hired' || previousData === 'In Discussion' ? 'Report' : type === 'User' && 'Cancel'} text={previousData === 'Hired' ? 'Hired Tasks' : previousData === 'Done' ? 'Done Project' : previousData === 'Reject' ? 'Rejected Project' : previousData === 'In Discussion' ? 'In Discussion' : 'Open Project'} />
       <View style={styles.subContainer}>
         <Image style={styles.taskImage} source={images.taskdetail1} />
         <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingTop: responsiveHeight(1.5) }}>
-          <Text style={styles.heading}>{type === 'user' ? 'Project Name' : 'Task Name'}</Text>
-          {previousData != 'Done' && previousData != 'Reject' && previousData != 'Hired' && previousData != 'In Discussion' && type === 'user' &&
+          <Text style={styles.heading}>{type === 'User' ? 'Project Name' : 'Task Name'}</Text>
+          {previousData != 'Done' && previousData != 'Reject' && previousData != 'Hired' && previousData != 'In Discussion' && type === 'User' &&
             <TouchableOpacity style={styles.editView} onPress={() => nav.navigate(ROUTES.POST_JOB, {screen: 'Edit Project'})}>
               <SVGXml width={'20'} height={'20'} icon={svgIcons.edit} />
             </TouchableOpacity>
@@ -85,10 +99,10 @@ const TaskDetail = ({ route }) => {
           </View>
           :
           <>
-            <View>
+            {/* <View>
               <Text>Email</Text>
-            </View>
-            <TouchableOpacity style={styles.professionalProfile}>
+            </View> */}
+           {type === 'User' && <TouchableOpacity style={styles.professionalProfile}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                 <Image source={images.professional} style={styles.professionalImage} />
                 <View>
@@ -99,8 +113,8 @@ const TaskDetail = ({ route }) => {
               <TouchableOpacity style={styles.iconWrapper} onPress={() => nav.navigate(ROUTES.CHAT_MESSAGES)}>
                 <SVGXml width={'17'} height={'17'} icon={svgIcons.professional} />
               </TouchableOpacity>
-            </TouchableOpacity>
-            {previousData === 'In Discussion' &&
+            </TouchableOpacity>}
+            {previousData === 'In Discussion' && type === 'User' &&
               <View style={{ paddingTop: responsiveHeight(3) }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <Button buttonText='Hire Now' onPress={() => nav.navigate(ROUTES.MY_JOBS)} style={{ width: responsiveWidth(42) }} />
@@ -109,20 +123,20 @@ const TaskDetail = ({ route }) => {
                 <Button gradient onPress={() => nav.navigate(ROUTES.CONGRATULATION, {reject: 'reject'})} style={{ marginTop: responsiveHeight(2), width: responsiveWidth(90), backgroundColor: colors.red2 }} buttonText='Reject' />
               </View>
             }
-            {previousData === 'Done' &&
+            {previousData === 'Done' && type === 'User' &&
               <ReviewCard style={{ marginTop: responsiveHeight(2.5), width: responsiveWidth(89) }} image={images.review1} name={'James Andrew'} rating={'5.0'} day={'1 day ago'} desc={'Many thanks to james he is professional, Cleaner..'} />}
             {/* {status === 'Completed' &&
             <Text style={styles.statusText}>Professional complete the job</Text>
           } */}
-              {previousData === 'Done' &&
+              {previousData === 'Done' && type === 'User' &&
                 <Button onPress={() => nav.navigate(ROUTES.GIVE_REVIEW)} style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} buttonText='Give Review' />}
 }
-            {previousData === 'Hired' &&
+            {previousData === 'Hired' && type === 'User' &&
               <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)} buttonText='Pay Now' />}
           </>
         }
 
-        {previousData !== 'In Discussion' && type === 'user' ? <View style={{marginTop: responsiveHeight(2)}}>
+        {previousData !== 'In Discussion' && type === 'User' ? <View style={{marginTop: responsiveHeight(2)}}>
           <Text style={styles.applyTxt}>Apply For This Job</Text>
 
           <TouchableOpacity style={styles.professionalProfile}>
@@ -145,7 +159,37 @@ const TaskDetail = ({ route }) => {
             </TouchableOpacity>
         </View>: null}
 
-        {type !== 'user' && <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PROFESSIONALS_PAYMENTMETHOD)} buttonText='Get Job' />}
+       {type === 'Pro' && previousData === 'Done' && <View>
+              <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center', marginTop: responsiveHeight(2) }}>
+                <SVGXml icon={svgIcons.clock} />
+                <Text style={styles.time}>Posted 3 days ago</Text>
+              </View>
+            <Text style={[styles.heading,{marginTop: responsiveHeight(2)}]}>Email</Text>
+            <Text style={styles.detail}>exampleemail@gmail.com</Text>
+            <Text style={[styles.heading,{marginTop: responsiveHeight(2)}]}>Phone Number</Text>
+            <Text style={styles.detail}>1234567890</Text>
+            </View>}
+
+      {type === 'Pro' && previousData === 'Done' &&    <View style={{ paddingTop: responsiveHeight(2) }}>
+        <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center', justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+            <Text style={styles.reviewHeading}>Reviews</Text>
+            <StarRating
+              rating={1}
+              onChange={() => null}
+              starSize={responsiveHeight(2.3)}
+              maxStars={1}
+            />
+            <Text style={styles.ratingText}>4.9 (124)</Text>
+          </View>
+          <TouchableOpacity onPress={() => nav.navigate(ROUTES.SEE_ALL_REVIEWS)}>
+            <Text style={[styles.ratingText, { textDecorationLine: 'underline' }]}>See All</Text>
+          </TouchableOpacity>
+        </View>
+        <FlatList style={{marginHorizontal: -responsiveHeight(3)}} showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: responsiveHeight(3), paddingTop: responsiveHeight(2) }} data={reviews} renderItem={renderItem} />
+      </View>}
+
+        {type === 'Pro' && previousData !== 'Hired' && <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PROFESSIONALS_PAYMENTMETHOD)} buttonText='Get Job' />}
       </View>
     </MainContainer>
   )
@@ -259,5 +303,23 @@ const styles = StyleSheet.create({
     color: colors.textColor2,
     fontSize: responsiveFontSize(1.8),
     marginTop: responsiveHeight(1)
+  },
+  name: {
+    color: colors.textColor2,
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.5)
+  },
+  detail: {
+    color: colors.black,
+    fontSize: responsiveFontSize(1.7),
+  },
+  reviewHeading: {
+    color: colors.textColor2,
+    fontWeight: 'bold',
+    fontSize: responsiveFontSize(2.5)
+  },
+  ratingText: {
+    color: colors.textColor2,
+    fontSize: responsiveFontSize(2)
   }
 });

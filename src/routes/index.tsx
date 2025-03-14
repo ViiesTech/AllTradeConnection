@@ -16,7 +16,7 @@ const Routes: React.FC = () => {
       <Stack.Navigator screenOptions={{
         headerShown: false,
       }}>
-        <Stack.Screen name={ROUTES.AUTHSTACK} component={AuthStack} />
+        {/* <Stack.Screen name={ROUTES.AUTHSTACK} component={AuthStack} /> */}
         <Stack.Screen name={ROUTES.DRAWER_STACK} component={DrawerStack} />
       </Stack.Navigator>
     </NavigationContainer>

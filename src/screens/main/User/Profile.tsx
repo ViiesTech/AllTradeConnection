@@ -1,5 +1,5 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MainContainer from '../../../components/MainContainer'
 import Header from '../../../components/Header'
 import { responsiveFontSize, responsiveHeight, responsiveWidth, reviews, ROUTES } from '../../../utils'
@@ -22,7 +22,7 @@ const certificates = [
 
 const Profile = () => {
   const nav = useNavigation();
-  const type = AsyncStorage.getItem('type');
+    const [type, setType] = useState('')
 
   const renderReviews = () => {
 
@@ -32,7 +32,13 @@ const Profile = () => {
       )
     }
 
-
+useEffect(async() => {
+  await AsyncStorage.getItem('type').then((res) => {
+    setType(res);
+  }).catch((err) => {
+    console.log(err)
+  })
+  }, [])
 
     return (
       <View style={{ paddingTop: responsiveHeight(2) }}>
@@ -75,7 +81,7 @@ const Profile = () => {
           <Text style={styles.detail}>Los angles, California</Text>
           <Text style={styles.detail}>Phone: 123456749</Text>
 
-        {type !== 'user' &&  <View style={{marginTop: responsiveHeight(2), alignItems: 'center', gap: 5}}>
+        {type === 'Pro' &&  <View style={{marginTop: responsiveHeight(2), alignItems: 'center', gap: 5}}>
             <Text style={{fontSize: responsiveFontSize(1.5), fontWeight: 'bold', textAlign: 'center'}}>Monday - Sat</Text>
             <Text style={{fontSize: responsiveFontSize(1.5), color: colors.gray, textAlign: 'center'}}>9:00am To 9:00pm</Text>
 

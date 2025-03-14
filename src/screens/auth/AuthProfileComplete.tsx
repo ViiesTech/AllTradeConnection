@@ -23,14 +23,14 @@ const AuthProfileComplete = ({route}) => {
       nav.navigate(ROUTES.AUTHSTACK);
     } else {
       await AsyncStorage.getItem('type').then((res: any) => {
-        if(res === 'user'){
+        if(res === 'User'){
           nav.navigate(ROUTES.DRAWER_STACK);
         }else {
           nav.navigate(ROUTES.SUBSCRIPTION_PACKAGES);
         }
       }).catch((err) => {
-        console.log(err, 'err')
-      })
+        console.log(err, 'err');
+      });
     }
   };
 

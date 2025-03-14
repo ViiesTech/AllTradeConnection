@@ -13,8 +13,7 @@ const SelectExperience = () => {
   const nav = useNavigation()
 
   const onClickHandler = async () => {
-    const type = chooseExperience === 'User' ? 'user' : 'professional';
-     await AsyncStorage.setItem('type', type).then((res) => {
+     await AsyncStorage.setItem('type', chooseExperience).then((res) => {
        nav.navigate(ROUTES.CREATE_PROFILE);
      }).catch((err) => {
       console.log(err);
