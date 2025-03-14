@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { loginFields, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES, validationSchema } from "../../utils";
+import { loginFields, loginValidationSchema, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES, validationSchema } from "../../utils";
 import { colors } from "../../assets/colors";
 import Container from "../../components/Container";
 import AuthHeading from "../../components/AuthHeading";
@@ -10,10 +10,12 @@ import { useNavigation } from "@react-navigation/native";
 import { images } from "../../assets/images";
 
 const Login = () => {
-  const initialValues = {email: '', password: ''};
+  const initialValues = {email: 'john32@gmail.com', password: 'fwefwefwef'};
   const nav = useNavigation();
 
-  const handleLogin = (values: string) => {};
+  const handleLogin = (values: string) => {
+    nav.navigate(ROUTES.SELECT_EXPERIENCE)
+  };
 
   return (
     <Container>
@@ -31,7 +33,7 @@ const Login = () => {
           fields={loginFields}
           childrenStyle={{width: responsiveWidth(95)}}
           buttonStyle={{marginTop: responsiveHeight(3)}}
-          validationSchema={validationSchema}>
+          validationSchema={loginValidationSchema}>
           <View style={styles.checkboxForgotContainer}>
             <CheckBoxText text="Remember me" />
             <TouchableOpacity

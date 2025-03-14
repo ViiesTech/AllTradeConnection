@@ -10,6 +10,7 @@ import svgIcons from '../../../assets/icons'
 import Button from '../../../components/Button'
 import { useNavigation } from '@react-navigation/native'
 import ReviewCard from '../../../components/ReviewCard'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const TaskDetail = ({ route }) => {
 
@@ -17,6 +18,7 @@ const TaskDetail = ({ route }) => {
   // const previousData = 'MyJobs';
   // const status = 'Completed';
   const nav = useNavigation();
+  const type = AsyncStorage.getItem('type');
 
   return (
     <MainContainer>
@@ -28,12 +30,12 @@ const TaskDetail = ({ route }) => {
         }else {
           nav.goBack();
         }
-      }} headerText2={previousData === 'Hired' || previousData === 'In Discussion' ? 'Report' : 'Cancel'} text={previousData === 'Hired' ? 'Hired Tasks' : previousData === 'Done' ? 'Done Project' : previousData === 'Reject' ? 'Rejected Project' : previousData === 'In Discussion' ? 'In Discussion' : 'Open Project'} />
+      }} headerText2={previousData === 'Hired' || previousData === 'In Discussion' ? 'Report' : type === 'user' && 'Cancel'} text={previousData === 'Hired' ? 'Hired Tasks' : previousData === 'Done' ? 'Done Project' : previousData === 'Reject' ? 'Rejected Project' : previousData === 'In Discussion' ? 'In Discussion' : 'Open Project'} />
       <View style={styles.subContainer}>
         <Image style={styles.taskImage} source={images.taskdetail1} />
         <View style={{ alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingTop: responsiveHeight(1.5) }}>
-          <Text style={styles.heading}>Project Name</Text>
-          {previousData != 'Done' && previousData != 'Reject' && previousData != 'Hired' && previousData != 'In Discussion' &&
+          <Text style={styles.heading}>{type === 'user' ? 'Project Name' : 'Task Name'}</Text>
+          {previousData != 'Done' && previousData != 'Reject' && previousData != 'Hired' && previousData != 'In Discussion' && type === 'user' &&
             <TouchableOpacity style={styles.editView} onPress={() => nav.navigate(ROUTES.POST_JOB, {screen: 'Edit Project'})}>
               <SVGXml width={'20'} height={'20'} icon={svgIcons.edit} />
             </TouchableOpacity>
@@ -120,7 +122,7 @@ const TaskDetail = ({ route }) => {
           </>
         }
 
-        {previousData !== 'In Discussion' && <View style={{marginTop: responsiveHeight(2)}}>
+        {previousData !== 'In Discussion' && type === 'user' ? <View style={{marginTop: responsiveHeight(2)}}>
           <Text style={styles.applyTxt}>Apply For This Job</Text>
 
           <TouchableOpacity style={styles.professionalProfile}>
@@ -141,7 +143,9 @@ const TaskDetail = ({ route }) => {
                 <SVGXml width={'17'} height={'17'} icon={svgIcons.professional} />
               </TouchableOpacity>
             </TouchableOpacity>
-        </View>}
+        </View>: null}
+
+        {type !== 'user' && <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.PROFESSIONALS_PAYMENTMETHOD)} buttonText='Get Job' />}
       </View>
     </MainContainer>
   )

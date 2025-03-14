@@ -83,7 +83,7 @@ const SubscriptionPackages = () => {
       />
         </View>
 
-        <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(80)}} onPress={() => nav.navigate(ROUTES.CASH_IN_PERSON)} buttonText='Start With Free Trial' />}
+        <Button style={{ marginTop: responsiveHeight(3.5), width: responsiveWidth(80)}} onPress={() => nav.navigate(ROUTES.PROFESSIONALS_PAYMENTMETHOD)} buttonText='Start With Free Trial' />}
     </MainContainer>
   )
 }

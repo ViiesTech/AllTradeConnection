@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Container from '../../components/Container'
 import Modal from "react-native-modal";
@@ -9,6 +9,7 @@ import SVGXml from '../../components/SVGXml';
 import svgIcons from '../../assets/icons';
 import Button from '../../components/Button';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthProfileComplete = ({route}) => {
 
@@ -17,11 +18,19 @@ const AuthProfileComplete = ({route}) => {
   const {type} = route?.params || {};
   console.log('data',type)
 
-  const onCompleteButtonPress = () => {
+  const onCompleteButtonPress = async () => {
     if (type === 'logout') {
       nav.navigate(ROUTES.AUTHSTACK);
     } else {
-      nav.navigate(ROUTES.DRAWER_STACK);
+      await AsyncStorage.getItem('type').then((res: any) => {
+        if(res === 'user'){
+          nav.navigate(ROUTES.DRAWER_STACK);
+        }else {
+          nav.navigate(ROUTES.SUBSCRIPTION_PACKAGES);
+        }
+      }).catch((err) => {
+        console.log(err, 'err')
+      })
     }
   };
 

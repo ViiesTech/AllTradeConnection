@@ -41,7 +41,7 @@ const AddNewCard = () => {
 
                     <Button 
                         isWhiteBtnBG={true} 
-                        textStyle={{ color: colors.black }}
+                        textStyle={{ color: colors.dark_purple }}
                         style={{width: responsiveWidth(80), backgroundColor: colors.secondary }} 
                         buttonText={'Add Card'} 
                         onPress={handleButtonPress} 

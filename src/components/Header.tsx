@@ -5,6 +5,7 @@ import svgIcons from '../assets/icons';
 import { responsiveHeight, ROUTES } from '../utils';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { colors } from '../assets/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface headerprops {
 hideNotification: boolean;
@@ -13,7 +14,6 @@ showMyLocation?: boolean;
 };
 
 const Header = (props: headerprops) => {
-
   const navigation = useNavigation();
 
     return (
@@ -22,13 +22,13 @@ const Header = (props: headerprops) => {
       <TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
         <SVGXml icon={svgIcons.bars} />
         </TouchableOpacity>
-      {props.showMyLocation &&  <TouchableOpacity onPress={() => navigation.navigate(ROUTES.LOCATION_FILTER)}>
+      {props.showMyLocation ?  <TouchableOpacity onPress={() => navigation.navigate(ROUTES.LOCATION_FILTER)}>
           <View style={{flexDirection: 'row', alignItems: 'center', gap: 12}}>
           <Text style={{color: colors.gray}}>My Location</Text>
           <SVGXml width={'12'} height={'12'} icon={svgIcons.dropdownBlack} />
           </View>
           <Text style={{color: colors.dark_purple, fontWeight: 'bold'}}>New York, USA</Text>
-        </TouchableOpacity>}
+        </TouchableOpacity> : null}
       </View>
         
         {!props?.hideNotification  &&

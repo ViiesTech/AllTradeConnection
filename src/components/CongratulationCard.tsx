@@ -45,7 +45,9 @@ const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject, s
             navigation.navigate(ROUTES.WALLET);
         } else if (review || reject) {
             navigation.navigate(ROUTES.MY_JOBS);
-        } else {
+        }else if(subscribing){
+            navigation.navigate(ROUTES.DRAWER_STACK);
+        }else {
             navigation.navigate(ROUTES.LIST_OF_PRO);
         }
     };

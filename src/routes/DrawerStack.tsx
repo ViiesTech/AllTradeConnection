@@ -63,6 +63,12 @@ import SubscribePackages from "../screens/main/Professional/SubscribePackages";
 import PaymentCard from "../screens/main/Professional/PaymentCard";
 import AddNewBank from "../screens/main/Professional/AddNewBank";
 import MyBankAccount from "../screens/main/Professional/MyBankAccount";
+import ProfessionalsPaymentMethod from "../screens/main/Professional/ProfessionalsPaymentMethod";
+import AddNewCard from "../screens/main/Professional/AddNewCard";
+import SubscriptionPackages from "../screens/main/Professional/SubscriptionPackages";
+import GetGold from "../screens/main/Professional/GetGold";
+import CreateProfessionalProfile from "../screens/main/Professional/CreateProfessionalProfile";
+import CreateProfileYourSelf from "../screens/main/Professional/CreateProfileYourSelf";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -222,6 +228,12 @@ const DrawerStack: React.FC = () => {
       <Drawer.Screen name={ROUTES.PAYMENT_CARD} component={PaymentCard} />
       <Drawer.Screen name={ROUTES.ADD_NEW_BANK} component={AddNewBank} />
       <Drawer.Screen name={ROUTES.MY_BANK_ACCOUNT} component={MyBankAccount} />
+      <Drawer.Screen name={ROUTES.PROFESSIONALS_PAYMENTMETHOD} component={ProfessionalsPaymentMethod} />
+      <Drawer.Screen name={ROUTES.ADD_NEW_CARD} component={AddNewCard} />
+      <Drawer.Screen name={ROUTES.SUBSCRIPTION_PACKAGES} component={SubscriptionPackages} />
+      <Drawer.Screen name={ROUTES.GET_GOLD} component={GetGold} />
+      <Drawer.Screen name={ROUTES.CREATE_PROFESSIONAL_PROFILE} component={CreateProfessionalProfile} />
+      <Drawer.Screen name={ROUTES.CREATE_PROFILE_YOURSELF} component={CreateProfileYourSelf} />
     </Drawer.Navigator>
   );
 };

@@ -152,6 +152,15 @@ export const validationSchema = Yup.object().shape({
     .required('Confirm password is required'),
 });
 
+export const loginValidationSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+});
+
 export const loginFields: signupFieldsTypes[] = [
   {
     name: 'email',
@@ -518,6 +527,76 @@ export const editProfileFields: editProfileTypes[] = [
   {
     name: 'bio',
     placeholder: 'Bio',
+    line: true,
+    keyboardType: 'text',
+    multiline: true,
+    textAlign: 'top',
+    height: responsiveHeight(15),
+  },
+]
+
+interface editProfessionalProfileTypes {
+  name: string;
+  placeholder: string;
+  keyboardType: string;
+  line: boolean;
+  height?: number;
+  multiline?: boolean;
+  textAlign?: string;
+  tags?: { id: number; title: string }[];
+  dropdownIcon: boolean;
+}
+
+export const editProfessionalProfileFields: editProfessionalProfileTypes[] = [
+  {
+    name: 'full name',
+    placeholder: 'john smith',
+    line: true,
+  },
+  {
+    name: 'phone number',
+    placeholder: '03234234234',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'state',
+    placeholder: 'California',
+    keyboardType: 'text',
+    line: true,
+    dropdownIcon: true,
+  },
+  {
+    name: 'zip code',
+    placeholder: '03234234234',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'postal code',
+    placeholder: '03234234234',
+    keyboardType: 'numeric',
+    line: true
+  },
+  {
+    name: 'select service',
+    placeholder: 'Plumber',
+    keyboardType: 'text',
+    line: true,
+    dropdownIcon: true,
+    tags: [
+      {id: 1, title: 'Plumbing'}, {id: 2, title: 'Plumbing'}
+      ],
+  },
+  {
+    name: 'address',
+    placeholder: 'Street No 4567892 Lorem ispum',
+    keyboardType: 'text',
+    line: true
+  },
+  {
+    name: 'bio',
+    placeholder: 'Bio...',
     line: true,
     keyboardType: 'text',
     multiline: true,

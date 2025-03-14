@@ -11,6 +11,7 @@ import ProfileCard from '../../../components/ProfileCard'
 import ReviewCard from '../../../components/ReviewCard'
 import StarRating from 'react-native-star-rating-widget'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const certificates = [
     {id: 1, certicateImg: images.certi1},
@@ -21,6 +22,7 @@ const certificates = [
 
 const Profile = () => {
   const nav = useNavigation();
+  const type = AsyncStorage.getItem('type');
 
   const renderReviews = () => {
 
@@ -72,6 +74,16 @@ const Profile = () => {
           <Text style={styles.detail}>john.smith@domain.com</Text>
           <Text style={styles.detail}>Los angles, California</Text>
           <Text style={styles.detail}>Phone: 123456749</Text>
+
+        {type !== 'user' &&  <View style={{marginTop: responsiveHeight(2), alignItems: 'center', gap: 5}}>
+            <Text style={{fontSize: responsiveFontSize(1.5), fontWeight: 'bold', textAlign: 'center'}}>Monday - Sat</Text>
+            <Text style={{fontSize: responsiveFontSize(1.5), color: colors.gray, textAlign: 'center'}}>9:00am To 9:00pm</Text>
+
+            <View>
+            <Text style={{fontSize: responsiveFontSize(2), fontWeight: 'bold', textAlign: 'center'}}>Rewards Points</Text>
+            <Text style={{fontSize: responsiveFontSize(2.1), fontWeight: 'bold', textAlign: 'center'}}>2000</Text>
+            </View>
+          </View>}
         </View>
         <Text style={styles.desc}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: responsiveHeight(3) }}>

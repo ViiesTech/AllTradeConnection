@@ -39,7 +39,7 @@ const AuthStack = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name={ROUTES.GET_STARTED} component={GetStarted} />
+      {/* <Stack.Screen name={ROUTES.GET_STARTED} component={GetStarted} /> */}
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.OTP} component={OTP} />
