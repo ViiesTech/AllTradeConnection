@@ -5,11 +5,11 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth, taskDetails } fr
 import SVGXml from './SVGXml';
 
 interface taskProps {
-  image: ImageSourcePropType,
-  title: string,
-  desc: string,
-  price: string,
-  onPress:  () => void,
+  image?: ImageSourcePropType,
+  title?: string,
+  desc?: string,
+  price?: string,
+  onPress?:  () => void,
 }
 
 const TaskCard = (props: taskProps) => {

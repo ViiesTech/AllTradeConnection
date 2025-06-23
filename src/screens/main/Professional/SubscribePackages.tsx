@@ -6,8 +6,10 @@ import Button from '../../../components/Button';
 import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '../../../utils';
 import { images } from '../../../assets/images';
 import { colors } from '../../../assets/colors';
+import { useNavigation } from '@react-navigation/native';
 
 const SubscribePackages = () => {
+    const nav = useNavigation();
   return (
     <MainContainer>
       <Header2 headerText3='' hideCancel text={'Subscribed Package'} subHeading={''} />

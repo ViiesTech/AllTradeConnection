@@ -1,7 +1,8 @@
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+/* eslint-disable react/no-unstable-nested-components */
 import React, { useEffect, useState } from 'react';
-import MainContainer from '../../../components/MainContainer';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Header from '../../../components/Header';
+import MainContainer from '../../../components/MainContainer';
 import { multipleTasks, responsiveFontSize, responsiveHeight, ROUTES } from '../../../utils';
 import { colors } from '../../../assets/colors';
 import TaskCard from '../../../components/TaskCard';
@@ -10,63 +11,72 @@ import svgIcons from '../../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 const Home = () => {
   const nav = useNavigation();
-  const [type, setType] = useState('')
- 
-  const renderTasks = () => {
-    const navigation = useNavigation();
-  
-    const renderItem = ({ item }) => {
-      return (
-        <TaskCard onPress={() => navigation.navigate('SecondaryStack',{screen:  ROUTES.TASK_DETAIL})} price={item.price} image={item.image} title={item.title} desc={item.desc} />
-      )
-    }
-  
-    return (
-      <FlatList
-        data={multipleTasks}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: responsiveHeight(2) }}
-        renderItem={renderItem}
-      />
-    )
-  };
+  const [type, setType] = useState('');
 
-  useEffect(async() => {
-  await AsyncStorage.getItem('type').then((res) => {
-    setType(res);
-  }).catch((err) => {
-    console.log(err)
-  })
-  }, [])
+  useEffect(() => {
+    const getType = async () => {
+      try {
+        const res = await AsyncStorage.getItem('type');
+        if (res) setType(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getType();
+  }, []);
+
+  const renderItem = ({ item }) => (
+    <TaskCard
+      onPress={() => nav.navigate('SecondaryStack', { screen: ROUTES.TASK_DETAIL })}
+      price={item.price}
+      image={item.image}
+      title={item.title}
+      desc={item.desc}
+    />
+  );
+
+  const ListHeader = () => (
+    <View style={styles.headerContainer}>
+      <Header showMyLocation={type === 'Pro'} />
+      <View style={styles.textView}>
+        <Text style={styles.welcomeText}>Welcome Back</Text>
+        <Text style={styles.nameText}>John Smith</Text>
+      </View>
+    </View>
+  );
 
   return (
-    <View>
-      <MainContainer style={{ paddingBottom: responsiveHeight(6) }}>
-        <Header showMyLocation={type === 'Pro'} />
-        <View style={styles.subContainer}>
-          <View style={styles.textView}>
-            <Text style={styles.welcomeText}>Welcome Back</Text>
-            <Text style={styles.nameText}>John Smith</Text>
-          </View>
-          {renderTasks()}
-        </View>
+    <View style={{ flex: 1 }}>
+      <MainContainer style={{ flex: 1 }}>
+        <FlatList
+          data={multipleTasks}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={renderItem}
+          ListHeaderComponent={ListHeader}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+        />
+        <TouchableOpacity
+          onPress={() => nav.navigate('SecondaryStack', { screen: ROUTES.POST_JOB })}
+          style={styles.plusView}
+        >
+          <SVGXml icon={svgIcons.plus} />
+        </TouchableOpacity>
       </MainContainer>
-      <TouchableOpacity onPress={() => nav.navigate('SecondaryStack',{screen: ROUTES.POST_JOB})} style={styles.plusView}>
-        <SVGXml icon={svgIcons.plus} />
-      </TouchableOpacity>
     </View>
-  )
+  );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-  subContainer: {
-    padding: responsiveHeight(2),
-    paddingTop: 0,
+  headerContainer: {
+    paddingBottom: responsiveHeight(1),
+  },
+  textView: {
+    paddingHorizontal: responsiveHeight(2),
   },
   welcomeText: {
     fontSize: responsiveFontSize(2),
@@ -76,6 +86,10 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(3),
     color: colors.textColor2,
     fontWeight: 'bold',
+  },
+  listContent: {
+    paddingBottom: responsiveHeight(10),
+    paddingTop: responsiveHeight(2),
   },
   plusView: {
     backgroundColor: colors.primary,
@@ -95,5 +109,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
     elevation: 12,
-  }
-})
+  },
+});

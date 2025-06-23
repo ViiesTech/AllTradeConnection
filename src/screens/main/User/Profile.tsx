@@ -1,44 +1,45 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import MainContainer from '../../../components/MainContainer'
-import Header from '../../../components/Header'
-import { responsiveFontSize, responsiveHeight, responsiveWidth, reviews, ROUTES } from '../../../utils'
-import { images } from '../../../assets/images'
-import SVGXml from '../../../components/SVGXml'
-import svgIcons from '../../../assets/icons'
-import { colors } from '../../../assets/colors'
-import ProfileCard from '../../../components/ProfileCard'
-import ReviewCard from '../../../components/ReviewCard'
-import StarRating from 'react-native-star-rating-widget'
-import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import MainContainer from '../../../components/MainContainer';
+import Header from '../../../components/Header';
+import { responsiveFontSize, responsiveHeight, responsiveWidth, reviews, ROUTES } from '../../../utils';
+import { images } from '../../../assets/images';
+import SVGXml from '../../../components/SVGXml';
+import svgIcons from '../../../assets/icons';
+import { colors } from '../../../assets/colors';
+import ProfileCard from '../../../components/ProfileCard';
+import ReviewCard from '../../../components/ReviewCard';
+import StarRating from 'react-native-star-rating-widget';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const certificates = [
     {id: 1, certicateImg: images.certi1},
     {id: 2, certicateImg: images.certi2},
     {id: 3, certicateImg: images.certi3},
     {id: 4, certicateImg: images.certi4},
-]
+];
 
 const Profile = () => {
   const nav = useNavigation();
-    const [type, setType] = useState('')
+    const [type, setType] = useState('');
 
   const renderReviews = () => {
 
     const renderItem = ({ item }) => {
       return (
         <ReviewCard day={item.days} image={item.image} name={item.name} rating={item.rating} desc={item.desc} />
-      )
-    }
+      );
+    };
 
-useEffect(async() => {
-  await AsyncStorage.getItem('type').then((res) => {
-    setType(res);
-  }).catch((err) => {
-    console.log(err)
-  })
-  }, [])
+    useEffect(async() => {
+      await AsyncStorage.getItem('type').then((res) => {
+        setType(res);
+      }).catch((err) => {
+        console.log(err);
+      });
+      }, []);
 
     return (
       <View style={{ paddingTop: responsiveHeight(2) }}>
@@ -59,8 +60,8 @@ useEffect(async() => {
         </View>
         <FlatList style={{marginHorizontal: -responsiveHeight(3)}} showsHorizontalScrollIndicator={false} horizontal contentContainerStyle={{ gap: 20, paddingHorizontal: responsiveHeight(3), paddingTop: responsiveHeight(2) }} data={reviews} renderItem={renderItem} />
       </View>
-    )
-  }
+    );
+  };
 
   return (
     <MainContainer style={{paddingBottom: responsiveHeight(12)}}>
@@ -93,15 +94,15 @@ useEffect(async() => {
         </View>
         <Text style={styles.desc}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,</Text>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: responsiveHeight(3) }}>
-          <ProfileCard text='Total Project' text2='100+' />
-          <ProfileCard icon text='Email Address' />
+          <ProfileCard text="Total Project" text2="100+" />
+          <ProfileCard icon text="Email Address" />
         </View>
         {renderReviews()}
 
         <View style={{marginTop: responsiveHeight(2)}}>
         <Text style={styles.reviewHeading}>Certificates</Text>
 
-        <FlatList 
+        <FlatList
           data={certificates}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -111,14 +112,14 @@ useEffect(async() => {
               <View>
                 <Image source={item.certicateImg} style={{width: responsiveWidth(20), height: responsiveHeight(8)}} />
               </View>
-            )
+            );
           }}
           />
         </View>
       </View>
     </MainContainer>
-  )
-}
+  );
+};
 
 export default Profile;
 
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
   name: {
     color: colors.textColor2,
     fontWeight: 'bold',
-    fontSize: responsiveFontSize(2.5)
+    fontSize: responsiveFontSize(2.5),
   },
   detail: {
     color: colors.black,
@@ -157,15 +158,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: responsiveWidth(90),
     fontSize: responsiveFontSize(1.7),
-    marginTop: responsiveHeight(4)
+    marginTop: responsiveHeight(4),
   },
   reviewHeading: {
     color: colors.textColor2,
     fontWeight: 'bold',
-    fontSize: responsiveFontSize(2.5)
+    fontSize: responsiveFontSize(2.5),
   },
   ratingText: {
     color: colors.textColor2,
-    fontSize: responsiveFontSize(2)
-  }
-})
+    fontSize: responsiveFontSize(2),
+  },
+});

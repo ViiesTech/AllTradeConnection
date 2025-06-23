@@ -1,8 +1,23 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  StyleSheet,
+} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
-import { professionalPaymentMethodFields, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES, transactionFirstSectionFields } from '../../../utils';
+import {
+  professionalPaymentMethodFields,
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  ROUTES,
+} from '../../../utils';
 import svgIcons from '../../../assets/icons';
 import { images } from '../../../assets/images';
 import { colors } from '../../../assets/colors';
@@ -14,94 +29,108 @@ import CustomInputForm from '../../../components/InputField';
 import * as Yup from 'yup';
 
 const cardData = [
-    {id: 1, icon: svgIcons.plus, isImage: false},
-    {id: 2, icon: images.visa, isImage: true},
-    {id: 2, icon: images.master, isImage: true},
-]
+  { id: '1', icon: svgIcons.plus, isImage: false },
+  { id: '2', icon: images.visa, isImage: true },
+  { id: '3', icon: images.master, isImage: true },
+];
 
 const validationSchema = Yup.object().shape({
-    name: Yup.string(),
-    cardnumber: Yup.string(),
-})
+  name: Yup.string(),
+  cardnumber: Yup.string(),
+});
 
 const ProfessionalsPaymentMethod = () => {
-                const nav = useNavigation()
+  const nav = useNavigation();
+
   return (
     <MainContainer>
-      <Header2 headerText3='' hideCancel text={'Payment Method'} subHeading={''} />
+      <Header2 headerText3='' hideCancel text='Payment Method' subHeading='' />
 
-        <View style={{padding: responsiveHeight(2.5), paddingTop: 0, gap: 20}}>
-
-            <FlatList 
-            data={cardData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{gap: 20}}
-            renderItem={({item}) => {
-                return (
-                    <View>
-                        {
-                            item.isImage ? (
-                                    <Image source={item.icon} />
-                            ) : (
-                                <TouchableOpacity style={{backgroundColor: colors.primary, padding: responsiveHeight(8), paddingHorizontal: responsiveWidth(5), borderRadius: 10}}>
-                                    <SVGXml width={'30'} height={'30'} icon={item.icon} />
-                                </TouchableOpacity>
-                            )
-                        }
-                    </View>
-                )
-            }}
-            />
-
+      <View style={{ padding: responsiveHeight(2.5), paddingTop: 0, gap: 20 }}>
+        <FlatList
+          data={cardData}
+          horizontal
+          keyExtractor={(item) => item.id}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: 20 }}
+          renderItem={({ item }) => (
             <View>
-            <View>
-            <CustomInputForm hideButton inputContainer={{width: responsiveWidth(90)}} buttonStyle={{width: responsiveWidth(80)}} inputStyle={{color: 'black'}} inputContainerStyle={{marginTop: responsiveHeight(0)}} onSubmit={(values) => nav.navigate(ROUTES.ADD_NEW_CARD)} initialValues={{name: 'Jordan Delgado',cardnumber: '***** ***** **** 789',}} validationSchema={validationSchema} buttonText='' fields={professionalPaymentMethodFields} />
+              {item.isImage ? (
+                <Image source={item.icon} resizeMode='contain' style={{ height: 160,  }} />
+              ) : (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: colors.primary,
+                    padding: responsiveHeight(8),
+                    paddingHorizontal: responsiveWidth(5),
+                    borderRadius: 10,
+                  }}
+                >
+                  <SVGXml width={'30'} height={'30'} icon={item.icon} />
+                </TouchableOpacity>
+              )}
             </View>
+          )}
+        />
 
-            <View style={styles.inputContainerWrapper}>
-                        <View style={styles.row}>
-                          <View style={[styles.inputContainer, false && styles.errorInput]}>
-                            <Text style={styles.label}>{'Expiry Date'}</Text>
-                            <TextInput
-                              style={styles.input}
-                              placeholder={'10-27-2025'}
-                              placeholderTextColor={colors.black}
-                            />
-                          </View>
-                          <View style={[styles.inputContainer, false && styles.errorInput]}>
-                            <Text style={styles.label}>{'CVV'}</Text>
-                            <TextInput
-                              style={styles.input}
-                              placeholder={'*******'}
-                              placeholderTextColor={colors.black}
-                            />
-                          </View>
-                        </View>
-                      </View>
+        <CustomInputForm
+          hideButton
+          inputContainer={{ width: responsiveWidth(90) }}
+          buttonStyle={{ width: responsiveWidth(80) }}
+          inputStyle={{ color: 'black' }}
+          inputContainerStyle={{ marginTop: responsiveHeight(0) }}
+          onSubmit={(values) => nav.navigate(ROUTES.ADD_NEW_CARD)}
+          initialValues={{
+            name: 'Jordan Delgado',
+            cardnumber: '***** ***** **** 789',
+          }}
+          validationSchema={validationSchema}
+          buttonText=''
+          fields={professionalPaymentMethodFields}
+        />
+
+        <View style={styles.inputContainerWrapper}>
+          <View style={styles.row}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>{'Expiry Date'}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder='10-27-2025'
+                placeholderTextColor={colors.black}
+              />
             </View>
-
-            <View>
-                <CheckBoxText text='Save Detail Information' />
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>{'CVV'}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder='*******'
+                placeholderTextColor={colors.black}
+              />
             </View>
-
-        <Button style={{ width: responsiveWidth(90) }} onPress={() => nav.navigate(ROUTES.ADD_NEW_CARD)} buttonText='Continue' />}
-
+          </View>
         </View>
+
+        <CheckBoxText text='Save Detail Information' />
+
+        <Button
+          style={{ width: responsiveWidth(90) }}
+          onPress={() => nav.navigate(ROUTES.ADD_NEW_CARD)}
+          buttonText='Continue'
+        />
+      </View>
     </MainContainer>
-  )
-}
+  );
+};
 
 export default ProfessionalsPaymentMethod;
 
 const styles = StyleSheet.create({
-  inputContainerWrapper: {
-  },
+  inputContainerWrapper: {},
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: responsiveWidth(90),
-    gap: 20
+    gap: 20,
   },
   inputContainer: {
     flex: 1,
@@ -112,14 +141,6 @@ const styles = StyleSheet.create({
     borderColor: colors.black,
     width: responsiveWidth(30),
   },
-  inputContainerTwo: {
-    borderWidth: 0.1,
-    borderRadius: 10,
-    paddingHorizontal: responsiveHeight(4),
-    backgroundColor: colors.secondary,
-    borderColor: colors.black,
-    width: responsiveWidth(30)
-},
   input: {
     flex: 1,
     borderRadius: 8,
@@ -127,16 +148,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
     color: colors.black,
     marginTop: -7,
-    marginLeft: -15
-  },
-  inputTwo: {
-    flex: 1,
-    borderRadius: 8,
-    padding: responsiveHeight(2),
-    fontSize: responsiveFontSize(2),
-    color: colors.black,
     marginLeft: -15,
-    height: responsiveHeight(20),
   },
   label: {
     marginTop: responsiveHeight(1),
@@ -147,4 +159,4 @@ const styles = StyleSheet.create({
     borderColor: colors.red,
     borderWidth: 1,
   },
-})
+});
