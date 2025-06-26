@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, ViewStyle } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { colors } from '../assets/colors';
@@ -11,9 +11,10 @@ interface ButtonProps {
   onPress: () => void;
   gradient: boolean;
   isWhiteBtnBG?: boolean;
+  isLoading?: boolean;
 }
 
-const Button = ({ buttonText, onPress, style, textStyle,gradient,isWhiteBtnBG }: ButtonProps) => {
+const Button = ({ buttonText, onPress, isLoading, style, textStyle,gradient,isWhiteBtnBG }: ButtonProps) => {
   return (
     <TouchableOpacity
       style={{ alignItems: 'center' }}
@@ -25,7 +26,10 @@ const Button = ({ buttonText, onPress, style, textStyle,gradient,isWhiteBtnBG }:
         end={{ x: 0.7, y: 0.5 }}
         colors={isWhiteBtnBG ? ['rgb(246, 251, 255)', colors.secondary] : ['rgba(2, 104, 188, 1)', colors.primary]}
         style={[styles.buttonStyle,style]}>
-        <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
+          {isLoading && (
+            <ActivityIndicator size={'small'} color={'#fff'} />
+          )}
+       {!isLoading && <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>}
       </LinearGradient>
       :
       <TouchableOpacity onPress={onPress} style={[styles.buttonStyle,style]}>

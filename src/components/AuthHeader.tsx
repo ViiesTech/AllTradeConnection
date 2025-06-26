@@ -11,17 +11,18 @@ interface Headerprops {
   text: string;
   desc: string;
   contentStyle: ViewStyle,
+  showBack: boolean,
 }
 
-const AuthHeader = ({image, text, desc,contentStyle}: Headerprops) => {
+const AuthHeader = ({image, text, desc,contentStyle, showBack}: Headerprops) => {
 
   const nav = useNavigation();
 
   return (
     <View style={styles.mainContainer}>
-     <TouchableOpacity onPress={() =>  nav.goBack()}> 
+    {!showBack && <TouchableOpacity onPress={() =>  nav.goBack()}> 
       <SVGXml icon={svgIcons.arrowleft} width={'12'} />
-      </TouchableOpacity>
+      </TouchableOpacity>}
       <View style={[styles.contentWrapper,contentStyle]}>
         {image &&
         <Image source={image} style={styles.logoStyle} />

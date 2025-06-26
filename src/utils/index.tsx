@@ -117,7 +117,7 @@ export const signupFields: signupFieldsTypes[] = [
   },
   {
     name: 'phone',
-    placeholder: '1234567890',
+    placeholder: '92314442333',
     keyboardType: 'numeric',
     icon: svgIcons.call,
   },

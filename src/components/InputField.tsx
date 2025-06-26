@@ -29,6 +29,8 @@ interface InputFieldProps extends TextInputProps {
   multiline: boolean;
   searchIcon?: boolean;
   dropdownIcon?: boolean;
+  setIsSecure?: any;
+  isSecure?: any;
 }
 
 const InputField = ({
@@ -45,6 +47,8 @@ const InputField = ({
   secureTextEntry = false,
   searchIcon,
   dropdownIcon,
+  setIsSecure,
+  isSecure,
   ...props
 }: InputFieldProps) => {
   const [field, meta] = useField(name);
@@ -68,19 +72,22 @@ const InputField = ({
           multiline={multiline}
           textAlignVertical={textAlign}
           onChangeText={field.onChange(name)}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={secureTextEntry && isSecure ? isSecure : false}
           onBlur={field.onBlur(name)}
           {...props}
           />
           </View>
           <View style={{flex: 1, alignItems: 'flex-end'}}>
         {secureTextEntry && (
+          <TouchableOpacity
+          onPress={() => setIsSecure(!isSecure)}
+          >
           <SVGXml
           icon={svgIcons.eye}
           width={15}
           style={styles.eyeIcon}
-          // onPress={() => setIsSecure(!isSecure)}
           />
+          </TouchableOpacity>
         )}
         {searchIcon && <SVGXml
           icon={svgIcons.searchingIcon}
@@ -124,6 +131,9 @@ interface CustomInputFormProps {
   hideTags?: boolean;
   searchIcon?:boolean;
   dropdownIcon?:boolean;
+  isSecure?:any;
+  setIsSecure?:any;
+  isLoading?:any;
 }
 
 const CustomInputForm = ({
@@ -142,6 +152,9 @@ const CustomInputForm = ({
   hideTags,
   searchIcon,
   dropdownIcon,
+  isSecure,
+  isLoading,
+  setIsSecure,
 }: CustomInputFormProps) => {
   return (
     <Formik
@@ -169,6 +182,8 @@ const CustomInputForm = ({
               textAlign={field.textAlign}
               autoCapitalize="none"
               searchIcon={searchIcon}
+              setIsSecure={setIsSecure}
+              isSecure={isSecure}
               dropdownIcon={dropdownIcon  || field.dropdownIcon}
               />
           {!hideTags && <View style={field.tags ? {flexDirection: 'row', gap: 20, paddingBottom: responsiveHeight(3)} : {}}>
@@ -189,7 +204,7 @@ const CustomInputForm = ({
           ))}
           {children && <View style={childrenStyle}>{children}</View>}
           {!hideButton &&
-          <Button  style={buttonStyle} buttonText={buttonText} onPress={handleSubmit} />
+          <Button isLoading={isLoading}  style={buttonStyle} buttonText={buttonText} onPress={handleSubmit} />
         }
         </View>
       )}

@@ -1,20 +1,31 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { loginFields, loginValidationSchema, responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES, validationSchema } from "../../utils";
-import { colors } from "../../assets/colors";
-import Container from "../../components/Container";
-import AuthHeading from "../../components/AuthHeading";
-import CustomInputForm from "../../components/InputField";
-import CheckBoxText from "../../components/CheckBoxText";
-import AuthenticationText from "../../components/AuthenticationText";
-import { useNavigation } from "@react-navigation/native";
-import { images } from "../../assets/images";
+/* eslint-disable react/react-in-jsx-scope */
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  loginFields,
+  loginValidationSchema,
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+  ROUTES,
+  validationSchema,
+} from '../../utils';
+import {colors} from '../../assets/colors';
+import Container from '../../components/Container';
+import AuthHeading from '../../components/AuthHeading';
+import CustomInputForm from '../../components/InputField';
+import CheckBoxText from '../../components/CheckBoxText';
+import AuthenticationText from '../../components/AuthenticationText';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {images} from '../../assets/images';
 
 const Login = () => {
   const initialValues = {email: 'john32@gmail.com', password: 'fwefwefwef'};
   const nav = useNavigation();
 
+  const type = useRoute()?.params?.type;
+
   const handleLogin = (values: string) => {
-    nav.navigate(ROUTES.SELECT_EXPERIENCE)
+    nav.navigate(ROUTES.SELECT_EXPERIENCE);
   };
 
   return (
@@ -46,7 +57,7 @@ const Login = () => {
       </View>
       <View style={styles.authTextContainer}>
         <AuthenticationText
-          onPress={() => nav.navigate(ROUTES.SIGNUP)}
+          onPress={() => nav.navigate(ROUTES.SIGNUP, {type})}
           text="Not"
           text2="Sign up"
         />
@@ -55,7 +66,7 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;
 
 const styles = StyleSheet.create({
   content: {
@@ -74,7 +85,7 @@ const styles = StyleSheet.create({
     // marginTop: responsiveHeight(2),
     paddingHorizontal: responsiveWidth(8),
   },
-  forgotPasswordContainer:{
+  forgotPasswordContainer: {
     margin: responsiveHeight(0.3),
   },
   textStyle: {

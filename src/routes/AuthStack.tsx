@@ -40,12 +40,12 @@ const AuthStack = () => {
         headerShown: false,
       }}>
       {/* <Stack.Screen name={ROUTES.GET_STARTED} component={GetStarted} /> */}
+      <Stack.Screen name={ROUTES.SELECT_EXPERIENCE} component={SelectExperience} />
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.OTP} component={OTP} />
       <Stack.Screen name={ROUTES.FORGOT_PASSWORD} component={ForgotPassword} />
       <Stack.Screen name={ROUTES.RESET_PASSWORD} component={ResetPassword} />
-      <Stack.Screen name={ROUTES.SELECT_EXPERIENCE} component={SelectExperience} />
       <Stack.Screen name={ROUTES.CREATE_PROFILE} component={CreateProfile} />
       <Stack.Screen name={ROUTES.SELECT_GENDER} component={SelectGender} />
       <Stack.Screen name={ROUTES.ADD_LOCATION} component={AddLocation} />

@@ -5,6 +5,7 @@ import {ROUTES} from '../utils';
 import AuthStack from './AuthStack';
 import AppStatusBar from '../components/AppStatusBar';
 import DrawerStack from './DrawerStack';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,11 +16,13 @@ const Routes: React.FC = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
         headerShown: false,
-      }}>
+      }}
+      >
         <Stack.Screen name={ROUTES.AUTHSTACK} component={AuthStack} />
         <Stack.Screen name={ROUTES.DRAWER_STACK} component={DrawerStack} />
       </Stack.Navigator>
     </NavigationContainer>
+    <Toast />
     </>
   );
 };
