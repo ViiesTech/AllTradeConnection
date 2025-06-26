@@ -1,5 +1,7 @@
-export const baseUrl = 'https://k5mqsj6k-2010.euw.devtunnels.ms';
+export const baseUrl = 'https://predemo.site/Alltradeconnection';
 
 export const endPoints = {
     signUp: '/api/user/signUp',
+    verifyOtp: '/api/user/verifyOtp',
+    resendOtp: '/api/user/resendOtp',
 };

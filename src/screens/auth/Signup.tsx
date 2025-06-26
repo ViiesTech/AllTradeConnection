@@ -31,24 +31,27 @@ const Signup = () => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSignup = async (values: string) => {
-    if ( isChecked) {
+    if (isChecked) {
       setIsLoading(true);
       const res = await signUp({
         email: values.email,
         password: values.password,
         type,
       });
-      setIsLoading(false);
       if (res?.success) {
-        console.log('response', res);
         nav.navigate(ROUTES.OTP, {
           type: 'signup',
           data: res?.data,
-          accessToken: res?.data?.accessToken,
+          accessToken: res?.accessToken,
+          password: values.password,
+        });
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: res?.message,
         });
         setIsLoading(false);
       } else {
-        console.log(res?.data?.message);
         Toast.show({
           type: 'error',
           text1: 'Sign up failed',
