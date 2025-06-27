@@ -234,8 +234,13 @@ interface createTypes {
 
 export const createProfileFields: createTypes[] = [
   {
-    name: 'fullname',
-    placeholder: 'Full Name',
+    name: 'firstname',
+    placeholder: 'First Name',
+    icon: svgIcons.user
+  },
+  {
+    name: 'lastname',
+    placeholder: 'Last Name',
     icon: svgIcons.user
   },
   {
@@ -245,8 +250,8 @@ export const createProfileFields: createTypes[] = [
     icon: svgIcons.call,
   },
   {
-    name: 'bio',
-    placeholder: 'Bio',
+    name: 'address',
+    placeholder: 'Address',
     textAlign: 'top',
     line: true,
     multiline: true,
@@ -882,31 +887,30 @@ export const listSearchField: listSearchTypes[] = [
 ]
 
 interface locationInfoTypes {
-  id: number;
-  heading: string;
-  text: string;
+  name: string;
+  placeholder: string;
 }
 
-export const locationData: locationInfoTypes[] = [
+export const locationBottomFields: locationInfoTypes[] = [
   {
-    id: 1,
-    heading: 'Location Name',
-    text: 'Home'
+    name: 'locationname',
+    placeholder: 'Home'
   },
   {
-    id: 2,
-    heading: 'Complete Address',
-    text: 'Street lorem ispum'
+    name: 'address',
+    placeholder: 'Street lorem ispum'
   },
   {
-    id: 3,
-    heading: 'Zip Code',
-    text: '1234567890'
+    name: 'zipcode',
+    placeholder: '1234567890'
+  },
+   {
+    name: 'state',
+    placeholder: 'New York 1'
   },
   {
-    id: 4,
-    heading: 'City',
-    text: 'New York'
+    name: 'city',
+    placeholder: 'New York'
   }
 ]
 

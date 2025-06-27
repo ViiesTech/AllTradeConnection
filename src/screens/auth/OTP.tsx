@@ -55,7 +55,7 @@ const OTP = ({route}) => {
           type: data.type,
         });
         if (res?.success) {
-          navigation.navigate(ROUTES.CREATE_PROFILE);
+          navigation.navigate(ROUTES.CREATE_PROFILE, {type: data.type, userId: res?.data?.id});
           Toast.show({
             type: 'success',
             text1: 'Success',
