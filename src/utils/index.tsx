@@ -268,25 +268,19 @@ interface createProfileYourSelfTypes {
   height: number;
   multiline: boolean;
   dropdownIcon: boolean;
-  tags?: { id: number; title: string }[];
+  editable: boolean;
+  tags?: boolean
 }
 
 export const createProfileYourSelfProfileFields: createProfileYourSelfTypes[] = [
   {
-    name: 'postal code',
-    placeholder: '1242312332',
-    keyboardType: 'numeric',
-    line: true,
-  },
-  {
-    name: 'select service',
+    name: 'selectservice',
     placeholder: 'Plumbing',
-    keyboardType: 'numeric',
+    keyboardType: 'text',
     line: true,
     dropdownIcon: true,
-    tags: [
-      {id: 1, title: 'Plumbing'}, {id: 2, title: 'Plumbing'}
-      ],
+    editable: true,
+    tags: true,
   },
   {
     name: 'bio',

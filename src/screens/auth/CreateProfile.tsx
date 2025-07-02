@@ -76,6 +76,22 @@ const CreateProfile = ({route}) => {
     }
   };
 
+  const handleCreateProfessionalProfile = values => {
+    if (profImg) {
+      nav.navigate(ROUTES.CREATE_PROFILE_YOURSELF, {
+        profileData: values,
+        professionalId: id,
+        type: type,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Profile not submitted.',
+        text2: 'Please upload a profile image.',
+      });
+    }
+  };
+
   const pickImage = () => {
     launchImageLibrary({mediaType: 'photo'}, response => {
       if (response.assets && response.assets.length > 0) {
@@ -106,7 +122,13 @@ const CreateProfile = ({route}) => {
       </View>
       <CustomInputForm
         inputContainerStyle={{marginTop: responsiveHeight(3)}}
-        onSubmit={values => handleCreateProfile(values)}
+        onSubmit={values => {
+          if (type === 'User') {
+            handleCreateProfile(values);
+          } else {
+            handleCreateProfessionalProfile(values);
+          }
+        }}
         initialValues={{firstname: '', lastname: '', number: '', address: ''}}
         validationSchema={validationSchema}
         buttonText="Continue"

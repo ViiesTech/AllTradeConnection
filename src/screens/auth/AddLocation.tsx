@@ -47,7 +47,6 @@ const AddLocation = ({route}) => {
 
   const onSaveLocation = async (values: string) => {
     // nav.navigate(ROUTES.AUTH_INTRO)
-    console.log(userId, values);
     if (!isLoading) {
       setIsLoading(true);
       const res = await createLocation({
@@ -61,7 +60,6 @@ const AddLocation = ({route}) => {
         city: values?.city,
       });
       if (res?.success) {
-        console.log(res);
         nav.navigate(ROUTES.AUTH_INTRO);
         Toast.show({
           type: 'success',

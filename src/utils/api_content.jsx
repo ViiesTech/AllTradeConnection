@@ -6,4 +6,5 @@ export const endPoints = {
     resendOtp: '/api/user/resendOtp',
     createProfile: '/api/user/updateProfile',
     createLocation: '/api/user/createLocation',
+    getAllServices: '/api/user/getAllCategory',
 };

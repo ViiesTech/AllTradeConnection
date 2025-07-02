@@ -125,3 +125,16 @@ export const createLocation = async ({
     };
   }
 };
+
+export const getAllServices = async () => {
+  try {
+    const data = await axios.get(`${baseUrl}${endPoints.getAllServices}`);
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
