@@ -146,7 +146,7 @@ interface CustomInputFormProps {
   isLoading?: any;
   editable?:any;
   dropdownOnPress?:any;
-  services?:any;
+  services?: [];
 }
 
 const CustomInputForm = ({

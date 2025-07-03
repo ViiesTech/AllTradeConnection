@@ -82,6 +82,7 @@ const CreateProfile = ({route}) => {
         profileData: values,
         professionalId: id,
         type: type,
+        image: profImg,
       });
     } else {
       Toast.show({

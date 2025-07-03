@@ -7,4 +7,5 @@ export const endPoints = {
     createProfile: '/api/user/updateProfile',
     createLocation: '/api/user/createLocation',
     getAllServices: '/api/user/getAllCategory',
+    createProfessionalProfile: '/api/user/updateProfile',
 };

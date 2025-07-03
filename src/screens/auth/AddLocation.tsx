@@ -42,6 +42,7 @@ const locationBottomFieldsSchema = Yup.object().shape({
 
 const AddLocation = ({route}) => {
   const userId = route?.params?.userId;
+  const professionalId = route?.params?.professionalId;
   const nav = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,7 +51,8 @@ const AddLocation = ({route}) => {
     if (!isLoading) {
       setIsLoading(true);
       const res = await createLocation({
-        userProfileId: userId,
+        userProfileId: userId || null,
+        proProfileId: professionalId || null,
         locationName: values?.locationname,
         address: values?.address,
         longitude: 17.4065,
@@ -59,6 +61,7 @@ const AddLocation = ({route}) => {
         zipCode: values?.zipcode,
         city: values?.city,
       });
+      
       if (res?.success) {
         nav.navigate(ROUTES.AUTH_INTRO);
         Toast.show({

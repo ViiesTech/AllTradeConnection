@@ -14,7 +14,7 @@ import * as Yup from 'yup';
 import ShowServicesModal from '../../../components/ShowServicesModal';
 import {getAllServices} from '../../../GlobalFunctions/auth';
 import Toast from 'react-native-toast-message';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 export const validationSchema = Yup.object().shape({
   bio: Yup.string(),
@@ -24,8 +24,9 @@ const CreateProfileYourSelf = ({route}) => {
   const nav = useNavigation();
   const [allServices, setAllServices] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const profileData = route?.params?.profileData;
+  const professionalProfileImage = route?.params?.image;
   const professionalId = route?.params?.professionalId;
   const type = route?.params?.type;
 
@@ -43,6 +44,7 @@ const CreateProfileYourSelf = ({route}) => {
       type,
       services: selectedIds,
       dataTwo: values,
+      professionalProfileImage,
     };
     nav.navigate(ROUTES.CREATE_PROFESSIONAL_PROFILE, {data});
   };
@@ -50,6 +52,7 @@ const CreateProfileYourSelf = ({route}) => {
   const getServices = async () => {
     const res = await getAllServices();
     if (res?.success) {
+      // console.log(typeof res)
       setAllServices(res.data);
     } else {
       Toast.show({
@@ -58,10 +61,11 @@ const CreateProfileYourSelf = ({route}) => {
         text2: res?.message,
       });
     }
-    console.log(res.data);
   };
+  console.log('hhhh', typeof selectedIds);
 
   const toggleSelection = (id: number) => {
+    console.log('idddddddddd =>>>>>>>>', id);
     setSelectedIds(prev =>
       prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id],
     );
@@ -84,7 +88,7 @@ const CreateProfileYourSelf = ({route}) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         data={allServices}
-        toggleSelection={toggleSelection}
+        toggleSelection={id => toggleSelection(id)}
         selectedIds={selectedIds}
       />
 

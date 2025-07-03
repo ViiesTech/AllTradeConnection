@@ -25,6 +25,7 @@ import {useNavigation} from '@react-navigation/native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import DateTimePicker from './../../../../node_modules/@react-native-community/datetimepicker/src/datetimepicker';
+import {createProfessionalProfile} from '../../../GlobalFunctions/auth';
 
 const certificates = [
   {id: 1, certicateImg: images.certi1},
@@ -34,22 +35,30 @@ const certificates = [
 ];
 
 const days = [
-  {id: 1, day: 'Mon', num: 1, isChecked: false},
-  {id: 2, day: 'Tue', num: 2, isChecked: false},
-  {id: 3, day: 'Wed', num: 3, isChecked: true},
-  {id: 4, day: 'Thu', num: 4, isChecked: false},
-  {id: 5, day: 'Fri', num: 5, isChecked: false},
-  {id: 6, day: 'Sat', num: 6, isChecked: false},
-  {id: 7, day: 'Sun', num: 7, isChecked: false},
+  {id: 1, name: 'Mon', day: 'Monday', num: 1, isChecked: false},
+  {id: 2, name: 'Tue', day: 'Tuesday', num: 2, isChecked: false},
+  {id: 3, name: 'Wed', day: 'Wednesday', num: 3, isChecked: true},
+  {id: 4, name: 'Thu', day: 'Thursday', num: 4, isChecked: false},
+  {id: 5, name: 'Fri', day: 'Friday', num: 5, isChecked: false},
+  {id: 6, name: 'Sat', day: 'Saturday', num: 6, isChecked: false},
+  {id: 7, name: 'Sun', day: 'Sunday', num: 7, isChecked: false},
 ];
+
+const formatTime = (date: Date) => {
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+};
+
 
 const CreateProfessionalProfile = ({route}) => {
   const nav = useNavigation();
-  // const params = route?.params;
+  const params = route?.params?.data;
   const [images, setImages] = useState([]);
   const [selectedDay, setSelectedDay] = useState([]);
   const [startTime, setStartTime] = useState(new Date());
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [endTime, setEndTime] = useState(new Date());
   const [endTimeshow, setEndTimeShow] = useState(false);
@@ -59,12 +68,13 @@ const CreateProfessionalProfile = ({route}) => {
     if (selectedDate) setStartTime(selectedDate);
   };
 
+
   const endTimeOnChange = (event: any, selectedDate?: Date) => {
     setEndTimeShow(Platform.OS === 'ios'); // keep open on iOS
     if (selectedDate) setEndTime(selectedDate);
   };
 
-  const nextOnPress = () => {
+  const nextOnPress = async () => {
     // nav.navigate(ROUTES.MY_LOCATION)
     // console.log(params);
     setSelectedDay(prev =>
@@ -74,8 +84,38 @@ const CreateProfessionalProfile = ({route}) => {
         endTime: endTime?.toLocaleTimeString(),
       })),
     );
+      setIsLoading(true);
 
-    console.log(selectedDay);
+    const res = await createProfessionalProfile({
+      professionalProfileId: params?.professionalId,
+      firstName: params?.profileData?.firstname,
+      lastName: params?.profileData?.lastname,
+      phoneNumber: params?.profileData?.number,
+      address: params?.profileData?.address,
+      type: params?.type,
+      image: params?.professionalProfileImage?.uri,
+      certificate: images,
+      category: params?.services,
+      workingDays: JSON.stringify(selectedDay),
+      bio: params?.dataTwo?.bio,
+    });
+
+    if (res?.success) {
+      nav.navigate(ROUTES.ADD_LOCATION, {professionalId: res?.data?._id});
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Profile Created Successfully',
+      });
+      setIsLoading(false);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Create Profile failed',
+        text2: res?.message,
+      });
+      setIsLoading(false);
+    }
   };
 
   const times = [
@@ -99,20 +139,18 @@ const CreateProfessionalProfile = ({route}) => {
     });
   };
 
-  const toggleDay = day => {
-    setSelectedDay(prev => {
-      const exists = prev.find(item => item.day === day);
+    const toggleDay = (dayItem) => {
+      setSelectedDay(prev => {
+        const exists = prev.find(item => item.day === dayItem.day);
+        if (exists) {
+          return prev.filter(item => item.day !== dayItem.day);
+        } else {
+          return [...prev, { day: dayItem.day, isActive: true }];
+        }
+      });
+    };
 
-      if (exists) {
-        // Remove the selected day
-        return prev.filter(item => item.day !== day);
-      } else {
-        // Add new selected day
-        return [...prev, {day, isActive: true}];
-      }
-    });
-  };
-
+  // console.log(selectedDay)
   return (
     <MainContainer>
       <Header2
@@ -213,7 +251,7 @@ const CreateProfessionalProfile = ({route}) => {
                     ? colors.primary
                     : colors.secondary,
                 }}
-                onPress={() => toggleDay(item.day)}>
+                onPress={() => toggleDay(item)}>
                 <Text
                   style={{
                     fontSize: responsiveFontSize(2),
@@ -221,7 +259,7 @@ const CreateProfessionalProfile = ({route}) => {
                       ? colors.secondary
                       : colors.gray,
                   }}>
-                  {item.day}
+                  {item.name}
                 </Text>
                 <Text
                   style={{
@@ -267,10 +305,10 @@ const CreateProfessionalProfile = ({route}) => {
                   borderColor: colors.line_color,
                 }}
                 onPress={() => {
-                  if(item.id == 1){
-                    setShow(true)
-                  }else{
-                    setEndTimeShow(true)
+                  if (item.id == 1) {
+                    setShow(true);
+                  } else {
+                    setEndTimeShow(true);
                   }
                 }}>
                 <View
@@ -319,6 +357,7 @@ const CreateProfessionalProfile = ({route}) => {
           style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}}
           buttonText={'Next'}
           onPress={() => nextOnPress()}
+          isLoading={isLoading}
         />
       </View>
     </MainContainer>

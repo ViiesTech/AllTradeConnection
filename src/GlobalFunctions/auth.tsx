@@ -104,10 +104,12 @@ export const createLocation = async ({
   state,
   zipCode,
   city,
+  proProfileId,
 }: any) => {
   try {
     const data = await axios.post(`${baseUrl}${endPoints.createLocation}`, {
-      userProfileId: userProfileId.toString(),
+      userProfileId: userProfileId ? userProfileId.toString() : null,
+      proProfileId: proProfileId ? proProfileId.toString() : null,
       locationName: locationName.toString(),
       address: address.toString(),
       longitude: longitude.toString(),
@@ -129,8 +131,71 @@ export const createLocation = async ({
 export const getAllServices = async () => {
   try {
     const data = await axios.get(`${baseUrl}${endPoints.getAllServices}`);
-
+//  alert(Array.isArray(data.data.data))
     return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const createProfessionalProfile = async ({
+  professionalProfileId,
+  firstName,
+  lastName,
+  phoneNumber,
+  address,
+  type,
+  category,
+  certificate,
+  image,
+  workingDays,
+  bio,
+}: any) => {
+  try {
+    let fields = new FormData();
+    fields.append('id', professionalProfileId);
+    fields.append('firstName', firstName);
+    fields.append('lastName', lastName);
+    fields.append('phoneNumber', phoneNumber);
+    fields.append('bio', bio);
+    fields.append('address', address);
+    fields.append('category', JSON.stringify(category));
+    fields.append('type', type);
+    fields.append('workingDays', workingDays);
+    fields.append('image', {
+      uri: image,
+      name: 'image.jpg',
+      type: 'image/jpeg',
+    });
+
+    // console.log('hhhh',fields)
+    certificate.forEach((img: any) => {
+      fields.append('certificate', {
+        uri: img?.uri,
+        name: 'image.jpg',
+        type: 'image/jpeg',
+      });
+    })
+
+    // return console.log('gfields',typeof category)
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${baseUrl}${endPoints.createProfessionalProfile}`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      data: fields,
+    };
+
+    const data = await axios.request(config);
+    
+
+    return data.data;
   } catch (error) {
     return {
       success: false,
