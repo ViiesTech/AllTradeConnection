@@ -14,7 +14,12 @@ import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import {images} from '../../assets/images';
 import Toast from 'react-native-toast-message';
-import {resendOtp, signUp, verifyOtp} from '../../GlobalFunctions/auth';
+import {
+  resendOtp,
+  signUp,
+  verifyOtp,
+  verifyOtpForResetPassword,
+} from '../../GlobalFunctions/auth';
 
 const RESEND_TIME = 60;
 
@@ -55,7 +60,11 @@ const OTP = ({route}) => {
           type: data.type,
         });
         if (res?.success) {
-          navigation.navigate(ROUTES.CREATE_PROFILE, {type: data.type, userId: res?.data?.id});
+          navigation.navigate(ROUTES.CREATE_PROFILE, {
+            type: data.type,
+            userId: res?.data?.id,
+          });
+          console.log(res);
           Toast.show({
             type: 'success',
             text1: 'Success',
@@ -72,7 +81,29 @@ const OTP = ({route}) => {
         }
       }
     } else {
-      navigation.navigate(ROUTES.RESET_PASSWORD);
+      if (OTPCode && !isLoading) {
+        setIsLoading(true);
+        const res = await verifyOtpForResetPassword({
+          email: data.email,
+          otp: data.Otp,
+        });
+        if (res?.success) {
+          navigation.navigate(ROUTES.RESET_PASSWORD, {data});
+          Toast.show({
+            type: 'success',
+            text1: 'Success',
+            text2: res?.message,
+          });
+          setIsLoading(false);
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: 'Otp verification failed',
+            text2: res?.message,
+          });
+          setIsLoading(false);
+        }
+      }
     }
   };
 
@@ -119,7 +150,9 @@ const OTP = ({route}) => {
         <TouchableOpacity
           style={styles.resendCodeWrapper}
           onPress={() => handleResendOtp()}>
-          <Text style={styles.resendText}>Resend Code {timer ? `(${timer}s)` : null}</Text>
+          <Text style={styles.resendText}>
+            Resend Code {timer ? `(${timer}s)` : null}
+          </Text>
         </TouchableOpacity>
       )}
       <Button

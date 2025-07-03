@@ -8,4 +8,5 @@ export const endPoints = {
     createLocation: '/api/user/createLocation',
     getAllServices: '/api/user/getAllCategory',
     createProfessionalProfile: '/api/user/updateProfile',
+    resetPassword: '/api/user/setNewPassword',
 };

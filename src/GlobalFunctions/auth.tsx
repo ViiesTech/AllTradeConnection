@@ -23,8 +23,24 @@ export const verifyOtp = async ({email, otp, addSignUpToken, type}: any) => {
     const data = await axios.post(`${baseUrl}${endPoints.verifyOtp}`, {
       email: email.toString(),
       Otp: otp.toString(),
-      addSignUpToken: addSignUpToken.toString(),
-      type: type.toString(),
+      addSignUpToken: addSignUpToken ? addSignUpToken?.toString() : null,
+      type: type ? type?.toString() : null,
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const verifyOtpForResetPassword = async ({email, otp}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.verifyOtp}`, {
+      email: email.toString(),
+      Otp: otp,
     });
 
     return data?.data;
@@ -131,7 +147,7 @@ export const createLocation = async ({
 export const getAllServices = async () => {
   try {
     const data = await axios.get(`${baseUrl}${endPoints.getAllServices}`);
-//  alert(Array.isArray(data.data.data))
+    //  alert(Array.isArray(data.data.data))
     return data?.data;
   } catch (error) {
     return {
@@ -178,7 +194,7 @@ export const createProfessionalProfile = async ({
         name: 'image.jpg',
         type: 'image/jpeg',
       });
-    })
+    });
 
     // return console.log('gfields',typeof category)
 
@@ -193,9 +209,24 @@ export const createProfessionalProfile = async ({
     };
 
     const data = await axios.request(config);
-    
 
     return data.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const resetPassword = async ({email, newPassword}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.resetPassword}`, {
+      email: email.toString(),
+      newPassword: newPassword.toString(),
+    });
+
+    return data?.data;
   } catch (error) {
     return {
       success: false,
