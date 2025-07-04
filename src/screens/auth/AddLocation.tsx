@@ -1,5 +1,5 @@
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Container from '../../components/Container';
 import AuthHeader from '../../components/AuthHeader';
 import CustomInputForm from '../../components/InputField';
@@ -20,6 +20,8 @@ import LocationCard from '../../components/LocationCard';
 import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import {createLocation} from '../../GlobalFunctions/auth';
+import { useDispatch } from 'react-redux';
+import { clearToken } from '../../redux/Slices';
 
 const locationValidationSchema = Yup.object().shape({
   location: Yup.string()
@@ -45,6 +47,7 @@ const AddLocation = ({route}) => {
   const professionalId = route?.params?.professionalId;
   const nav = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onSaveLocation = async (values: string) => {
     // nav.navigate(ROUTES.AUTH_INTRO)
@@ -80,6 +83,10 @@ const AddLocation = ({route}) => {
       }
     }
   };
+
+  useEffect(() => {
+    dispatch(clearToken());
+  }, []);
 
   return (
     <Container style={{paddingBottom: responsiveHeight(2.5)}}>

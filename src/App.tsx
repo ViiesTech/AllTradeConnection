@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Routes from './routes';
 import Container from './components/Container';
-import { Image, StyleSheet, View } from 'react-native';
-import { images } from './assets/images';
-import { responsiveHeight, responsiveWidth } from './utils';
+import {Image, StyleSheet, View} from 'react-native';
+import {images} from './assets/images';
+import {responsiveHeight, responsiveWidth} from './utils';
+import {Provider} from 'react-redux';
+import {persistor, store} from './redux/Store';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -21,13 +24,19 @@ const App = () => {
         <View style={styles.logoWrapper}>
           <Image source={images.logo} style={styles.logoStyle} />
         </View>
-        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+        <View style={{flex: 1, justifyContent: 'flex-end'}}>
           <Image style={styles.endImage} source={images.splash_background2} />
         </View>
       </Container>
     );
   }
-  return <Routes />;
+  return (
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Routes />
+      </PersistGate>
+    </Provider>
+  );
 };
 
 export default App;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
@@ -22,6 +22,7 @@ import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
 import StartAndEndtimeInput from '../../../components/StartAndEndtimeInput';
 import Button from '../../../components/Button';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const validationSchema = Yup.object().shape({
   fullname: Yup.string()
@@ -41,7 +42,17 @@ const validationSchema = Yup.object().shape({
 const PostJob = ({route}: any) => {
   const nav = useNavigation();
   const screen = route?.params?.screen;
+  const [profImg, setProfImg] = useState([]);
 
+  const pickImage = () => {
+    launchImageLibrary({mediaType: 'photo', selectionLimit: 0}, response => {
+      if (response.assets && response.assets.length > 0) {
+        setProfImg(response.assets);
+      }
+    });
+  };
+
+  console.log(profImg);
   return (
     <MainContainer>
       <Header2
@@ -52,20 +63,21 @@ const PostJob = ({route}: any) => {
       />
       <View style={styles.subContainer}>
         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          {PostJobImages.map(item => (
-            <View>
-              <Image
-                resizeMode="contain"
-                style={styles.imageStyle}
-                source={item.image}
-              />
-              <TouchableOpacity style={styles.crossView}>
-                <SVGXml width={'40'} height={'40'} icon={svgIcons.cross} />
-              </TouchableOpacity>
-            </View>
-          ))}
+          {!!profImg.length &&
+            profImg.map(item => (
+              <View>
+                <Image
+                  resizeMode="contain"
+                  style={styles.imageStyle}
+                  source={{uri: item?.uri}}
+                />
+                <TouchableOpacity style={styles.crossView}>
+                  <SVGXml width={'40'} height={'40'} icon={svgIcons.cross} />
+                </TouchableOpacity>
+              </View>
+            ))}
         </View>
-        <TouchableOpacity style={styles.uploadView}>
+        <TouchableOpacity style={styles.uploadView} onPress={() => pickImage()}>
           <SVGXml width={'35'} height={'35'} icon={svgIcons.upload2} />
           <Text style={styles.uploadText}>Upload Your File</Text>
         </TouchableOpacity>

@@ -69,6 +69,9 @@ import SubscriptionPackages from "../screens/main/Professional/SubscriptionPacka
 import GetGold from "../screens/main/Professional/GetGold";
 import CreateProfessionalProfile from "../screens/main/Professional/CreateProfessionalProfile";
 import CreateProfileYourSelf from "../screens/main/Professional/CreateProfileYourSelf";
+import { clearToken } from "../redux/Slices";
+import { store } from "../redux/Store";
+import { useSelector } from "react-redux";
 
 type RootStackParamList = {
   BottomStack: undefined;
@@ -240,6 +243,7 @@ const DrawerStack: React.FC = () => {
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const userData = useSelector((state: RootState) => state.user.userData);
 
   // console.log(navigation.getState().routes[0].state?.routes);
 
@@ -248,8 +252,8 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = () => {
       <View style={styles.profileContainer}>
         <Image style={styles.profileStyle} source={images.profile} />
         <View style={{ paddingTop: responsiveHeight(2), alignItems: "center" }}>
-          <Text style={styles.name}>John Smith</Text>
-          <Text style={styles.email}>john.smith@domain.com</Text>
+          <Text style={styles.name}>{userData?.firstName} {userData?.lastName}</Text>
+          <Text style={styles.email}>{userData?.email}</Text>
         </View>
       </View>
       <View style={styles.listContainer}>
@@ -260,9 +264,9 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = () => {
               if (!item.navTo) {
                 alert('working in progress')
               } else if (item.navTo === ROUTES.AUTH_PROFILE_COMPLETE) {
-                navigation.navigate(ROUTES.DRAWER_STACK,{screen: item.navTo,params: {type: 'logout'}})
-              }
-              else {
+                // navigation.navigate(ROUTES.DRAWER_STACK,{screen: item.navTo,params: {type: 'logout'}})
+                store.dispatch(clearToken());
+              } else {
                 navigation.navigate(ROUTES.DRAWER_STACK, { screen: item.navTo })
               }
             }}

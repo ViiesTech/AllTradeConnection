@@ -10,10 +10,12 @@ import SVGXml from '../../../components/SVGXml';
 import svgIcons from '../../../assets/icons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const nav = useNavigation();
   const [type, setType] = useState('');
+  const userData = useSelector((state: RootState) => state.user.userData);
 
   useEffect(() => {
     const getType = async () => {
@@ -42,7 +44,7 @@ const Home = () => {
       <Header showMyLocation={type === 'Pro'} />
       <View style={styles.textView}>
         <Text style={styles.welcomeText}>Welcome Back</Text>
-        <Text style={styles.nameText}>John Smith</Text>
+        <Text style={styles.nameText}>{userData?.firstName} {userData?.lastName}</Text>
       </View>
     </View>
   );

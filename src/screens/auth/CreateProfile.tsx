@@ -50,7 +50,7 @@ const CreateProfile = ({route}) => {
       setIsLoading(true);
       const res = await createProfile({
         id: id,
-        firstName: values?.lastname,
+        firstName: values?.firstName,
         lastName: values?.lastname,
         phoneNumber: values?.number,
         address: values?.address,

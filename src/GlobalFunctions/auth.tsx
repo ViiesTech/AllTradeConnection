@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {baseUrl, endPoints} from '../utils/api_content';
+import Toast from 'react-native-toast-message';
 
 export const signUp = async ({email, password, type}: any) => {
   try {
@@ -233,4 +234,32 @@ export const resetPassword = async ({email, newPassword}: any) => {
       message: error?.response?.data?.message || error.message,
     };
   }
+};
+
+export const login = async ({email, password}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.signIn}`, {
+      email: email.toString(),
+      password: password.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const ShowToast = (type: 'success' | 'error' | 'info', message: string) => {
+  Toast.show({
+    type: type,
+    text1: type === 'success' ? 'Success' : type === 'error' ? 'Error' : 'Info',
+    text2: message,
+    position: 'top',
+    visibilityTime: 3000,
+    autoHide: true,
+    topOffset: 50,
+  });
 };

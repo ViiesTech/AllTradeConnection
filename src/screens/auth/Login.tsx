@@ -17,15 +17,45 @@ import CheckBoxText from '../../components/CheckBoxText';
 import AuthenticationText from '../../components/AuthenticationText';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {images} from '../../assets/images';
+import {useState} from 'react';
+import Toast from 'react-native-toast-message';
+import {login} from '../../GlobalFunctions/auth';
+import {useDispatch} from 'react-redux';
+import {setToken, setUserData} from '../../redux/Slices';
 
 const Login = () => {
-  const initialValues = {email: 'john32@gmail.com', password: 'fwefwefwef'};
+  const initialValues = {email: '', password: ''};
   const nav = useNavigation();
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSecured, setIsSecured] = useState(true);
+  const dispatch = useDispatch();
   const type = useRoute()?.params?.type;
 
-  const handleLogin = (values: string) => {
-    nav.navigate(ROUTES.SELECT_EXPERIENCE);
+  const handleLogin = async (values: string) => {
+    if (!isLoading) {
+      setIsLoading(true);
+      const res = await login({
+        email: values.email,
+        password: values.password,
+      });
+      if (res?.success) {
+        dispatch(setToken(res?.token));
+        dispatch(setUserData(res?.data));
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Successfully Login',
+        });
+        setIsLoading(false);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed to login',
+          text2: res?.message,
+        });
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
@@ -42,6 +72,9 @@ const Login = () => {
           onSubmit={values => handleLogin(values)}
           initialValues={initialValues}
           fields={loginFields}
+          isLoading={isLoading}
+          setIsSecure={setIsSecured}
+          isSecure={isSecured}
           childrenStyle={{width: responsiveWidth(95)}}
           buttonStyle={{marginTop: responsiveHeight(3)}}
           validationSchema={loginValidationSchema}>
