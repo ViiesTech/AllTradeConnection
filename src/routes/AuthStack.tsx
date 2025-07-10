@@ -1,6 +1,6 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ROUTES } from '../utils';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {ROUTES} from '../utils';
 import Signup from '../screens/auth/Signup';
 import Login from '../screens/auth/Login';
 import OTP from '../screens/auth/OTP';
@@ -40,7 +40,10 @@ const AuthStack = () => {
         headerShown: false,
       }}>
       {/* <Stack.Screen name={ROUTES.GET_STARTED} component={GetStarted} /> */}
-      <Stack.Screen name={ROUTES.SELECT_EXPERIENCE} component={SelectExperience} />
+      <Stack.Screen
+        name={ROUTES.SELECT_EXPERIENCE}
+        component={SelectExperience}
+      />
       <Stack.Screen name={ROUTES.LOGIN} component={Login} />
       <Stack.Screen name={ROUTES.SIGNUP} component={Signup} />
       <Stack.Screen name={ROUTES.OTP} component={OTP} />
@@ -50,17 +53,31 @@ const AuthStack = () => {
       <Stack.Screen name={ROUTES.SELECT_GENDER} component={SelectGender} />
       <Stack.Screen name={ROUTES.ADD_LOCATION} component={AddLocation} />
       <Stack.Screen name={ROUTES.AUTH_INTRO} component={AuthIntro} />
-      <Stack.Screen name={ROUTES.AUTH_PROFILE_COMPLETE} component={AuthProfileComplete} />
-      <Stack.Screen name={ROUTES.PROFESSIONALS_PAYMENTMETHOD} component={ProfessionalsPaymentMethod} />
+      <Stack.Screen
+        name={ROUTES.AUTH_PROFILE_COMPLETE}
+        component={AuthProfileComplete}
+      />
+      <Stack.Screen
+        name={ROUTES.PROFESSIONALS_PAYMENTMETHOD}
+        component={ProfessionalsPaymentMethod}
+      />
       <Stack.Screen name={ROUTES.ADD_NEW_CARD} component={AddNewCard} />
       <Stack.Screen name={ROUTES.CONGRATULATION} component={Congratulation} />
-      <Stack.Screen name={ROUTES.SUBSCRIPTION_PACKAGES} component={SubscriptionPackages} />
+      <Stack.Screen
+        name={ROUTES.SUBSCRIPTION_PACKAGES}
+        component={SubscriptionPackages}
+      />
       <Stack.Screen name={ROUTES.GET_GOLD} component={GetGold} />
-      <Stack.Screen name={ROUTES.CREATE_PROFESSIONAL_PROFILE} component={CreateProfessionalProfile} />
-      <Stack.Screen name={ROUTES.CREATE_PROFILE_YOURSELF} component={CreateProfileYourSelf} />
+      <Stack.Screen
+        name={ROUTES.CREATE_PROFESSIONAL_PROFILE}
+        component={CreateProfessionalProfile}
+      />
+      <Stack.Screen
+        name={ROUTES.CREATE_PROFILE_YOURSELF}
+        component={CreateProfileYourSelf}
+      />
     </Stack.Navigator>
   );
 };
 
 export default AuthStack;
-

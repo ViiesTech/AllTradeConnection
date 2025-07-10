@@ -753,37 +753,6 @@ export const addNewCardFields: addNewCardTypes[] = [
   },
 ]
 
-interface selectServiceAddionalTypes {
-  name: string;
-  placeholder: string;
-  keyboardType: string;
-  line: boolean;
-  tags?: { id: number; title: string }[];
-}
-
-export const selectServiceAddionalFields: selectServiceAddionalTypes[] = [
-  {
-    name: 'add category',
-    placeholder: 'category',
-    line: true,
-    tags: [
-    {id: 1, title: 'Plumbing'}, {id: 2, title: 'Flooring'}
-    ],
-  },
-  {
-    name: 'price',
-    placeholder: 'price',
-    keyboardType: 'numeric',
-    line: true
-  },
-  {
-    name: 'select date',
-    placeholder: 'date',
-    line: true,
-    keyboardType: 'time',
-  },
-]
-
 interface supportTypes {
   name: string;
   placeholder: string;
@@ -1270,7 +1239,19 @@ export const PostJobImages: postJobTypes[] = [
   }
 ]
 
+export const formatDate = (date: any) => {
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
+  const d = new Date(date);
+  const month = months[d.getMonth()];
+  const day = d.getDate();
+  const year = d.getFullYear().toString().slice(-2); // Get last 2 digits
+
+  return `${month}/${day}/${year}`;
+};
 
 
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import { View } from 'react-native'
+import React from 'react';
+import {View} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
 import CongratulationCard from '../../../components/CongratulationCard';
@@ -12,16 +12,26 @@ const Congratulation = ({route}) => {
   const subscribing = route?.params?.subscribing;
   const deleteCard = route?.params?.deleteCard;
   const addNow = route?.params?.addNow;
+  const additional = route?.params?.additional;
 
   return (
     <MainContainer scrollEnabled={false}>
-      <Header2 headerText3='' hideCancel text='' subHeading={''} />
+      <Header2 headerText3="" hideCancel text="" subHeading={''} />
 
-        <View style={{flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
-            <CongratulationCard changePasswordScreen={changePasswordScreen} review={review} cancelJob={cancelJob} reject={reject} subscribing={subscribing} deleteCard={deleteCard} addNow={addNow} />
-        </View>
+      <View style={{flex: 0.7, justifyContent: 'center', alignItems: 'center'}}>
+        <CongratulationCard
+          changePasswordScreen={changePasswordScreen}
+          review={review}
+          cancelJob={cancelJob}
+          reject={reject}
+          subscribing={subscribing}
+          deleteCard={deleteCard}
+          addNow={addNow}
+          additional={additional}
+        />
+      </View>
     </MainContainer>
-  )
-}
+  );
+};
 
-export default Congratulation
+export default Congratulation;

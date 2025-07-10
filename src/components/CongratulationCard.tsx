@@ -6,7 +6,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth, ROUTES } from '.
 import { colors } from '../assets/colors';
 import Button from './Button';
 
-const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject, subscribing, deleteCard, addNow }: any) => {
+const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject, subscribing, deleteCard, addNow, additional }: any) => {
     const navigation = useNavigation();
 
     const getTitle = () => {
@@ -47,11 +47,14 @@ const CongratulationCard = ({ review, cancelJob, changePasswordScreen, reject, s
             navigation.navigate(ROUTES.MY_JOBS);
         }else if(subscribing){
             navigation.navigate(ROUTES.DRAWER_STACK);
+        }else if(additional){
+            navigation.navigate('BottomStack');
         }else {
             navigation.navigate(ROUTES.LIST_OF_PRO);
         }
     };
 
+    console.log(additional)
     return (
         <View>
             <ImageBackground 

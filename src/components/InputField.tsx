@@ -198,9 +198,9 @@ const CustomInputForm = ({
                 autoCapitalize="none"
                 searchIcon={searchIcon}
                 setIsSecure={setIsSecure}
-                editable={editable}
+                editable={field.editable}
                 isSecure={isSecure}
-                dropdownOnPress={dropdownOnPress}
+                dropdownOnPress={dropdownOnPress || field.dropdownOnPress}
                 dropdownIcon={dropdownIcon || field.dropdownIcon}
               />
               {/* {!hideTags && (

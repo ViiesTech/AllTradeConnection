@@ -1,41 +1,127 @@
-import React from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
-import { colors } from '../assets/colors'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from '../utils'
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {colors} from '../assets/colors';
+import {responsiveFontSize, responsiveHeight, responsiveWidth} from '../utils';
+import CheckBoxText from './CheckBoxText';
+import DateTimePicker from '@react-native-community/datetimepicker/src/datetimepicker';
+import moment from 'moment';
 
-const StartAndEndtimeInput = () => {
+type Props = {
+  isProfessional?: any;
+  setIsProfessional?: any;
+  startTime?: any;
+  endTime?: any;
+  openStartTimePicker?: any;
+  setOpenStartTimePicker?: any;
+  openEndTimePicker?: any;
+  setOpenEndTimePicker?: any;
+  startTimeOnChange?: any;
+  endTimeOnChange?: any;
+  additional?: any;
+  setAdditional?: any;
+};
+
+const StartAndEndtimeInput = ({
+  isProfessional,
+  setIsProfessional,
+  startTime,
+  endTime,
+  openStartTimePicker,
+  setOpenStartTimePicker,
+  openEndTimePicker,
+  setOpenEndTimePicker,
+  startTimeOnChange,
+  endTimeOnChange,
+  additional,
+  setAdditional,
+}: Props) => {
   return (
     <View style={styles.inputContainerWrapper}>
+      {openStartTimePicker && (
+        <DateTimePicker
+          value={startTime}
+          mode="time"
+          display="default"
+          is24Hour={false}
+          onChange={startTimeOnChange}
+        />
+      )}
+      {openEndTimePicker && (
+        <DateTimePicker
+          value={startTime}
+          mode="time"
+          display="default"
+          is24Hour={false}
+          onChange={endTimeOnChange}
+        />
+      )}
       <View style={styles.row}>
-        <View style={[styles.inputContainer, false && styles.errorInput]}>
+        <TouchableOpacity
+          style={[styles.inputContainer, false && styles.errorInput]}
+          onPress={() => setOpenStartTimePicker(true)}>
           <Text style={styles.label}>{'Start Time'}</Text>
           <TextInput
             style={styles.input}
-            placeholder={'9:00AM'}
+            placeholder={moment(startTime).format('hh:mm A')}
             placeholderTextColor={colors.black}
+            editable={false}
           />
-        </View>
-        <View style={[styles.inputContainer, false && styles.errorInput]}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.inputContainer, false && styles.errorInput]}
+          onPress={() => setOpenEndTimePicker(true)}>
           <Text style={styles.label}>{'End Time'}</Text>
           <TextInput
             style={styles.input}
-            placeholder={'12:00PM'}
+            placeholder={moment(endTime).format('hh:mm A')}
             placeholderTextColor={colors.black}
+            editable={false}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={[styles.inputContainerTwo, false && styles.errorInput]}>
+        <TextInput
+          style={styles.inputTwo}
+          placeholder={'Addional Details'}
+          placeholderTextColor={colors.black}
+          multiline={true}
+          textAlignVertical="top"
+          value={additional}
+          onChangeText={(text) => setAdditional(text)}
+        />
+      </View>
+      <View
+        style={{
+          marginTop: responsiveHeight(4),
+          flexDirection: 'row',
+          width: responsiveWidth(90),
+          justifyContent: 'space-between',
+        }}>
+        <View style={{width: responsiveWidth(40)}}>
+          <CheckBoxText
+            isChecked={isProfessional === 'New Professional'}
+            text={'New Professional'}
+            onPress={() => setIsProfessional('New Professional')}
+          />
+        </View>
+        <View style={{width: responsiveWidth(45)}}>
+          <CheckBoxText
+            isChecked={isProfessional === 'Previous Professional'}
+            text={'Previous Professional'}
+            onPress={() => setIsProfessional('Previous Professional')}
           />
         </View>
       </View>
-      <View style={[styles.inputContainerTwo, false && styles.errorInput]}>
-          <TextInput
-            style={styles.inputTwo}
-            placeholder={'Addional Details'}
-            placeholderTextColor={colors.black}
-            multiline={true}
-            textAlignVertical='top'
-          />
-        </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   inputContainerWrapper: {
@@ -70,7 +156,7 @@ const styles = StyleSheet.create({
     fontSize: responsiveFontSize(2),
     color: colors.black,
     marginTop: -7,
-    marginLeft: -15
+    marginLeft: -15,
   },
   inputTwo: {
     flex: 1,
@@ -90,6 +176,6 @@ const styles = StyleSheet.create({
     borderColor: colors.red,
     borderWidth: 1,
   },
-})
+});
 
-export default StartAndEndtimeInput
+export default StartAndEndtimeInput;

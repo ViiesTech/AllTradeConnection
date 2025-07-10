@@ -62,7 +62,6 @@ const CreateProfileYourSelf = ({route}) => {
       });
     }
   };
-  console.log('hhhh', typeof selectedIds);
 
   const toggleSelection = (id: number) => {
     console.log('idddddddddd =>>>>>>>>', id);

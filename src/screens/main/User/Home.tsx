@@ -1,71 +1,124 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Header from '../../../components/Header';
 import MainContainer from '../../../components/MainContainer';
-import { multipleTasks, responsiveFontSize, responsiveHeight, ROUTES } from '../../../utils';
-import { colors } from '../../../assets/colors';
+import {
+  responsiveFontSize,
+  responsiveHeight,
+  ROUTES,
+} from '../../../utils';
+import {colors} from '../../../assets/colors';
 import TaskCard from '../../../components/TaskCard';
 import SVGXml from '../../../components/SVGXml';
 import svgIcons from '../../../assets/icons';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useSelector } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {getUserAllProjects} from '../../../GlobalFunctions/userMain';
+import Toast from 'react-native-toast-message';
 
 const Home = () => {
   const nav = useNavigation();
-  const [type, setType] = useState('');
   const userData = useSelector((state: RootState) => state.user.userData);
+  const userDetail = useSelector((state: RootState) => state.user);
+  const [allProjects, setAllProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const getType = async () => {
-      try {
-        const res = await AsyncStorage.getItem('type');
-        if (res) setType(res);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    getType();
-  }, []);
-
-  const renderItem = ({ item }) => (
-    <TaskCard
-      onPress={() => nav.navigate('SecondaryStack', { screen: ROUTES.TASK_DETAIL })}
-      price={item.price}
-      image={item.image}
-      title={item.title}
-      desc={item.desc}
-    />
-  );
+  const renderItem = ({item}) => {
+    if (allProjects.length !== 0) {
+      return (
+        <TaskCard
+          onPress={() =>
+            nav.navigate('SecondaryStack', {screen: ROUTES.TASK_DETAIL})
+          }
+          price={item.price}
+          image={item.image}
+          title={item.fullName}
+          desc={item.additionalNote}
+          item={item}
+        />
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            height: responsiveHeight(50),
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Text>Projects Not Found</Text>
+        </View>
+      );
+    }
+  };
 
   const ListHeader = () => (
     <View style={styles.headerContainer}>
-      <Header showMyLocation={type === 'Pro'} />
+      <Header showMyLocation={userData?.type !== 'User'} />
       <View style={styles.textView}>
         <Text style={styles.welcomeText}>Welcome Back</Text>
-        <Text style={styles.nameText}>{userData?.firstName} {userData?.lastName}</Text>
+        <Text style={styles.nameText}>
+          {userData?.firstName} {userData?.lastName}
+        </Text>
       </View>
     </View>
   );
 
+  const getAllProject = async token => {
+    setIsLoading(true);
+    const res = await getUserAllProjects({token: token});
+    if (res?.success) {
+      setAllProjects(res.data);
+      setIsLoading(false);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch projects',
+        text2: res?.message,
+      });
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getAllProject(userDetail?.token);
+  }, [userDetail]);
+
   return (
-    <View style={{ flex: 1 }}>
-      <MainContainer style={{ flex: 1 }}>
-        <FlatList
-          data={multipleTasks}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-          ListHeaderComponent={ListHeader}
-          contentContainerStyle={styles.listContent}
-          showsVerticalScrollIndicator={false}
-        />
-        <TouchableOpacity
-          onPress={() => nav.navigate('SecondaryStack', { screen: ROUTES.POST_JOB })}
-          style={styles.plusView}
-        >
-          <SVGXml icon={svgIcons.plus} />
-        </TouchableOpacity>
+    <View style={{flex: 1}}>
+      <MainContainer style={{flex: 1}}>
+        {isLoading ? (
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <ActivityIndicator size={'large'} color={colors.primary} />
+          </View>
+        ) : (
+          <FlatList
+            data={allProjects}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItem}
+            ListHeaderComponent={ListHeader}
+            contentContainerStyle={styles.listContent}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
+        {!isLoading && (
+          <TouchableOpacity
+            onPress={() =>
+              nav.navigate('SecondaryStack', {screen: ROUTES.POST_JOB})
+            }
+            style={styles.plusView}>
+            <SVGXml icon={svgIcons.plus} />
+          </TouchableOpacity>
+        )}
       </MainContainer>
     </View>
   );

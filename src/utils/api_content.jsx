@@ -10,4 +10,7 @@ export const endPoints = {
     createProfessionalProfile: '/api/user/updateProfile',
     resetPassword: '/api/user/setNewPassword',
     signIn: '/api/user/login',
+    getAllProjects: '/api/user/getProjectByStatusOrProfileId',
+    getAllProjectLocations: '/api/user/getLocationByProfileId',
+    createProject: '/api/user/createProject',
 };

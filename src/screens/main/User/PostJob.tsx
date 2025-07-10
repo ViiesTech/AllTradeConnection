@@ -1,5 +1,13 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
 import {
@@ -52,7 +60,14 @@ const PostJob = ({route}: any) => {
     });
   };
 
-  console.log(profImg);
+  const nextOnPressHandler = (values) => {
+    const data = {
+      values,
+      images: profImg,
+    };
+    nav.navigate(ROUTES.POST_LOCATION_JOB, {data});
+  }
+
   return (
     <MainContainer>
       <Header2
@@ -62,21 +77,33 @@ const PostJob = ({route}: any) => {
         subHeading={'Enter Your Details'}
       />
       <View style={styles.subContainer}>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <ScrollView
+          horizontal
+          style={{flex: 1}}
+          contentContainerStyle={{
+            flexDirection: 'row',
+            gap: 20,
+          }}>
           {!!profImg.length &&
             profImg.map(item => (
               <View>
                 <Image
-                  resizeMode="contain"
+                  // resizeMode="contain"
                   style={styles.imageStyle}
                   source={{uri: item?.uri}}
                 />
-                <TouchableOpacity style={styles.crossView}>
+                <TouchableOpacity
+                  style={styles.crossView}
+                  onPress={() =>
+                    setProfImg(prev =>
+                      prev.filter(prevItem => prevItem?.uri !== item?.uri),
+                    )
+                  }>
                   <SVGXml width={'40'} height={'40'} icon={svgIcons.cross} />
                 </TouchableOpacity>
               </View>
             ))}
-        </View>
+        </ScrollView>
         <TouchableOpacity style={styles.uploadView} onPress={() => pickImage()}>
           <SVGXml width={'35'} height={'35'} icon={svgIcons.upload2} />
           <Text style={styles.uploadText}>Upload Your File</Text>
@@ -84,7 +111,7 @@ const PostJob = ({route}: any) => {
 
         <CustomInputForm
           hideButton={screen === 'Edit Project' ? true : false}
-          onSubmit={values => nav.navigate(ROUTES.POST_LOCATION_JOB)}
+          onSubmit={values => nextOnPressHandler(values)}
           inputContainer={{width: responsiveWidth(90)}}
           buttonStyle={{width: responsiveWidth(90)}}
           inputContainerStyle={{marginTop: responsiveHeight(3)}}
