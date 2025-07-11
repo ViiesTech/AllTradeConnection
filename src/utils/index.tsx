@@ -360,6 +360,23 @@ interface editProjectTypes {
 
 export const editProjectFields: editProjectTypes[] = [
   {
+    name: 'fullname',
+    placeholder: 'Name',
+    line: true,
+  },
+  {
+    name: 'email',
+    placeholder: 'Email',
+    keyboardType: 'email-address',
+    line: true
+  },
+  {
+    name: 'number',
+    placeholder: 'Phone Number',
+    line: true,
+    keyboardType: 'numeric',
+  },
+  {
     name: 'address',
     placeholder: 'Street no 120 lorem ispum',
     line: true,
@@ -370,16 +387,6 @@ export const editProjectFields: editProjectTypes[] = [
     keyboardType: 'text',
     line: true
   },
-]
-
-interface editProjectCityTypes {
-  name: string;
-  placeholder: string;
-  keyboardType: string;
-  line: boolean;
-}
-
-export const editProjectCityFields: editProjectCityTypes[] = [
   {
     name: 'city',
     placeholder: 'New York',
@@ -391,17 +398,11 @@ export const editProjectCityFields: editProjectCityTypes[] = [
     keyboardType: 'text',
     line: true
   },
-]
-
-export const editProjectZipCodFields: editProjectCityTypes[] = [
   {
-    name: 'zip code',
+    name: 'zipcode',
     placeholder: '12242354235',
     line: true,
   },
-]
-
-export const editProjectSerivceSecFields: editProjectCityTypes[] = [
   {
     name: 'price',
     placeholder: 'price',
@@ -409,7 +410,7 @@ export const editProjectSerivceSecFields: editProjectCityTypes[] = [
     line: true
   },
   {
-    name: 'select date',
+    name: 'selectdate',
     placeholder: 'date',
     line: true,
     keyboardType: 'time',

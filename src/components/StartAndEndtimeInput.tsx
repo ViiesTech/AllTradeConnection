@@ -26,6 +26,7 @@ type Props = {
   endTimeOnChange?: any;
   additional?: any;
   setAdditional?: any;
+  getProjectDetails?: any;
 };
 
 const StartAndEndtimeInput = ({
@@ -41,6 +42,7 @@ const StartAndEndtimeInput = ({
   endTimeOnChange,
   additional,
   setAdditional,
+  getProjectDetails,
 }: Props) => {
   return (
     <View style={styles.inputContainerWrapper}>
@@ -104,20 +106,20 @@ const StartAndEndtimeInput = ({
           width: responsiveWidth(90),
           justifyContent: 'space-between',
         }}>
-        <View style={{width: responsiveWidth(40)}}>
+        {setIsProfessional && <View style={{width: responsiveWidth(40)}}>
           <CheckBoxText
             isChecked={isProfessional === 'New Professional'}
             text={'New Professional'}
             onPress={() => setIsProfessional('New Professional')}
           />
-        </View>
-        <View style={{width: responsiveWidth(45)}}>
+        </View>}
+       {setIsProfessional && <View style={{width: responsiveWidth(45)}}>
           <CheckBoxText
             isChecked={isProfessional === 'Previous Professional'}
             text={'Previous Professional'}
             onPress={() => setIsProfessional('Previous Professional')}
           />
-        </View>
+        </View>}
       </View>
     </View>
   );

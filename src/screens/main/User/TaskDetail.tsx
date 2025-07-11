@@ -220,7 +220,13 @@ const TaskDetail = ({route}) => {
                 <TouchableOpacity
                   style={styles.editView}
                   onPress={() =>
-                    nav.navigate(ROUTES.POST_JOB, {screen: 'Edit Project'})
+                    nav.navigate('SecondaryStack', {
+                      screen: ROUTES.POST_JOB,
+                      params: {
+                        projectId: projectId,
+                        screen: 'Edit Project',
+                      },
+                    })
                   }>
                   <SVGXml width="20" height="20" icon={svgIcons.edit} />
                 </TouchableOpacity>

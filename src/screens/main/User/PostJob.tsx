@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -11,12 +12,7 @@ import {
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
 import {
-  editProjectCityFields,
-  editProjectFields,
-  editProjectSerivceSecFields,
-  editProjectZipCodFields,
   postJobFields,
-  PostJobImages,
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
@@ -31,8 +27,30 @@ import {useNavigation} from '@react-navigation/native';
 import StartAndEndtimeInput from '../../../components/StartAndEndtimeInput';
 import Button from '../../../components/Button';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {useFormikContext} from 'formik';
+import Toast from 'react-native-toast-message';
+import {getProjectById, updateProject} from '../../../GlobalFunctions/userMain';
+import moment from 'moment';
+import {baseUrl} from '../../../utils/api_content';
+import DateTimePicker from '@react-native-community/datetimepicker/src/datetimepicker';
+import { useSelector } from 'react-redux';
 
 const validationSchema = Yup.object().shape({
+  fullname: Yup.string()
+    .min(2, 'Full name must be at least 2 characters')
+    .max(50, 'Full name must not exceed 50 characters')
+    .required('Full name is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  number: Yup.string()
+    .matches(/^\d+$/, 'Contact number must contain only digits')
+    .min(10, 'Contact number must be at least 10 digits')
+    .max(15, 'Contact number must not exceed 15 digits')
+    .required('Phone number is required'),
+});
+
+const EditValidationSchema = Yup.object().shape({
   fullname: Yup.string()
     .min(2, 'Full name must be at least 2 characters')
     .max(50, 'Full name must not exceed 50 characters')
@@ -50,7 +68,86 @@ const validationSchema = Yup.object().shape({
 const PostJob = ({route}: any) => {
   const nav = useNavigation();
   const screen = route?.params?.screen;
+  const projectId = route?.params?.projectId;
   const [profImg, setProfImg] = useState([]);
+  const [getProjectDetails, setGetProjectDetails] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [openDatePicker, setOpenDatePicker] = useState(false);
+  const [date, setDate] = useState<any>(new Date());
+  const [startTime, setStartTime] = useState<any>(new Date());
+  const [endTime, setEndTime] = useState<any>(new Date());
+  const [openStartTimePicker, setOpenStartTimePicker] = useState(false);
+  const [openEndTimePicker, setOpenEndTimePicker] = useState(false);
+  const [additional, setAdditional] = useState('');
+  const userData = useSelector((state: RootState) => state.user.userData);
+
+  const openDate = useCallback(() => setOpenDatePicker(true), []);
+  const formik = useFormikContext();
+
+  const editProjectFields = useMemo(
+    () => [
+      {
+        name: 'fullname',
+        placeholder: 'Name',
+        line: true,
+      },
+      {
+        name: 'email',
+        placeholder: 'Email',
+        keyboardType: 'email-address',
+        line: true,
+      },
+      {
+        name: 'number',
+        placeholder: 'Phone Number',
+        keyboardType: 'numeric',
+        line: true,
+      },
+      {
+        name: 'address',
+        placeholder: 'Street no 120 lorem ispum',
+        line: true,
+      },
+      {
+        name: 'apartment',
+        placeholder: 'Apartment/Suite#',
+        keyboardType: 'default',
+        line: true,
+      },
+      {
+        name: 'city',
+        placeholder: 'New York',
+        line: true,
+      },
+      // {
+      //   name: 'state',
+      //   placeholder: 'California',
+      //   keyboardType: 'default',
+      //   line: true,
+      // },
+      {
+        name: 'zipcode',
+        placeholder: '12242354235',
+        line: true,
+      },
+      {
+        name: 'price',
+        placeholder: 'price',
+        keyboardType: 'numeric',
+        line: true,
+      },
+      {
+        name: 'date',
+        placeholder: 'date',
+        keyboardType: 'time',
+        line: true,
+        dropdownIcon: true,
+        dropdownOnPress: openDate,
+      },
+    ],
+    [openDate],
+  );
 
   const pickImage = () => {
     launchImageLibrary({mediaType: 'photo', selectionLimit: 0}, response => {
@@ -60,153 +157,272 @@ const PostJob = ({route}: any) => {
     });
   };
 
-  const nextOnPressHandler = (values) => {
+  const updateOnPressHandler = async (values) => {
+    console.log(projectId)
+   setIsUpdating(true);
+    const res = await updateProject({
+      id: projectId,
+      email: values?.email,
+      phoneNumber: values?.number,
+      fullName: values?.fullname,
+      selectDate: moment(date).format('YYYY-MM-DD'),
+      image: profImg,
+      startTime: moment(startTime).format('hh:mm A'),
+      endTime: moment(endTime).format('hh:mm A'),
+      price: values?.price,
+      address: values?.address,
+      appartmentNo: values?.apartment,
+      locationName: 'Alaska, United States',
+      longitude: -153.369141,
+      latitude: 66.160507,
+      // state:null,
+      additionalNote: additional,
+      city: values?.city,
+      zipCode: values?.zipcode,
+    });
+
+    console.log({res: res})
+
+    if (res?.success) {
+      // nav.navigate(ROUTES.DRAWER_STACK);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Project Updated Successfully',
+      });
+      setIsUpdating(false);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Update Project failed',
+        text2: res?.message,
+      });
+      setIsUpdating(false);
+    }
+  // console.log({
+  //     id: userData?._id,
+  //     email: values?.email,
+  //     phoneNumber: values?.number,
+  //     fullName: values?.fullname,
+  //     selectDate: moment(date).format('YYYY-MM-DD'),
+  //     image: profImg,
+  //     startTime: moment(startTime).format('hh:mm A'),
+  //     endTime: moment(endTime).format('hh:mm A'),
+  //     price: values?.price,
+  //     address: values?.address,
+  //     appartmentNo: values?.apartment,
+  //     locationName: 'Alaska, United States',
+  //     longitude: -153.369141,
+  //     latitude: 66.160507,
+  //     // state:null,
+  //     additionalNote: additional,
+  //     city: values?.city,
+  //     zipCode: values?.zipcode,
+  //   })
+  }
+
+  const startTimeOnChange = (event: any, selectedDate?: Date) => {
+    if (event.type === 'set' && selectedDate) {
+      setStartTime(selectedDate);
+      setOpenStartTimePicker(false);
+    }
+    setOpenStartTimePicker(false);
+  };
+
+  const endTimeOnChange = (event: any, selectedDate?: Date) => {
+    if (event.type === 'set' && selectedDate) {
+      setEndTime(selectedDate);
+      setOpenEndTimePicker(false);
+    }
+    setOpenEndTimePicker(false);
+  };
+
+  const nextOnPressHandler = values => {
     const data = {
       values,
       images: profImg,
     };
     nav.navigate(ROUTES.POST_LOCATION_JOB, {data});
-  }
+  };
+
+  const dateOnChange = (event: any, selectedDate?: Date) => {
+    if (event.type === 'set' && selectedDate) {
+      setDate(selectedDate);
+      setOpenDatePicker(false);
+    }
+    setOpenDatePicker(false);
+  };
+
+  const getProject = async projectId => {
+    setIsLoading(true);
+    const res = await getProjectById({projectId: projectId});
+    if (res?.success) {
+      setGetProjectDetails(res.data);
+      setIsLoading(false);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch values',
+        text2: res?.message,
+      });
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (screen === 'Edit Project') {
+      getProject(projectId);
+    }
+  }, [projectId, screen]);
+
+  useEffect(() => {
+    if (getProjectDetails) {
+      setProfImg(getProjectDetails?.images);
+      setAdditional(getProjectDetails?.additionalNote);
+    }
+  }, [getProjectDetails]);
 
   return (
-    <MainContainer>
-      <Header2
-        headerText3="Who Are You"
-        hideCancel
-        text={screen === 'Edit Project' ? screen : 'Post A Job'}
-        subHeading={'Enter Your Details'}
-      />
-      <View style={styles.subContainer}>
-        <ScrollView
-          horizontal
-          style={{flex: 1}}
-          contentContainerStyle={{
-            flexDirection: 'row',
-            gap: 20,
-          }}>
-          {!!profImg.length &&
-            profImg.map(item => (
+    <>
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={'large'} color={colors.primary} />
+        </View>
+      ) : (
+        <MainContainer>
+          <Header2
+            headerText3="Who Are You"
+            hideCancel
+            text={screen === 'Edit Project' ? screen : 'Post A Job'}
+            subHeading={'Enter Your Details'}
+          />
+          <View style={styles.subContainer}>
+            <ScrollView
+              horizontal
+              style={{flex: 1}}
+              contentContainerStyle={{
+                flexDirection: 'row',
+                gap: 20,
+              }}>
+              {!!profImg.length &&
+                profImg.map(item => (
+                  <View>
+                    <Image
+                      // resizeMode="contain"
+                      style={styles.imageStyle}
+                      source={
+                        item?.uri
+                          ? {uri: item?.uri}
+                          : {uri: `${baseUrl}/${item}`}
+                      }
+                    />
+                    <TouchableOpacity
+                      style={styles.crossView}
+                      onPress={() =>
+                        setProfImg(prev =>
+                          prev.filter(prevItem => prevItem?.uri !== item?.uri),
+                        )
+                      }>
+                      <SVGXml
+                        width={'40'}
+                        height={'40'}
+                        icon={svgIcons.cross}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.uploadView}
+              onPress={() => pickImage()}>
+              <SVGXml width={'35'} height={'35'} icon={svgIcons.upload2} />
+              <Text style={styles.uploadText}>Upload Your File</Text>
+            </TouchableOpacity>
+
+            {screen === 'Edit Project' ? null : (
+              <CustomInputForm
+                onSubmit={values => nextOnPressHandler(values)}
+                inputContainer={{width: responsiveWidth(90)}}
+                buttonStyle={{width: responsiveWidth(90)}}
+                inputContainerStyle={{marginTop: responsiveHeight(3)}}
+                initialValues={{
+                  fullname: 'Name',
+                  email: 'loremipsum@gmail.com',
+                  number: '02302402910',
+                }}
+                validationSchema={validationSchema}
+                buttonText="Next"
+                fields={postJobFields}
+              />
+            )}
+
+            {screen === 'Edit Project' && (
+              <View style={{height: responsiveHeight(2)}} />
+            )}
+
+            {openDatePicker && (
+              <DateTimePicker
+                value={date}
+                mode="date"
+                display="default"
+                is24Hour={false}
+                onChange={dateOnChange}
+              />
+            )}
+
+            {screen === 'Edit Project' ? (
               <View>
-                <Image
-                  // resizeMode="contain"
-                  style={styles.imageStyle}
-                  source={{uri: item?.uri}}
-                />
-                <TouchableOpacity
-                  style={styles.crossView}
-                  onPress={() =>
-                    setProfImg(prev =>
-                      prev.filter(prevItem => prevItem?.uri !== item?.uri),
-                    )
-                  }>
-                  <SVGXml width={'40'} height={'40'} icon={svgIcons.cross} />
-                </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: responsiveFontSize(3),
+                    color: colors.dark_purple,
+                    fontWeight: 'bold',
+                  }}>
+                  Your Home
+                </Text>
+                <CustomInputForm
+                  inputContainer={{width: responsiveWidth(90)}}
+                  buttonStyle={{width: responsiveWidth(90)}}
+                  inputContainerStyle={{marginTop: responsiveHeight(3)}}
+                  isLoading={isUpdating}
+                  onSubmit={values => updateOnPressHandler(values)}
+                  initialValues={{
+                    fullname: getProjectDetails?.fullName,
+                    email: getProjectDetails?.email,
+                    number: getProjectDetails?.phoneNumber,
+                    address: getProjectDetails?.address,
+                    apartment: getProjectDetails?.appartmentNo,
+                    city: getProjectDetails?.city,
+                    zipcode: getProjectDetails?.zipCode,
+                    price: JSON.stringify(getProjectDetails?.price),
+                    date: moment(getProjectDetails?.selectDate).format(
+                      'YYYY-MM-DD',
+                    ),
+                  }}
+                  childrenStyle={{flex: 1}}
+                  buttonText="Update"
+                  validationSchema={EditValidationSchema}
+                  fields={editProjectFields}>
+                  <StartAndEndtimeInput
+                    startTime={startTime}
+                    endTime={endTime}
+                    openStartTimePicker={openStartTimePicker}
+                    setOpenStartTimePicker={setOpenStartTimePicker}
+                    openEndTimePicker={openEndTimePicker}
+                    setOpenEndTimePicker={setOpenEndTimePicker}
+                    startTimeOnChange={startTimeOnChange}
+                    endTimeOnChange={endTimeOnChange}
+                    additional={additional}
+                    setAdditional={setAdditional}
+                    getProjectDetails={getProjectDetails}
+                  />
+                </CustomInputForm>
               </View>
-            ))}
-        </ScrollView>
-        <TouchableOpacity style={styles.uploadView} onPress={() => pickImage()}>
-          <SVGXml width={'35'} height={'35'} icon={svgIcons.upload2} />
-          <Text style={styles.uploadText}>Upload Your File</Text>
-        </TouchableOpacity>
-
-        <CustomInputForm
-          hideButton={screen === 'Edit Project' ? true : false}
-          onSubmit={values => nextOnPressHandler(values)}
-          inputContainer={{width: responsiveWidth(90)}}
-          buttonStyle={{width: responsiveWidth(90)}}
-          inputContainerStyle={{marginTop: responsiveHeight(3)}}
-          initialValues={{
-            fullname: 'Name',
-            email: 'loremipsum@gmail.com',
-            number: '02302402910',
-          }}
-          validationSchema={validationSchema}
-          buttonText="Next"
-          fields={postJobFields}
-        />
-
-        {screen === 'Edit Project' ? (
-          <View>
-            <Text
-              style={{
-                fontSize: responsiveFontSize(3),
-                color: colors.dark_purple,
-                fontWeight: 'bold',
-              }}>
-              Your Home
-            </Text>
-            <CustomInputForm
-              hideButton={true}
-              inputContainer={{width: responsiveWidth(90)}}
-              buttonStyle={{width: responsiveWidth(90)}}
-              inputContainerStyle={{marginTop: responsiveHeight(3)}}
-              initialValues={{
-                address: 'Street no 120 lorem ispum',
-                apartment: 'Apartment/Suite#',
-              }}
-              validationSchema={validationSchema}
-              fields={editProjectFields}
-            />
-            <View style={{marginTop: responsiveHeight(-4)}}>
-              <CustomInputForm
-                dropdownIcon={true}
-                hideButton={true}
-                inputContainer={{width: responsiveWidth(90)}}
-                buttonStyle={{width: responsiveWidth(90)}}
-                inputContainerStyle={{marginTop: responsiveHeight(3)}}
-                initialValues={{city: 'Now York', state: 'California'}}
-                validationSchema={validationSchema}
-                fields={editProjectCityFields}
-              />
-            </View>
-
-            <View style={{marginTop: responsiveHeight(-4)}}>
-              <CustomInputForm
-                hideButton={true}
-                inputContainer={{width: responsiveWidth(90)}}
-                buttonStyle={{width: responsiveWidth(90)}}
-                inputContainerStyle={{marginTop: responsiveHeight(3)}}
-                initialValues={{zipCode: '12432432'}}
-                validationSchema={validationSchema}
-                fields={editProjectZipCodFields}
-              />
-            </View>
-
-            <Text
-              style={{
-                fontSize: responsiveFontSize(3),
-                marginBottom: responsiveHeight(4),
-                color: colors.dark_purple,
-                fontWeight: 'bold',
-              }}>
-              Select A Service
-            </Text>
-            <View style={{marginTop: responsiveHeight(-4)}}>
-              <CustomInputForm
-                hideButton={true}
-                inputContainer={{width: responsiveWidth(90)}}
-                buttonStyle={{width: responsiveWidth(90)}}
-                inputContainerStyle={{marginTop: responsiveHeight(3)}}
-                initialValues={{zipCode: '12432432'}}
-                validationSchema={validationSchema}
-                fields={editProjectSerivceSecFields}
-              />
-            </View>
-
-            <StartAndEndtimeInput />
-
-            <Button
-              style={{
-                marginTop: responsiveHeight(2),
-                width: responsiveWidth(90),
-              }}
-              buttonText={'Update'}
-              onPress={() => nav.navigate(ROUTES.MY_LOCATION)}
-            />
+            ) : null}
           </View>
-        ) : null}
-      </View>
-    </MainContainer>
+        </MainContainer>
+      )}
+    </>
   );
 };
 
