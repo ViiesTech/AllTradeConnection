@@ -109,3 +109,36 @@ export const createProject = async ({
     };
   }
 };
+
+export const getProjectById = async ({projectId}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getProjectById}?id=${projectId}`,
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getProposalsByProjectIdAndStatus = async ({
+  projectId,
+  projectStatus,
+}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getProposalByProjectIdOrStatus}?projectId=${projectId}&status=${projectStatus}`,
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};

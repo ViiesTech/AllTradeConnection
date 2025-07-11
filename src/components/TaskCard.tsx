@@ -66,7 +66,7 @@ const TaskCard = (props: taskProps) => {
                         {item?.id == 1 && props.item?.selectDate
                           ? formatDate(new Date(props.item?.selectDate))
                           : item?.id == 1 && 'N/A'}
-                        {item?.id == 3 && props.item?.state}
+                        {item?.id == 3 && props.item?.locationName}
                       </Text>
                     </View>
                   );

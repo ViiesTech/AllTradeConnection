@@ -13,4 +13,6 @@ export const endPoints = {
     getAllProjects: '/api/user/getProjectByStatusOrProfileId',
     getAllProjectLocations: '/api/user/getLocationByProfileId',
     createProject: '/api/user/createProject',
+    getProjectById: '/api/user/getProject',
+    getProposalByProjectIdOrStatus: '/api/user/getProposalByProjectIdOrStatus',
 };

@@ -11,11 +11,7 @@ import {
 } from 'react-native';
 import Header from '../../../components/Header';
 import MainContainer from '../../../components/MainContainer';
-import {
-  responsiveFontSize,
-  responsiveHeight,
-  ROUTES,
-} from '../../../utils';
+import {responsiveFontSize, responsiveHeight, ROUTES} from '../../../utils';
 import {colors} from '../../../assets/colors';
 import TaskCard from '../../../components/TaskCard';
 import SVGXml from '../../../components/SVGXml';
@@ -33,11 +29,17 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const renderItem = ({item}) => {
+    console.log({item: item._id});
     if (allProjects.length !== 0) {
       return (
         <TaskCard
           onPress={() =>
-            nav.navigate('SecondaryStack', {screen: ROUTES.TASK_DETAIL})
+            nav.navigate('SecondaryStack', {
+              screen: ROUTES.TASK_DETAIL,
+              params: {
+                projectId: item?._id,
+              },
+            })
           }
           price={item.price}
           image={item.image}
@@ -80,6 +82,7 @@ const Home = () => {
       setAllProjects(res.data);
       setIsLoading(false);
     } else {
+      setAllProjects([]);
       Toast.show({
         type: 'error',
         text1: 'Failed to fetch projects',
