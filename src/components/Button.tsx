@@ -27,7 +27,7 @@ const Button = ({ buttonText, onPress, isLoading, style, textStyle,gradient,isWh
         colors={isWhiteBtnBG ? ['rgb(246, 251, 255)', colors.secondary] : ['rgba(2, 104, 188, 1)', colors.primary]}
         style={[styles.buttonStyle,style]}>
           {isLoading && (
-            <ActivityIndicator size={'small'} color={'#fff'} />
+            <ActivityIndicator size={'small'} color={isWhiteBtnBG ? '#000' : '#fff'} />
           )}
        {!isLoading && <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>}
       </LinearGradient>

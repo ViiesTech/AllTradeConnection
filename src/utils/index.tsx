@@ -514,19 +514,26 @@ interface editProfileTypes {
 
 export const editProfileFields: editProfileTypes[] = [
   {
-    name: 'full name',
-    placeholder: 'john smith',
+    name: 'firstname',
+    placeholder: 'john',
     line: true,
+    keyboardType: 'text',
   },
   {
-    name: 'phone number',
-    placeholder: '03234234234',
+    name: 'lastname',
+    placeholder: 'smith',
+    line: true,
     keyboardType: 'text',
+  },
+  {
+    name: 'number',
+    placeholder: '03234234234',
+    keyboardType: 'numeric',
     line: true
   },
   {
-    name: 'bio',
-    placeholder: 'Bio',
+    name: 'address',
+    placeholder: 'Address',
     line: true,
     keyboardType: 'text',
     multiline: true,
@@ -1172,19 +1179,23 @@ interface categoryTypes {
 export const categoryData: categoryTypes[] = [
   {
     id: 1,
-    text: 'In Discussion',
+    text: 'Open',
   },
   {
     id: 2,
-    text: 'Hired',
+    text: 'In Discussion',
   },
   {
     id: 3,
-    text: 'Done',
+    text: 'Hired',
   },
   {
     id: 4,
-    text: 'Reject',
+    text: 'Done',
+  },
+  {
+    id: 5,
+    text: 'Canceled',
   },
 ];
 

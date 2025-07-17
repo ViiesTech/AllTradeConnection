@@ -1,8 +1,10 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
 import CongratulationCard from '../../../components/CongratulationCard';
+import {useNavigation} from '@react-navigation/native';
 
 const Congratulation = ({route}) => {
   const changePasswordScreen = route?.params?.changePassword;
@@ -13,6 +15,10 @@ const Congratulation = ({route}) => {
   const deleteCard = route?.params?.deleteCard;
   const addNow = route?.params?.addNow;
   const additional = route?.params?.additional;
+  const proposalId = route?.params?.proposalId;
+  const projectId = route?.params?.projectId;
+  const [isLoading, setIsLoading] = useState(false);
+  const nav = useNavigation();
 
   return (
     <MainContainer scrollEnabled={false}>
@@ -28,6 +34,11 @@ const Congratulation = ({route}) => {
           deleteCard={deleteCard}
           addNow={addNow}
           additional={additional}
+          setIsLoading={setIsLoading}
+          isLoading={isLoading}
+          nav={nav}
+          proposalId={proposalId}
+          projectId={projectId}
         />
       </View>
     </MainContainer>

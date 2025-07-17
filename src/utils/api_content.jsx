@@ -16,4 +16,12 @@ export const endPoints = {
     updateProject: '/api/user/updateProject',
     getProjectById: '/api/user/getProject',
     getProposalByProjectIdOrStatus: '/api/user/getProposalByProjectIdOrStatus',
+    getProposalByProposalId: '/api/user/getProposal',
+    updateProposalByProposalIdAndStatus: '/api/user/updateProposal',
+    updateProjectStatusById: '/api/user/updateStatus',
+    reportByIdAndReason: '/api/user/reportedByUser',
+    createReview: '/api/user/createReview',
+    getReviewByUserIdOrProId: '/api/user/getReviewByUserIdOrProId',
+    getProfile: '/api/user/getProfile',
+    updateProfile: '/api/user/updateProfile',
 };

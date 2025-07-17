@@ -1,16 +1,27 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { Text, TouchableOpacity, View, StyleSheet } from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import Modal from 'react-native-modal';
-import { reportList, responsiveFontSize, responsiveHeight, responsiveWidth } from '../utils';
-import { colors } from '../assets/colors';
+import {
+  reportList,
+  responsiveFontSize,
+  responsiveHeight,
+  responsiveWidth,
+} from '../utils';
+import {colors} from '../assets/colors';
 import SVGXml from './SVGXml';
 import svgIcons from '../assets/icons';
 import Button from './Button';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-
-function ModalComponent({ isModalVisible, backdropPress }) {
-const nav = useNavigation();
+function ModalComponent({
+  isModalVisible,
+  backdropPress,
+  selectedReport,
+  setSelectedReport,
+  onSubmitHandler,
+  isLoading,
+}: any) {
 
   return (
     <Modal
@@ -20,20 +31,38 @@ const nav = useNavigation();
       animationOut={'slideOutDown'}
       backdropOpacity={0}
       onBackdropPress={backdropPress}
-      style={{ margin: 0 }}
+      style={{margin: 0}}
       isVisible={isModalVisible}>
-          <View style={styles.modalView}>
-                  <SVGXml style={{alignSelf: 'center'}} icon={svgIcons.modal_bar} />
-                  <View style={{paddingTop: responsiveHeight(0.8)}}>
-                    {reportList.map((item) => (
-                      <>
-                      <Text style={styles.textStyle}>{item.text}</Text>
-                      <View style={styles.border} />
-                      </>
-                    ))}
-                  </View>
-                  <Button onPress={() => nav.goBack()} buttonText='Submit' style={{marginTop: responsiveHeight(3),marginBottom: responsiveHeight(2)}} />
-          </View>
+      <View style={styles.modalView}>
+        <SVGXml style={{alignSelf: 'center'}} icon={svgIcons.modal_bar} />
+        <View style={{paddingTop: responsiveHeight(0.8)}}>
+          {reportList.map(item => (
+            <TouchableOpacity
+              style={{
+                backgroundColor:
+                  selectedReport?.id == item.id ? '#b3b3b3' : '#fff',
+                  borderBottomWidth: 1,
+                  borderBottomColor: '#b3b3b3',
+                  paddingVertical: responsiveHeight(3),
+                  borderRadius: 10,
+              }}
+              onPress={() =>
+                setSelectedReport({id: item.id, report: item.text})
+              }>
+              <Text style={styles.textStyle}>{item.text}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <Button
+          onPress={onSubmitHandler}
+          buttonText="Submit"
+          isLoading={isLoading}
+          style={{
+            marginTop: responsiveHeight(3),
+            marginBottom: responsiveHeight(2),
+          }}
+        />
+      </View>
     </Modal>
   );
 }
@@ -60,15 +89,14 @@ const styles = StyleSheet.create({
     shadowRadius: 10.32,
     elevation: 16,
   },
-  textStyle:{
+  textStyle: {
     color: colors.black,
     textAlign: 'center',
-    marginBottom: responsiveHeight(2),
-    fontSize: responsiveFontSize(2.5)
+    fontSize: responsiveFontSize(2.5),
   },
-  border:{
+  border: {
     borderBottomColor: colors.black,
-    borderBottomWidth: 0.20,
+    borderBottomWidth: 0.2,
     marginBottom: responsiveHeight(2),
   },
-})
+});

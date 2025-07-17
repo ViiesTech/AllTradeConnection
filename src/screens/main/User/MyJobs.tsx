@@ -1,7 +1,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-native/no-inline-styles */
-import {FlatList, StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import MainContainer from '../../../components/MainContainer';
 import JobsCategory from '../../../components/JobsCategory';
 import {
@@ -14,9 +21,44 @@ import {colors} from '../../../assets/colors';
 import Header from '../../../components/Header';
 import {useNavigation} from '@react-navigation/native';
 import TaskCard from '../../../components/TaskCard';
+import {useSelector} from 'react-redux';
+import {getUserAllProjects} from '../../../GlobalFunctions/userMain';
+import Toast from 'react-native-toast-message';
 
 const MyJobs = () => {
-  const [chooseCategory, setChooseCategory] = useState<string>('In Discussion');
+  const [chooseCategory, setChooseCategory] = useState<string>('Open');
+  const userDetail = useSelector((state: RootState) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [allProjects, setAllProjects] = useState([]);
+
+  const getAllProject = async token => {
+    setIsLoading(true);
+    const res = await getUserAllProjects({token: token});
+    if (res?.success) {
+      const data = res?.data?.filter(item => item.status === chooseCategory);
+      setAllProjects(data);
+      setIsLoading(false);
+    } else {
+      setAllProjects([]);
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch projects',
+        text2: res?.message,
+      });
+      setIsLoading(false);
+    }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getAllProject(userDetail?.token);
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    getAllProject(userDetail?.token);
+  }, [userDetail, chooseCategory]);
 
   const renderCategory = () => {
     const renderItem = ({item, index}) => {
@@ -51,27 +93,37 @@ const MyJobs = () => {
 
   const renderTasks = () => {
     const navigation = useNavigation();
-
+    // const data = allProjects.filter((item) => item.status === chooseCategory)
     const renderItem = ({item}) => {
       return (
         <TaskCard
           onPress={() =>
-            navigation.navigate(ROUTES.TASK_DETAIL, {type: chooseCategory})
+            navigation.navigate('SecondaryStack', {
+              screen: ROUTES.TASK_DETAIL,
+              params: {
+                projectId: item?._id,
+              },
+            })
           }
           price={item.price}
           image={item.image}
-          title={item.title}
-          desc={item.desc}
+          title={item.fullName}
+          desc={item.additionalNote}
+          item={item}
         />
       );
     };
 
     return (
       <FlatList
-        data={multipleTasks}
+        data={allProjects}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingTop: responsiveHeight(2)}}
+        contentContainerStyle={{paddingTop: responsiveHeight(2), flexGrow: 1}}
+        style={{flex: 1}}
         renderItem={renderItem}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     );
   };
@@ -81,7 +133,30 @@ const MyJobs = () => {
       <Header hideNotification={true} />
       <View style={styles.subContainer}>
         {renderCategory()}
-        {renderTasks()}
+        {!!allProjects.length ? (
+          isLoading ? (
+            <View
+              style={{
+                flex: 1,
+                height: responsiveHeight(90),
+                justifyContent: 'center',
+              }}>
+              <ActivityIndicator size={'large'} color={colors.primary} />
+            </View>
+          ) : (
+            renderTasks()
+          )
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              height: responsiveHeight(80),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text>Projects Not Found</Text>
+          </View>
+        )}
       </View>
     </MainContainer>
   );

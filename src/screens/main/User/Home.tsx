@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -27,9 +28,9 @@ const Home = () => {
   const userDetail = useSelector((state: RootState) => state.user);
   const [allProjects, setAllProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const renderItem = ({item}) => {
-    console.log({item: item._id});
     if (allProjects.length !== 0) {
       return (
         <TaskCard
@@ -92,6 +93,12 @@ const Home = () => {
     }
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    getAllProject(userDetail?.token);
+    setRefreshing(false);
+  };
+
   useEffect(() => {
     getAllProject(userDetail?.token);
   }, [userDetail]);
@@ -108,6 +115,9 @@ const Home = () => {
             data={allProjects}
             keyExtractor={(item, index) => index.toString()}
             renderItem={renderItem}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
             ListHeaderComponent={ListHeader}
             contentContainerStyle={styles.listContent}
             showsVerticalScrollIndicator={false}

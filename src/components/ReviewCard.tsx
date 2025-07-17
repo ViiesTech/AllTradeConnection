@@ -1,33 +1,45 @@
-import { Image, ImageSourcePropType, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { colors } from '../assets/colors'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from '../utils'
-import StarRating from 'react-native-star-rating-widget'
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React from 'react';
+import {colors} from '../assets/colors';
+import {responsiveFontSize, responsiveHeight, responsiveWidth} from '../utils';
+import StarRating from 'react-native-star-rating-widget';
 
 interface reviewProps {
-  image: ImageSourcePropType,
-  name: string,
-  day: string,
-  desc: string,
-  rating: string,
-  style: ViewStyle,
+  image: ImageSourcePropType;
+  name: string;
+  day: string;
+  desc: string;
+  rating: string;
+  local: string;
+  style: ViewStyle;
 }
 
 const ReviewCard = (props: reviewProps) => {
   return (
-    <TouchableOpacity style={[styles.reviewStyle,props?.style]}>
-      <View style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-      }}>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <Image style={styles.imageStyle} source={props?.image} />
+    <TouchableOpacity style={[styles.reviewStyle, props?.style]}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+        <View style={{flexDirection: 'row', gap: 10}}>
+          <Image
+            style={styles.imageStyle}
+            source={props?.local ? props?.image : {uri: props?.image}}
+          />
           <View>
             <Text style={styles.name}>{props?.name}</Text>
             <Text style={styles.day}>{props?.day}</Text>
           </View>
         </View>
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{flexDirection: 'row'}}>
           <StarRating
             rating={1}
             onChange={() => null}
@@ -39,10 +51,10 @@ const ReviewCard = (props: reviewProps) => {
       </View>
       <Text style={styles.desc}>{props?.desc}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default ReviewCard
+export default ReviewCard;
 
 const styles = StyleSheet.create({
   reviewStyle: {
@@ -52,7 +64,7 @@ const styles = StyleSheet.create({
     width: responsiveWidth(70),
     padding: responsiveHeight(1.5),
   },
-  imageStyle:{
+  imageStyle: {
     height: responsiveHeight(6),
     width: responsiveHeight(6),
     borderRadius: 100,
@@ -60,19 +72,19 @@ const styles = StyleSheet.create({
   name: {
     color: colors.textColor2,
     fontWeight: 'bold',
-    fontSize: responsiveFontSize(2)
+    fontSize: responsiveFontSize(2),
   },
   day: {
     color: colors.textColor3,
-    fontSize: responsiveFontSize(1.8)
+    fontSize: responsiveFontSize(1.8),
   },
   ratingText: {
     color: colors.textColor2,
-    fontSize: responsiveFontSize(1.8)
+    fontSize: responsiveFontSize(1.8),
   },
   desc: {
     width: responsiveWidth(65),
     marginTop: responsiveHeight(1),
     color: colors.textColor3,
-  }
-})
+  },
+});

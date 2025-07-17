@@ -29,11 +29,11 @@ import Button from '../../../components/Button';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {useFormikContext} from 'formik';
 import Toast from 'react-native-toast-message';
-import {getProjectById, updateProject} from '../../../GlobalFunctions/userMain';
+import {getProjectById, getUserAllProjects, updateProject} from '../../../GlobalFunctions/userMain';
 import moment from 'moment';
 import {baseUrl} from '../../../utils/api_content';
 import DateTimePicker from '@react-native-community/datetimepicker/src/datetimepicker';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const validationSchema = Yup.object().shape({
   fullname: Yup.string()
@@ -70,17 +70,20 @@ const PostJob = ({route}: any) => {
   const screen = route?.params?.screen;
   const projectId = route?.params?.projectId;
   const [profImg, setProfImg] = useState([]);
+  const [apiImages, setApiImages] = useState([]);
   const [getProjectDetails, setGetProjectDetails] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [openDatePicker, setOpenDatePicker] = useState(false);
   const [date, setDate] = useState<any>(new Date());
   const [startTime, setStartTime] = useState<any>(new Date());
+  const [getStartTime, setGetStartTime] = useState<any>(new Date());
   const [endTime, setEndTime] = useState<any>(new Date());
+  const [getEndTime, setGetEndTime] = useState<any>(new Date());
   const [openStartTimePicker, setOpenStartTimePicker] = useState(false);
   const [openEndTimePicker, setOpenEndTimePicker] = useState(false);
   const [additional, setAdditional] = useState('');
-  const userData = useSelector((state: RootState) => state.user.userData);
+  const userDetail = useSelector((state: RootState) => state.user);
 
   const openDate = useCallback(() => setOpenDatePicker(true), []);
   const formik = useFormikContext();
@@ -152,14 +155,15 @@ const PostJob = ({route}: any) => {
   const pickImage = () => {
     launchImageLibrary({mediaType: 'photo', selectionLimit: 0}, response => {
       if (response.assets && response.assets.length > 0) {
-        setProfImg(response.assets);
+        if (response.assets && response.assets.length > 0) {
+          setProfImg(prev => [...prev, ...response.assets]);
+        }
       }
     });
   };
 
-  const updateOnPressHandler = async (values) => {
-    console.log(projectId)
-   setIsUpdating(true);
+  const updateOnPressHandler = async values => {
+    setIsUpdating(true);
     const res = await updateProject({
       id: projectId,
       email: values?.email,
@@ -179,18 +183,19 @@ const PostJob = ({route}: any) => {
       additionalNote: additional,
       city: values?.city,
       zipCode: values?.zipcode,
+      apiImages: apiImages,
     });
 
-    console.log({res: res})
 
     if (res?.success) {
-      // nav.navigate(ROUTES.DRAWER_STACK);
+      nav.navigate(ROUTES.MAIN_STACK);
       Toast.show({
         type: 'success',
         text1: 'Success',
         text2: 'Project Updated Successfully',
       });
       setIsUpdating(false);
+      getUserAllProjects({token: userDetail?.token})
     } else {
       Toast.show({
         type: 'error',
@@ -199,30 +204,11 @@ const PostJob = ({route}: any) => {
       });
       setIsUpdating(false);
     }
-  // console.log({
-  //     id: userData?._id,
-  //     email: values?.email,
-  //     phoneNumber: values?.number,
-  //     fullName: values?.fullname,
-  //     selectDate: moment(date).format('YYYY-MM-DD'),
-  //     image: profImg,
-  //     startTime: moment(startTime).format('hh:mm A'),
-  //     endTime: moment(endTime).format('hh:mm A'),
-  //     price: values?.price,
-  //     address: values?.address,
-  //     appartmentNo: values?.apartment,
-  //     locationName: 'Alaska, United States',
-  //     longitude: -153.369141,
-  //     latitude: 66.160507,
-  //     // state:null,
-  //     additionalNote: additional,
-  //     city: values?.city,
-  //     zipCode: values?.zipcode,
-  //   })
-  }
+  };
 
   const startTimeOnChange = (event: any, selectedDate?: Date) => {
     if (event.type === 'set' && selectedDate) {
+      setGetStartTime('');
       setStartTime(selectedDate);
       setOpenStartTimePicker(false);
     }
@@ -231,6 +217,7 @@ const PostJob = ({route}: any) => {
 
   const endTimeOnChange = (event: any, selectedDate?: Date) => {
     if (event.type === 'set' && selectedDate) {
+      setGetEndTime('');
       setEndTime(selectedDate);
       setOpenEndTimePicker(false);
     }
@@ -277,8 +264,28 @@ const PostJob = ({route}: any) => {
 
   useEffect(() => {
     if (getProjectDetails) {
-      setProfImg(getProjectDetails?.images);
+      setApiImages(getProjectDetails?.images || []);
       setAdditional(getProjectDetails?.additionalNote);
+      if (getProjectDetails?.startTime) {
+        const parsedStart = moment(getProjectDetails.startTime, [
+          'hh:mm A',
+          'HH:mm',
+        ]).toDate();
+        setStartTime(parsedStart);
+      } else {
+        setStartTime(new Date());
+      }
+
+      // Check and parse end time
+      if (getProjectDetails?.endTime) {
+        const parsedEnd = moment(getProjectDetails.endTime, [
+          'hh:mm A',
+          'HH:mm',
+        ]).toDate();
+        setEndTime(parsedEnd);
+      } else {
+        setEndTime(new Date());
+      }
     }
   }, [getProjectDetails]);
 
@@ -304,33 +311,28 @@ const PostJob = ({route}: any) => {
                 flexDirection: 'row',
                 gap: 20,
               }}>
-              {!!profImg.length &&
-                profImg.map(item => (
-                  <View>
-                    <Image
-                      // resizeMode="contain"
-                      style={styles.imageStyle}
-                      source={
-                        item?.uri
-                          ? {uri: item?.uri}
-                          : {uri: `${baseUrl}/${item}`}
-                      }
-                    />
-                    <TouchableOpacity
-                      style={styles.crossView}
-                      onPress={() =>
-                        setProfImg(prev =>
-                          prev.filter(prevItem => prevItem?.uri !== item?.uri),
-                        )
-                      }>
-                      <SVGXml
-                        width={'40'}
-                        height={'40'}
-                        icon={svgIcons.cross}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                ))}
+              {[...apiImages, ...profImg].map(item => (
+                <View>
+                  <Image
+                    // resizeMode="contain"
+                    style={styles.imageStyle}
+                    source={
+                      item?.uri ? {uri: item?.uri} : {uri: `${baseUrl}/${item}`}
+                    }
+                  />
+                  <TouchableOpacity
+                    style={styles.crossView}
+                    onPress={() => {
+                      typeof item === 'string'
+                        ? setApiImages(prev => prev.filter(i => i !== item))
+                        : setProfImg(prev =>
+                            prev.filter(i => i.uri !== item.uri),
+                          );
+                    }}>
+                    <SVGXml width={'40'} height={'40'} icon={svgIcons.cross} />
+                  </TouchableOpacity>
+                </View>
+              ))}
             </ScrollView>
             <TouchableOpacity
               style={styles.uploadView}
@@ -389,7 +391,7 @@ const PostJob = ({route}: any) => {
                   initialValues={{
                     fullname: getProjectDetails?.fullName,
                     email: getProjectDetails?.email,
-                    number: getProjectDetails?.phoneNumber,
+                    number: JSON.stringify(getProjectDetails?.phoneNumber),
                     address: getProjectDetails?.address,
                     apartment: getProjectDetails?.appartmentNo,
                     city: getProjectDetails?.city,
@@ -415,6 +417,8 @@ const PostJob = ({route}: any) => {
                     additional={additional}
                     setAdditional={setAdditional}
                     getProjectDetails={getProjectDetails}
+                    getStartTime={getStartTime}
+                    getEndTime={getEndTime}
                   />
                 </CustomInputForm>
               </View>

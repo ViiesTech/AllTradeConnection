@@ -31,6 +31,7 @@ import StarRating from 'react-native-star-rating-widget';
 import {
   getProjectById,
   getProposalsByProjectIdAndStatus,
+  getReviewByUserIdAndProId,
 } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../../utils/api_content';
@@ -41,11 +42,13 @@ const TaskDetail = ({route}) => {
   const nav = useNavigation();
   const [type, setType] = useState('');
   const [getProjectDetails, setGetProjectDetails] = useState({});
+  const [getReviews, setGetReviews] = useState({});
+  const [reviewLoading, setReviewLoading] = useState({});
   const [getProposal, setGetProposal] = useState([]);
   const [selectedTab, setSelectedTab] = useState('Pending');
   const [isLoading, setIsLoading] = useState(false);
   const [statusLoading, setStatusLoading] = useState(false);
-  const previousData = route?.params?.type;
+  // const previousData = route?.params?.type;
   const projectId = route?.params?.projectId;
   const userDetail = useSelector((state: RootState) => state.user);
 
@@ -97,25 +100,28 @@ const TaskDetail = ({route}) => {
   );
 
   const showEdit =
-    previousData !== 'Done' &&
-    previousData !== 'Reject' &&
-    previousData !== 'Hired' &&
-    previousData !== 'In Discussion' &&
+    getProjectDetails?.status !== 'Done' &&
+    getProjectDetails?.status !== 'Canceled' &&
+    getProjectDetails?.status !== 'Hired' &&
+    getProjectDetails?.status !== 'In Discussion' &&
     type === 'User';
 
   const showReportButton =
-    previousData !== 'Hired' &&
-    previousData !== 'Done' &&
-    previousData !== 'Reject' &&
-    previousData !== 'In Discussion';
+    getProjectDetails?.status !== 'Hired' &&
+    getProjectDetails?.status !== 'Done' &&
+    getProjectDetails?.status !== 'Canceled' &&
+    getProjectDetails?.status !== 'In Discussion';
 
-  const isUser = type === 'User';
-  const isPro = type === 'Pro';
+  const isUser = userDetail?.userData?.type === 'User';
+  const isPro = userDetail?.userData?.type === 'Professional';
 
   const getHeaderText2 = () => {
-    if (previousData === 'Hired' || previousData === 'In Discussion')
+    if (
+      getProjectDetails?.status === 'Hired' ||
+      getProjectDetails?.status === 'In Discussion'
+    )
       return 'Report';
-    if (isUser) return 'Cancel';
+    if (isUser && getProjectDetails?.status !== 'Canceled' && getProjectDetails?.status !== 'Done') return 'Cancel';
     return '';
   };
 
@@ -125,8 +131,8 @@ const TaskDetail = ({route}) => {
         return 'Hired Tasks';
       case 'Done':
         return 'Done Project';
-      case 'Reject':
-        return 'Rejected Project';
+      case 'Canceled':
+        return 'Canceled Project';
       case 'In Discussion':
         return 'In Discussion';
       default:
@@ -158,7 +164,6 @@ const TaskDetail = ({route}) => {
     });
 
     if (res?.success) {
-      // setGetProjectDetails(res.data);
       setGetProposal(res?.data);
       setStatusLoading(false);
     } else {
@@ -167,9 +172,29 @@ const TaskDetail = ({route}) => {
     }
   };
 
+  const getReview = async (proId, userId) => {
+    setReviewLoading(true);
+    const res = await getReviewByUserIdAndProId({
+      userId: userId,
+      proProfileId: proId,
+    });
+
+    if (res?.success) {
+      setGetReviews(res?.data[0]);
+      setReviewLoading(false);
+    } else {
+      setGetReviews({});
+      setReviewLoading(false);
+    }
+  };
+
   useEffect(() => {
     getProject(projectId);
   }, [projectId]);
+
+  useEffect(() => {
+    getReview(getProjectDetails?.asignTo?._id, userDetail?.userData?._id);
+  }, [getProjectDetails?.asignTo?._id, userDetail?.userData?._id]);
 
   useEffect(() => {
     getProposalByProjectId(projectId, selectedTab);
@@ -186,12 +211,15 @@ const TaskDetail = ({route}) => {
           <Header2
             onCancel={() => {
               if (
-                previousData === 'Hired' ||
-                previousData === 'In Discussion'
+                getProjectDetails?.status === 'Hired' ||
+                getProjectDetails?.status === 'In Discussion'
               ) {
                 nav.navigate(ROUTES.REPORT_JOB);
-              } else if (previousData !== 'In Discussion') {
-                nav.navigate(ROUTES.CONGRATULATION, {cancelJob: 'cancel job'});
+              } else if (getProjectDetails?.status !== 'In Discussion') {
+                nav.navigate(ROUTES.CONGRATULATION, {
+                  cancelJob: 'cancel job',
+                  projectId: projectId,
+                });
               } else {
                 nav.goBack();
               }
@@ -281,7 +309,7 @@ const TaskDetail = ({route}) => {
                       Posted {moment(getProjectDetails?.createdAt).fromNow()}
                     </Text>
                   </View>
-                  {previousData === 'Reject' && (
+                  {getProjectDetails?.status === 'Reject' && (
                     <>
                       <Text
                         style={[
@@ -315,18 +343,36 @@ const TaskDetail = ({route}) => {
               </View>
             )}
 
-            {['Hired', 'Done', 'In Discussion'].includes(previousData) &&
+            {['Hired', 'Done', 'In Discussion'].includes(
+              getProjectDetails?.status,
+            ) &&
               isUser && (
                 <>
                   <TouchableOpacity style={styles.professionalProfile}>
-                    <View style={styles.profileLeft}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 10,
+                        alignItems: 'center',
+                      }}>
                       <Image
-                        source={images.professional}
+                        source={
+                          getProjectDetails?.asignTo
+                            ? {
+                                uri: `${baseUrl}/${getProjectDetails?.asignTo?.image}`,
+                              }
+                            : images.professional
+                        }
                         style={styles.professionalImage}
                       />
                       <View>
-                        <Text style={styles.name}>James Andrew</Text>
-                        <Text style={styles.ratingText}>Rating 4.5</Text>
+                        <Text style={styles.name}>
+                          {getProjectDetails?.asignTo?.firstName}{' '}
+                          {getProjectDetails?.asignTo?.lastName}
+                        </Text>
+                        <Text style={styles.ratingText}>
+                          Rating {Math.round(getProjectDetails?.asignTo?.avgRating)}
+                        </Text>
                       </View>
                     </View>
                     <TouchableOpacity
@@ -340,7 +386,7 @@ const TaskDetail = ({route}) => {
                     </TouchableOpacity>
                   </TouchableOpacity>
 
-                  {previousData === 'In Discussion' && (
+                  {getProjectDetails?.status === 'In Discussion' && (
                     <View style={{paddingTop: responsiveHeight(3)}}>
                       <View
                         style={{
@@ -375,21 +421,26 @@ const TaskDetail = ({route}) => {
                     </View>
                   )}
 
-                  {previousData === 'Done' && (
+                  {getProjectDetails?.status === 'Done' && (
                     <>
                       <ReviewCard
                         style={{
                           marginTop: responsiveHeight(2.5),
                           width: responsiveWidth(89),
                         }}
-                        image={images.review1}
-                        name="James Andrew"
-                        rating="5.0"
-                        day="1 day ago"
-                        desc="Many thanks to james he is professional, Cleaner.."
+                        image={`${baseUrl}/${getReviews?.userId?.image}`}
+                        name={`${getReviews?.userId?.firstName} ${getReviews?.userId?.lastName}`}
+                        rating={getReviews?.rating}
+                        day={moment(getReviews?.createdAt).fromNow()}
+                        desc={getReviews?.comment}
                       />
                       <Button
-                        onPress={() => nav.navigate(ROUTES.GIVE_REVIEW)}
+                        onPress={() => {
+                          nav.navigate(ROUTES.GIVE_REVIEW, {
+                            userId: userDetail?.userData?._id,
+                            professionalId: getProjectDetails?.asignTo?._id,
+                          });
+                        }}
                         style={{
                           marginTop: responsiveHeight(3.5),
                           width: responsiveWidth(90),
@@ -399,7 +450,7 @@ const TaskDetail = ({route}) => {
                     </>
                   )}
 
-                  {previousData === 'Hired' && (
+                  {getProjectDetails?.status === 'Hired' && (
                     <Button
                       style={{
                         marginTop: responsiveHeight(3.5),
@@ -508,7 +559,13 @@ const TaskDetail = ({route}) => {
                       data={getProposal}
                       renderItem={({item}) => {
                         return (
-                          <TouchableOpacity style={styles.professionalProfile}>
+                          <TouchableOpacity
+                            style={styles.professionalProfile}
+                            onPress={() =>
+                              nav.navigate(ROUTES.PROPOSAL, {
+                                proposalId: item?._id,
+                              })
+                            }>
                             <View
                               style={{
                                 flexDirection: 'row',
@@ -576,7 +633,7 @@ const TaskDetail = ({route}) => {
                 </View>
               )}
 
-            {isPro && previousData === 'Done' && (
+            {isPro && getProjectDetails?.status === 'Done' && (
               <>
                 <View>
                   <View style={styles.timeRow}>
@@ -638,7 +695,7 @@ const TaskDetail = ({route}) => {
               </>
             )}
 
-            {isPro && previousData !== 'Hired' && (
+            {isPro && getProjectDetails?.status !== 'Hired' && (
               <Button
                 style={{
                   marginTop: responsiveHeight(3.5),

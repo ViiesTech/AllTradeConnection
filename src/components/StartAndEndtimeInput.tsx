@@ -27,6 +27,8 @@ type Props = {
   additional?: any;
   setAdditional?: any;
   getProjectDetails?: any;
+  getStartTime?: any;
+  getEndTime?: any;
 };
 
 const StartAndEndtimeInput = ({
@@ -43,12 +45,14 @@ const StartAndEndtimeInput = ({
   additional,
   setAdditional,
   getProjectDetails,
+  getStartTime,
+  getEndTime,
 }: Props) => {
   return (
     <View style={styles.inputContainerWrapper}>
       {openStartTimePicker && (
         <DateTimePicker
-          value={startTime}
+          value={ startTime}
           mode="time"
           display="default"
           is24Hour={false}
@@ -57,7 +61,7 @@ const StartAndEndtimeInput = ({
       )}
       {openEndTimePicker && (
         <DateTimePicker
-          value={startTime}
+          value={endTime}
           mode="time"
           display="default"
           is24Hour={false}
@@ -71,7 +75,7 @@ const StartAndEndtimeInput = ({
           <Text style={styles.label}>{'Start Time'}</Text>
           <TextInput
             style={styles.input}
-            placeholder={moment(startTime).format('hh:mm A')}
+            placeholder={ moment(startTime).format('hh:mm A')}
             placeholderTextColor={colors.black}
             editable={false}
           />

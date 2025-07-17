@@ -164,6 +164,7 @@ export const updateProject = async ({
   additionalNote,
   city,
   zipCode,
+  apiImages,
 }: any) => {
   try {
     let fields = new FormData();
@@ -186,16 +187,24 @@ export const updateProject = async ({
     fields.append('additionalNote', additionalNote);
     fields.append('city', city);
     fields.append('zipCode', zipCode);
-    image.forEach((img: any) => {
-      if(img?.uri){
+    const allImages = [...image, ...apiImages]; // merge
+
+    allImages.forEach(img => {
+      if (typeof img === 'string') {
+        // API image (filename string)
+        fields.append('image', img);
+      } else if (img?.uri) {
+        // New image (file object)
         fields.append('images', {
-          uri: img?.uri,
+          uri: img.uri,
           name: 'image.jpg',
           type: 'image/jpeg',
         });
-      }else {
-        fields.append('images', img);
       }
+    });
+
+    apiImages.forEach(imgName => {
+      fields.append('images', imgName); // Or whatever key your API expects
     });
 
     let config = {
@@ -209,6 +218,179 @@ export const updateProject = async ({
     };
 
     const data = await axios.request(config);
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getProposalsByProposalId = async ({proposalId}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getProposalByProposalId}?id=${proposalId}`,
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const updateProposalByProposalIdAndStatus = async ({
+  proposalId,
+  status,
+}: any) => {
+  try {
+    const data = await axios.post(
+      `${baseUrl}${endPoints.updateProposalByProposalIdAndStatus}`,
+      {
+        id: proposalId?.toString(),
+        status: status?.toString(),
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const updateProjectStatusById = async ({projectId, status}: any) => {
+  try {
+    const data = await axios.post(
+      `${baseUrl}${endPoints.updateProjectStatusById}`,
+      {
+        id: projectId?.toString(),
+        status: status?.toString(),
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const reportByIdAndReason = async ({id, reason}: any) => {
+  try {
+    const data = await axios.post(
+      `${baseUrl}${endPoints.reportByIdAndReason}`,
+      {
+        reportedByUser: id?.toString(),
+        reason: reason?.toString(),
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const createReview = async ({
+  userId,
+  proProfileId,
+  comment,
+  rating,
+}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.createReview}`, {
+      userId: userId?.toString(),
+      proProfileId: proProfileId?.toString(),
+      comment: comment?.toString(),
+      rating: rating?.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getReviewByUserIdAndProId = async ({
+  userId,
+  proProfileId,
+}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getReviewByUserIdOrProId}?userId=${userId}&proId=${proProfileId}`,
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getUserProfileById = async ({token, userId, type}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getProfile}?id=${userId}&type=${type}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Typical format
+        },
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const updateProfile = async ({
+  userId,
+  firstName,
+  lastName,
+  phoneNumber,
+  address,
+  type,
+}: any) => {
+  try {
+    const formData = new FormData();
+
+    formData.append('id', userId);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('address', address);
+    formData.append('phoneNumber', phoneNumber);
+    formData.append('type', type);
+
+    const data = await axios.post(
+      `${baseUrl}${endPoints.updateProfile}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
 
     return data?.data;
   } catch (error) {
