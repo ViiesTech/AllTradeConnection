@@ -24,4 +24,8 @@ export const endPoints = {
     getReviewByUserIdOrProId: '/api/user/getReviewByUserIdOrProId',
     getProfile: '/api/user/getProfile',
     updateProfile: '/api/user/updateProfile',
+    createSupport: '/api/user/createSupport',
+    changePassword: '/api/user/resetPassword',
+    getAllProProfile: '/api/user/getAllProProfile',
+    searchProProfileByLocationAndCategory: '/api/user/getProProfileByLocationAndCategory',
 };

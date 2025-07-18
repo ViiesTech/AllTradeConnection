@@ -19,7 +19,10 @@ import SVGXml from '../../../components/SVGXml';
 import svgIcons from '../../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import {getUserAllProjects} from '../../../GlobalFunctions/userMain';
+import {
+  getUserAllProjects,
+  getUserProfileById,
+} from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 
 const Home = () => {
@@ -29,6 +32,7 @@ const Home = () => {
   const [allProjects, setAllProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [userProfile, setUserProfile] = useState({});
 
   const renderItem = ({item}) => {
     if (allProjects.length !== 0) {
@@ -70,7 +74,7 @@ const Home = () => {
       <View style={styles.textView}>
         <Text style={styles.welcomeText}>Welcome Back</Text>
         <Text style={styles.nameText}>
-          {userData?.firstName} {userData?.lastName}
+          {userProfile?.firstName} {userProfile?.lastName}
         </Text>
       </View>
     </View>
@@ -93,14 +97,38 @@ const Home = () => {
     }
   };
 
+  const getUserProfile = async () => {
+    const res = await getUserProfileById({
+      token: userDetail?.token,
+      userId: userDetail?.userData?._id,
+      type: 'User',
+    });
+
+    if (res.success) {
+      setUserProfile(res?.data);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch profile',
+        text2: res?.message,
+      });
+    }
+  };
+
   const onRefresh = () => {
     setRefreshing(true);
     getAllProject(userDetail?.token);
+    getUserProfile();
     setRefreshing(false);
   };
 
   useEffect(() => {
     getAllProject(userDetail?.token);
+  }, [userDetail]);
+
+  useEffect(() => {
+    getUserProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetail]);
 
   return (

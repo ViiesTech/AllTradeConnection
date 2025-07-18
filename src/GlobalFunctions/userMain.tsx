@@ -400,3 +400,109 @@ export const updateProfile = async ({
     };
   }
 };
+
+export const updateProfileImage = async ({userId, image, type}: any) => {
+  try {
+    const formData = new FormData();
+
+    formData.append('id', userId);
+    formData.append('image', {
+      uri: image,
+      name: 'image.jpg',
+      type: 'image/jpeg',
+    });
+    formData.append('type', type);
+
+    const data = await axios.post(
+      `${baseUrl}${endPoints.updateProfile}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const createSupport = async ({
+  fullName,
+  email,
+  phoneNumber,
+  message,
+}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.createSupport}`, {
+      fullName: fullName?.toString(),
+      email: email?.toString(),
+      phoneNumber: phoneNumber?.toString(),
+      message: message?.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const changePassword = async ({id, password, newPassword}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.changePassword}`, {
+      id: id?.toString(),
+      password: password?.toString(),
+      newPassword: newPassword?.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getAllProProfile = async ({token}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getAllProProfile}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Typical format
+        },
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const searchProProfileByLocationAndCategory = async ({fullName}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.searchProProfileByLocationAndCategory}`, {
+      fullName: fullName?.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};

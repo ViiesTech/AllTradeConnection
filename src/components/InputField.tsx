@@ -32,8 +32,10 @@ interface InputFieldProps extends TextInputProps {
   dropdownIcon?: boolean;
   setIsSecure?: any;
   isSecure?: any;
-  editable?:any;
-  dropdownOnPress?:any;
+  editable?: any;
+  dropdownOnPress?: any;
+  ref?: any;
+  onChangeSearchText?: any;
 }
 
 const InputField = ({
@@ -54,6 +56,8 @@ const InputField = ({
   isSecure,
   editable,
   dropdownOnPress,
+  ref,
+  onChangeSearchText,
   ...props
 }: InputFieldProps) => {
   const [field, meta] = useField(name);
@@ -79,8 +83,14 @@ const InputField = ({
             placeholderTextColor={colors.black}
             value={field.value}
             multiline={multiline}
+            ref={ref}
             textAlignVertical={textAlign}
-            onChangeText={field.onChange(name)}
+            onChangeText={text => {
+              field.onChange(name)(text);
+              if (name === 'search') {
+                onChangeSearchText?.(text);
+              }
+            }}
             secureTextEntry={secureTextEntry && isSecure ? isSecure : false}
             onBlur={field.onBlur(name)}
             editable={editable}
@@ -144,8 +154,10 @@ interface CustomInputFormProps {
   isSecure?: any;
   setIsSecure?: any;
   isLoading?: any;
-  editable?:any;
-  dropdownOnPress?:any;
+  editable?: any;
+  dropdownOnPress?: any;
+  onChangeSearchText?: any;
+  ref?: any;
   services?: [];
 }
 
@@ -171,11 +183,14 @@ const CustomInputForm = ({
   editable,
   services,
   dropdownOnPress,
+  ref,
+  onChangeSearchText,
 }: CustomInputFormProps) => {
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
+      innerRef={ref}
       onSubmit={onSubmit}>
       {({handleSubmit}) => (
         <View style={[styles.form, inputContainerStyle]}>
@@ -200,6 +215,7 @@ const CustomInputForm = ({
                 setIsSecure={setIsSecure}
                 editable={field.editable}
                 isSecure={isSecure}
+                onChangeSearchText={onChangeSearchText}
                 dropdownOnPress={dropdownOnPress || field.dropdownOnPress}
                 dropdownIcon={dropdownIcon || field.dropdownIcon}
               />

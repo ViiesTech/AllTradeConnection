@@ -481,13 +481,13 @@ interface changePasswordTypes {
 
 export const changePasswordFields: changePasswordTypes[] = [
   {
-    name: 'old password',
+    name: 'oldpassword',
     placeholder: '***********************877',
     line: true,
     secureTextEntry: true,
   },
   {
-    name: 'new password',
+    name: 'newpassword',
     placeholder: '***********************877',
     keyboardType: 'text',
     line: true,
@@ -994,6 +994,12 @@ export const drawerItems: drawerItemsTypes[] = [
     title: 'My Jobs',
     icon: svgIcons.drawer_jobs,
     navTo: ROUTES.MY_JOBS,
+  },
+  {
+    id: 11,
+    title: 'List of pro',
+    icon: svgIcons.drawer_jobs,
+    navTo: ROUTES.LIST_OF_PRO,
   },
   {
     id: 4,
