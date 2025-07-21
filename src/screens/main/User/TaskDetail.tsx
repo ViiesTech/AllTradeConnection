@@ -32,6 +32,7 @@ import {
   getProjectById,
   getProposalsByProjectIdAndStatus,
   getReviewByUserIdAndProId,
+  updateProposalByProposalIdAndStatus,
 } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../../utils/api_content';
@@ -44,6 +45,9 @@ const TaskDetail = ({route}) => {
   const [getProjectDetails, setGetProjectDetails] = useState({});
   const [getReviews, setGetReviews] = useState({});
   const [reviewLoading, setReviewLoading] = useState({});
+  const [inDiscussionData, setInDiscussionData] = useState([]);
+  const [selectedProposal, setSelectedProposal] = useState({id: 0});
+  const [showButtons, setShowButtons] = useState(false);
   const [getProposal, setGetProposal] = useState([]);
   const [selectedTab, setSelectedTab] = useState('Pending');
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +55,7 @@ const TaskDetail = ({route}) => {
   // const previousData = route?.params?.type;
   const projectId = route?.params?.projectId;
   const userDetail = useSelector((state: RootState) => state.user);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   interface taskDetailTypes {
     id: number;
@@ -121,7 +126,12 @@ const TaskDetail = ({route}) => {
       getProjectDetails?.status === 'In Discussion'
     )
       return 'Report';
-    if (isUser && getProjectDetails?.status !== 'Canceled' && getProjectDetails?.status !== 'Done') return 'Cancel';
+    if (
+      isUser &&
+      getProjectDetails?.status !== 'Canceled' &&
+      getProjectDetails?.status !== 'Done'
+    )
+      return 'Cancel';
     return '';
   };
 
@@ -199,6 +209,59 @@ const TaskDetail = ({route}) => {
   useEffect(() => {
     getProposalByProjectId(projectId, selectedTab);
   }, [projectId, selectedTab]);
+
+  const getDataForInDiscussion = async () => {
+    const res = await getProposalsByProjectIdAndStatus({
+      projectId: getProjectDetails?._id,
+      projectStatus: 'Pending',
+    });
+
+    const proposalData = res?.data?.filter(item => item.proProfileId?._id);
+    const proProfileData = getProjectDetails.inDiscussionPro?.filter(
+      item => item._id,
+    );
+
+    const matchedData = proposalData?.filter(proposal =>
+      proProfileData?.some(pro => pro._id === proposal.proProfileId._id),
+    );
+
+    if (!!matchedData.length) {
+      setInDiscussionData(matchedData);
+    }
+  };
+
+  const handleHireNow = async (proposalId) => {
+      if (isUpdating) {
+        return null;
+      }
+
+      setIsUpdating(true);
+      const res = await updateProposalByProposalIdAndStatus({
+        proposalId: proposalId,
+        status: 'Accept',
+      });
+      if (res?.success) {
+        nav.navigate(ROUTES.MAIN_STACK, {screen: 'BottomStack'});
+        setIsUpdating(false);
+        Toast.show({
+          type: 'success',
+          text1: 'Hired successfully',
+          text2: `You have successfully Accept`,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Failed to hire',
+          text2: res?.message,
+        });
+        setIsUpdating(false);
+      }
+    };
+
+  useEffect(() => {
+    getDataForInDiscussion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getProjectDetails?.inDiscussionPro]);
 
   return (
     <>
@@ -371,7 +434,8 @@ const TaskDetail = ({route}) => {
                           {getProjectDetails?.asignTo?.lastName}
                         </Text>
                         <Text style={styles.ratingText}>
-                          Rating {Math.round(getProjectDetails?.asignTo?.avgRating)}
+                          Rating{' '}
+                          {Math.round(getProjectDetails?.asignTo?.avgRating)}
                         </Text>
                       </View>
                     </View>
@@ -386,7 +450,7 @@ const TaskDetail = ({route}) => {
                     </TouchableOpacity>
                   </TouchableOpacity>
 
-                  {getProjectDetails?.status === 'In Discussion' && (
+                  {/* {getProjectDetails?.status === 'In Discussion' && (
                     <View style={{paddingTop: responsiveHeight(3)}}>
                       <View
                         style={{
@@ -419,7 +483,7 @@ const TaskDetail = ({route}) => {
                         buttonText="Reject"
                       />
                     </View>
-                  )}
+                  )} */}
 
                   {getProjectDetails?.status === 'Done' && (
                     <>
@@ -463,8 +527,158 @@ const TaskDetail = ({route}) => {
                 </>
               )}
 
+            {isUser && !!inDiscussionData.length && (
+              <>
+                <Text
+                  style={[styles.applyTxt, {marginTop: responsiveHeight(2)}]}>
+                  In Discussion
+                </Text>
+                <FlatList
+                  data={inDiscussionData}
+                  renderItem={({item}) => {
+                    return (
+                      <>
+                        <TouchableOpacity
+                          style={[
+                            styles.professionalProfile,
+                            {
+                              backgroundColor:
+                                selectedProposal?.id == item._id
+                                  ? colors.line_color
+                                  : null,
+                            },
+                          ]}
+                          onPress={() => {
+                            setSelectedProposal({id: item?._id});
+                            setShowButtons(true);
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              gap: 10,
+                              alignItems: 'center',
+                            }}>
+                            <Image
+                              source={
+                                item?.proProfileId?.image
+                                  ? {
+                                      uri: `${baseUrl}/${item?.proProfileId?.image}`,
+                                    }
+                                  : images.professional
+                              }
+                              style={styles.professionalImage}
+                            />
+                            <View>
+                              <Text style={styles.name}>
+                                {item?.proProfileId?.firstName}{' '}
+                                {item?.proProfileId?.lastName}
+                              </Text>
+                              <Text style={styles.ratingText}>
+                                Rating{' '}
+                                {Number(item?.proProfileId?.avgRating)?.toFixed(
+                                  1,
+                                )}
+                              </Text>
+                            </View>
+                          </View>
+                          <TouchableOpacity
+                            style={styles.iconWrapper}
+                            onPress={() =>
+                              nav.navigate(ROUTES.CHAT_MESSAGES, {
+                                professionalImage: `${baseUrl}/${item?.proProfileId?.image}`,
+                                professionalName: `${item?.proProfileId?.firstName} ${item?.proProfileId?.lastName}`,
+                              })
+                            }>
+                            <SVGXml
+                              width="17"
+                              height="17"
+                              icon={svgIcons.professional}
+                            />
+                          </TouchableOpacity>
+                        </TouchableOpacity>
+                        {showButtons && selectedProposal.id == item._id && (
+                          <View style={{paddingTop: responsiveHeight(3)}}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              }}>
+                              <Button
+                                buttonText="Hire Now"
+                                isLoading={isUpdating}
+                                onPress={() => {
+                                  handleHireNow(selectedProposal.id);
+                                }}
+                                style={{width: responsiveWidth(42)}}
+                              />
+                              <Button
+                                buttonText="Proposal"
+                                onPress={() => {
+                                  if (selectedProposal.id) {
+                                    nav.navigate(ROUTES.PROPOSAL, {
+                                      proposalId: selectedProposal.id,
+                                    });
+                                  } else {
+                                    Toast.show({
+                                      type: 'error',
+                                      text1: 'Failed',
+                                      text2: 'Select the proposal',
+                                    });
+                                  }
+                                }}
+                                style={{width: responsiveWidth(42)}}
+                              />
+                            </View>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                              }}>
+                              <Button
+                                gradient
+                                onPress={() =>
+                                  nav.navigate(ROUTES.CONGRATULATION, {
+                                    reject: 'reject',
+                                    proposalId: selectedProposal.id,
+                                  })
+                                }
+                                style={{
+                                  marginTop: responsiveHeight(2),
+                                  width: responsiveWidth(42),
+                                  backgroundColor: colors.red2,
+                                }}
+                                buttonText="Reject"
+                              />
+                              <Button
+                                gradient
+                                onPress={() =>
+                                  nav.navigate('SecondaryStack', {
+                                    screen: ROUTES.REPORT_JOB,
+                                    params: {
+                                      professionalId: item?.proProfileId?._id
+                                    }
+                                  })
+                                }
+                                style={{
+                                  marginTop: responsiveHeight(2),
+                                  width: responsiveWidth(42),
+                                  backgroundColor: colors.textColor,
+                                }}
+                                buttonText="Report"
+                              />
+                            </View>
+                          </View>
+                        )}
+                      </>
+                    );
+                  }}
+                />
+              </>
+            )}
+
             {getProjectDetails?.status === 'Open' &&
-              getProjectDetails?.userProfileId?.type === 'User' && (
+              getProjectDetails?.userProfileId?.type === 'User' &&
+              inDiscussionData?.length == 0 && (
                 <View style={{marginTop: responsiveHeight(2)}}>
                   <Text style={styles.applyTxt}>Apply For This Job</Text>
 
@@ -476,7 +690,7 @@ const TaskDetail = ({route}) => {
                       gap: 20,
                     }}>
                     <Text style={[styles.applyTxt, {fontSize: 17}]}>
-                      Change Status:
+                      Status:
                     </Text>
 
                     <TouchableOpacity
@@ -573,7 +787,9 @@ const TaskDetail = ({route}) => {
                                 alignItems: 'center',
                               }}>
                               <Image
-                                source={images.professional}
+                                source={{
+                                  uri: `${baseUrl}/${item?.proProfileId?.image}`,
+                                }}
                                 style={styles.professionalImage}
                               />
                               <View>
@@ -595,7 +811,10 @@ const TaskDetail = ({route}) => {
                                 </View>
                                 <View style={{flexDirection: 'row', gap: 20}}>
                                   <Text style={styles.ratingText}>
-                                    Rating {item?.proProfileId?.avgRating}
+                                    Rating{' '}
+                                    {Number(
+                                      item?.proProfileId?.avgRating,
+                                    )?.toFixed(1)}
                                   </Text>
                                   <Text style={styles.ratingText}>
                                     {item?.status}
@@ -605,9 +824,15 @@ const TaskDetail = ({route}) => {
                             </View>
                             <TouchableOpacity
                               style={styles.iconWrapper}
-                              onPress={() =>
-                                nav.navigate(ROUTES.CHAT_MESSAGES)
-                              }>
+                              onPress={() => {
+                                nav.navigate(ROUTES.CHAT_MESSAGES, {
+                                  professionalImage: `${baseUrl}/${item?.proProfileId?.image}`,
+                                  professionalName: `${item?.proProfileId?.firstName} ${item?.proProfileId?.lastName}`,
+                                  professionalId: item.proProfileId?._id,
+                                  projectId: getProjectDetails?._id,
+                                  projectStatus: getProjectDetails?.status,
+                                });
+                              }}>
                               <SVGXml
                                 width="17"
                                 height="17"

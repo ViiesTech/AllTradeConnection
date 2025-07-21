@@ -243,6 +243,24 @@ export const getProposalsByProposalId = async ({proposalId}: any) => {
   }
 };
 
+export const getProposalsByProIdAndProjectId = async ({
+  projectId,
+  proProfileId,
+}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getProposalByProjectIdOrStatus}?projectId=${projectId}?proProfileId=${proProfileId}`,
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
 export const updateProposalByProposalIdAndStatus = async ({
   proposalId,
   status,
@@ -284,12 +302,13 @@ export const updateProjectStatusById = async ({projectId, status}: any) => {
   }
 };
 
-export const reportByIdAndReason = async ({id, reason}: any) => {
+export const reportByIdAndReason = async ({userId, professionalId, reason}: any) => {
   try {
     const data = await axios.post(
       `${baseUrl}${endPoints.reportByIdAndReason}`,
       {
-        reportedByUser: id?.toString(),
+        reportedByUser: userId?.toString(),
+        reportedPro: professionalId?.toString(),
         reason: reason?.toString(),
       },
     );
@@ -474,12 +493,29 @@ export const changePassword = async ({id, password, newPassword}: any) => {
 
 export const getAllProProfile = async ({token}: any) => {
   try {
-    const data = await axios.get(
-      `${baseUrl}${endPoints.getAllProProfile}`,
+    const data = await axios.get(`${baseUrl}${endPoints.getAllProProfile}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Typical format
+      },
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const searchProProfileByLocationAndCategory = async ({
+  fullName,
+}: any) => {
+  try {
+    const data = await axios.post(
+      `${baseUrl}${endPoints.searchProProfileByLocationAndCategory}`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`, // Typical format
-        },
+        fullName: fullName?.toString(),
       },
     );
 
@@ -492,11 +528,18 @@ export const getAllProProfile = async ({token}: any) => {
   }
 };
 
-export const searchProProfileByLocationAndCategory = async ({fullName}: any) => {
+export const updateProjectStatusToInDiscussion = async ({
+  id,
+  inDiscussionPro,
+}: any) => {
   try {
-    const data = await axios.post(`${baseUrl}${endPoints.searchProProfileByLocationAndCategory}`, {
-      fullName: fullName?.toString(),
-    });
+    const data = await axios.post(
+      `${baseUrl}${endPoints.updateProjectStatusToInDiscussion}`,
+      {
+        id: id?.toString(),
+        inDiscussionPro: inDiscussionPro?.toString(),
+      },
+    );
 
     return data?.data;
   } catch (error) {

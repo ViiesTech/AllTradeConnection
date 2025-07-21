@@ -131,6 +131,7 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetail]);
 
+  console.log(allProjects)
   return (
     <View style={{flex: 1}}>
       <MainContainer style={{flex: 1}}>

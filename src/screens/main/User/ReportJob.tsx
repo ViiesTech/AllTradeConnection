@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Header2 from '../../../components/Header2';
 import ModalComponent from '../../../components/Sheet';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation, useRoute} from '@react-navigation/native';
 import { reportByIdAndReason } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 import { ROUTES } from '../../../utils';
@@ -14,6 +14,8 @@ const ReportJob = () => {
   const [selectedReport, setSelectedReport] = useState({id: 0, report: ''});
   const [isLoading, setIsLoading] = useState(false);
   const userDetail = useSelector((state: RootState) => state.user);
+  const route = useRoute();
+  const id = route?.params?.professionalId
 
   useEffect(() => {
     if (isFocused) {
@@ -38,10 +40,10 @@ const ReportJob = () => {
 
       setIsLoading(true);
       const res = await reportByIdAndReason({
-        id: userDetail?.userData?._id,
+        userId: userDetail?.userData?._id,
+        professionalId: id,
         reason: selectedReport.report,
       });
-      console.log(res)
       if (res?.success) {
         nav.navigate(ROUTES.MAIN_STACK, {screen: 'BottomStack'});
         setIsLoading(false);

@@ -21,6 +21,7 @@ import {
 } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 import moment from 'moment';
+import { baseUrl } from '../../../utils/api_content';
 
 const Proposal = ({route}) => {
   const nav = useNavigation();
@@ -101,14 +102,14 @@ const Proposal = ({route}) => {
                   justifyContent: 'space-between',
                 }}>
                 <View style={{flexDirection: 'row', gap: 10}}>
-                  <Image style={styles.imageStyle} source={images.review1} />
+                  <Image style={styles.imageStyle} source={{uri: `${baseUrl}/${getPropo?.proProfileId?.image}`}} />
                   <View>
                     <Text style={styles.name}>
                       {getPropo?.proProfileId?.firstName}{' '}
                       {getPropo?.proProfileId?.lastName}
                     </Text>
                     <Text style={styles.day}>
-                      Rating {getPropo?.proProfileId?.avgRating}
+                      Rating {Number(getPropo?.proProfileId?.avgRating)?.toFixed(1)}
                     </Text>
                   </View>
                 </View>

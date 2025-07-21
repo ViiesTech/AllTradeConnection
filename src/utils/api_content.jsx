@@ -28,4 +28,5 @@ export const endPoints = {
     changePassword: '/api/user/resetPassword',
     getAllProProfile: '/api/user/getAllProProfile',
     searchProProfileByLocationAndCategory: '/api/user/getProProfileByLocationAndCategory',
+    updateProjectStatusToInDiscussion: '/api/user/updateStatus',
 };

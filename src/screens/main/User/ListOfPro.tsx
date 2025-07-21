@@ -106,26 +106,26 @@ const ListOfPro = () => {
     }
   };
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefreshing(true);
-    getUserProfile();
+    await getUserProfile();
     setRefreshing(false);
   };
 
   useEffect(() => {
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userDetail, searchValue]);
+  }, [userDetail]);
 
   const searchByName = async (searchValue: any) => {
     const res = await searchProProfileByLocationAndCategory({
       fullName: searchValue,
     });
     if (res.success) {
-      console.log(res);
+      console.log('success', res);
       setProProfile(res?.data);
     } else {
-      console.log(res);
+      console.log('failure', res);
       setProProfile([]);
     }
   };
@@ -140,7 +140,7 @@ const ListOfPro = () => {
 
       <CustomInputForm
         hideButton
-        searchIcon={true}
+        // searchIcon={true}
         inputContainer={{width: responsiveWidth(92)}}
         inputContainerStyle={{padding: 0}}
         childrenStyle={{marginBottom: responsiveHeight(3)}}
@@ -156,7 +156,7 @@ const ListOfPro = () => {
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={'large'} color={colors.primary} />
         </View>
-      ) : (
+      ) : !!proProfile.length ? (
         <View style={{padding: responsiveHeight(2), paddingTop: 0}}>
           <FlatList
             ItemSeparatorComponent={() => (
@@ -262,6 +262,10 @@ const ListOfPro = () => {
             nav.navigate(ROUTES.POST_JOB, {screen: 'Edit Project'})
           }
         /> */}
+        </View>
+      ) : (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>No professionals found.</Text>
         </View>
       )}
     </MainContainer>

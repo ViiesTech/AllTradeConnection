@@ -37,7 +37,8 @@ const MyJobs = () => {
     const res = await getUserAllProjects({token: token});
     if (res?.success) {
       const data = res?.data?.filter(item => item.status === chooseCategory);
-      setAllProjects(data);
+      const inDiscussionData = res?.data?.filter(item => item.status === 'Open' && item?.inDiscussionPro?.length >= 1);
+      setAllProjects(chooseCategory === 'In Discussion' ? inDiscussionData : data);
       setIsLoading(false);
     } else {
       setAllProjects([]);
