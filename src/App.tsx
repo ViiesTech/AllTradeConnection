@@ -7,6 +7,8 @@ import {responsiveHeight, responsiveWidth} from './utils';
 import {Provider} from 'react-redux';
 import {persistor, store} from './redux/Store';
 import {PersistGate} from 'redux-persist/integration/react';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true);

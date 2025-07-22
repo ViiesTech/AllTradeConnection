@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "939980262002",
+    "project_id": "all-trads",
+    "storage_bucket": "all-trads.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939980262002:android:49f9a947c3b047dc0a50eb",
+        "android_client_info": {
+          "package_name": "com.alltradeconnection"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLBMkG-zd9wTNJeby0AxN7Te3IYZIOxTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
