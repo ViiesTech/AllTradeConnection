@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header from '../../../components/Header';
 import CustomInputForm from '../../../components/InputField';
@@ -12,7 +12,8 @@ import {
 import * as Yup from 'yup';
 import Threads from '../../../components/Threads';
 import {colors} from '../../../assets/colors';
-// import firestore from '@react-native-firebase/firestore';
+import {useSelector} from 'react-redux';
+import firestore from '@react-native-firebase/firestore';
 
 const searchValidationSchema = Yup.object().shape({
   search: Yup.string()
@@ -22,23 +23,37 @@ const searchValidationSchema = Yup.object().shape({
 });
 const Message = () => {
   const onSaveLocation = async (values: string) => {};
+  const userData = useSelector((state: RootState) => state.user.userData);
+  const [chats, setChats] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const unsubscribe = firestore()
-  //     .collection('chats')
-  //     .where('participants', 'array-contains', '889498323923424')
-  //     .orderBy('updatedAt', 'desc')
-  //     .onSnapshot(snapshot => {
-  //       if (snapshot.empty) {
-  //         console.log('No chats found.');
-  //         return;
-  //       }
-  //       const chats = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-  //       console.log('Chats:', chats);
-  //     });
-
-  //   return () => unsubscribe();
-  // }, []);
+  useEffect(() => {
+    if (!userData?._id) return;
+    setLoading(true);
+    const unsubscribe = firestore()
+      .collection('userChats')
+      .doc(userData?._id)
+      .onSnapshot(doc => {
+        if (!doc.exists) {
+          setChats([]);
+          setLoading(false);
+          return;
+        }
+        const chatsMap = doc.data();
+        const chatsArray = Object.entries(chatsMap).map(([id, chat]) => ({
+          id,
+          ...chat,
+        }));
+        // Sort by timestamp descending
+        chatsArray.sort(
+          (a, b) =>
+            b.timestamp?.toDate()?.getTime() - a.timestamp?.toDate()?.getTime(),
+        );
+        setChats(chatsArray);
+        setLoading(false);
+      });
+    return () => unsubscribe();
+  }, [userData?._id]);
 
   const renderThreads = () => {
     const renderItem = ({item}) => {
@@ -46,9 +61,10 @@ const Message = () => {
         <>
           <Threads
             icon={item.icon}
-            image={item.image}
-            name={item.name}
-            message={item.message}
+            image={item.userImage}
+            name={item.userName}
+            message={item.lastMessage}
+            userId={item.userId}
           />
           <View style={styles.horizontalLine} />
         </>
@@ -59,7 +75,7 @@ const Message = () => {
       <FlatList
         renderItem={renderItem}
         contentContainerStyle={{paddingBottom: responsiveHeight(10)}}
-        data={chatThreads}
+        data={chats}
       />
     );
   };
@@ -78,7 +94,11 @@ const Message = () => {
           validationSchema={searchValidationSchema}
           initialValues={{search: 'Search'}}
         />
-        {renderThreads()}
+        {loading ? (
+          <ActivityIndicator size={'large'} color={colors.primary} />
+        ) : (
+          renderThreads()
+        )}
       </View>
     </MainContainer>
   );

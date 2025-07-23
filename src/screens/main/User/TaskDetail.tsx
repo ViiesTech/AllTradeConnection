@@ -827,6 +827,7 @@ const TaskDetail = ({route}) => {
                               onPress={() => {
                                 nav.navigate(ROUTES.CHAT_MESSAGES, {
                                   professionalImage: `${baseUrl}/${item?.proProfileId?.image}`,
+                                  professionalSimpleImage: item?.proProfileId?.image,
                                   professionalName: `${item?.proProfileId?.firstName} ${item?.proProfileId?.lastName}`,
                                   professionalId: item.proProfileId?._id,
                                   projectId: getProjectDetails?._id,

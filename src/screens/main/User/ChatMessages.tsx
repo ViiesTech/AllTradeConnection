@@ -1,22 +1,43 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import {images} from '../../../assets/images';
 import {responsiveFontSize, responsiveHeight} from '../../../utils';
 import SVGXml from '../../../components/SVGXml';
 import svgIcons from '../../../assets/icons';
-import Example from '../../../components/ChatCom';
 import {useNavigation} from '@react-navigation/native';
-import {updateProjectStatusToInDiscussion} from '../../../GlobalFunctions/userMain';
+import {
+  getUserProfileById,
+  updateProjectStatusToInDiscussion,
+} from '../../../GlobalFunctions/userMain';
+import ChatCom from '../../../components/ChatCom';
+import {useSelector} from 'react-redux';
+import Toast from 'react-native-toast-message';
+import {baseUrl} from '../../../utils/api_content';
 
 const ChatMessages = ({route}: any) => {
   const nav = useNavigation();
   const professionalImage = route?.params?.professionalImage;
+  const professionalSimpleImage = route?.params?.professionalSimpleImage;
   const professionalName = route?.params?.professionalName;
   const professionalId = route?.params?.professionalId;
   const projectId = route?.params?.projectId;
-//   const projectStatus = route?.params?.projectStatus;
+  //   const projectStatus = route?.params?.projectStatus;
+  const userDetail = useSelector((state: RootState) => state.user);
+  const [userProfile, setUserProfile] = useState({});
+
+  const receiverData = {
+    _id: professionalId,
+    fullName: professionalName,
+    image: professionalSimpleImage,
+  };
+
+  const userData = {
+    _id: userDetail?.userData?._id,
+    image: userProfile?.image,
+    fullName: `${userProfile?.firstName} ${userProfile?.lastName}`,
+  };
 
   const updateProjectInDiscussion = async () => {
     const res = await updateProjectStatusToInDiscussion({
@@ -27,13 +48,30 @@ const ChatMessages = ({route}: any) => {
     console.log({res});
   };
 
+  const getUserProfile = async () => {
+    const res = await getUserProfileById({
+      token: userDetail?.token,
+      userId: userDetail?.userData?._id,
+      type: 'User',
+    });
+
+    if (res.success) {
+      setUserProfile(res?.data);
+    }
+  };
+
   useEffect(() => {
-    if(projectId && professionalId){
-        updateProjectInDiscussion();
+    if (projectId && professionalId) {
+      updateProjectInDiscussion();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, professionalId]);
 
+  useEffect(() => {
+    getUserProfile();
+  }, [userDetail]);
+
+  console.log({professionalSimpleImage});
   return (
     <MainContainer style={{flex: 1}}>
       <View
@@ -56,7 +94,11 @@ const ChatMessages = ({route}: any) => {
               }}>
               <Image
                 source={
-                  professionalImage ? {uri: professionalImage} : images.profile
+                  professionalImage
+                    ? {uri: professionalImage}
+                    : professionalSimpleImage
+                    ? {uri: `${baseUrl}/${professionalSimpleImage}`}
+                    : images.profile
                 }
                 style={{width: 47, height: 47, borderRadius: 100}}
               />
@@ -71,7 +113,7 @@ const ChatMessages = ({route}: any) => {
           </View>
         </View>
       </View>
-      <Example />
+      <ChatCom userData={userData} receiverData={receiverData} />
     </MainContainer>
   );
 };
