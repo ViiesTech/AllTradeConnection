@@ -30,13 +30,12 @@ const searchValidationSchema = Yup.object().shape({
     .max(200, 'cannot be longer than 200 characters.'),
 });
 const Message = () => {
-  const onSaveLocation = async (values: string) => {};
   const userData = useSelector((state: RootState) => state.user.userData);
   const [chats, setChats] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
-  useEffect(() => {
-    if (!userData?._id) return;
+  const getChatLists = () => {
     setLoading(true);
     const unsubscribe = firestore()
       .collection('userChats')
@@ -64,11 +63,23 @@ const Message = () => {
           (a, b) =>
             b.timestamp?.toDate()?.getTime() - a.timestamp?.toDate()?.getTime(),
         );
-        setChats(chatsArray);
+
+        const result = chatsArray.filter(chat =>
+          chat.userName?.toLowerCase().includes(searchValue.toLowerCase()),
+        );
+
+        setChats(result);
         setLoading(false);
       });
+
+    return unsubscribe;
+  };
+
+  useEffect(() => {
+    if (!userData?._id) return;
+    const unsubscribe = getChatLists();
     return () => unsubscribe();
-  }, [userData?._id]);
+  }, [userData?._id, searchValue]);
 
   const renderThreads = () => {
     const renderItem = ({item}) => {
@@ -104,10 +115,10 @@ const Message = () => {
           inputContainer={{width: responsiveWidth(92)}}
           inputContainerStyle={{padding: 0}}
           childrenStyle={{marginBottom: responsiveHeight(3)}}
-          onSubmit={values => onSaveLocation(values)}
           fields={searchField}
           validationSchema={searchValidationSchema}
-          initialValues={{search: 'Search'}}
+          initialValues={{search: ''}}
+          onChangeSearchText={text => setSearchValue(text)}
         />
         {loading ? (
           <ActivityIndicator size={'large'} color={colors.primary} />
@@ -117,7 +128,7 @@ const Message = () => {
           <View
             style={{
               flex: 1,
-              height: responsiveHeight(60),
+              height: responsiveHeight(40),
               justifyContent: 'center',
               alignItems: 'center',
             }}>
@@ -127,7 +138,7 @@ const Message = () => {
                 fontWeight: '500',
                 fontSize: responsiveFontSize(2.5),
               }}>
-              Start a conversation to see it here!
+              No chat history found.
             </Text>
           </View>
         )}
