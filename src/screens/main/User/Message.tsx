@@ -1,10 +1,18 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, FlatList, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header from '../../../components/Header';
 import CustomInputForm from '../../../components/InputField';
 import {
   chatThreads,
+  responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
   searchField,
@@ -40,6 +48,13 @@ const Message = () => {
           return;
         }
         const chatsMap = doc.data();
+
+        if (typeof chatsMap !== 'object' || chatsMap === null) {
+          setChats([]);
+          setLoading(false);
+          return;
+        }
+
         const chatsArray = Object.entries(chatsMap).map(([id, chat]) => ({
           id,
           ...chat,
@@ -96,8 +111,25 @@ const Message = () => {
         />
         {loading ? (
           <ActivityIndicator size={'large'} color={colors.primary} />
-        ) : (
+        ) : !!chats.length ? (
           renderThreads()
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              height: responsiveHeight(60),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: colors.black,
+                fontWeight: '500',
+                fontSize: responsiveFontSize(2.5),
+              }}>
+              Start a conversation to see it here!
+            </Text>
+          </View>
         )}
       </View>
     </MainContainer>

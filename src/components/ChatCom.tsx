@@ -2,8 +2,9 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 import firestore from '@react-native-firebase/firestore';
-import {ActivityIndicator, View} from 'react-native';
-import {colors} from '../assets/colors';
+import {ActivityIndicator, Image, View} from 'react-native';
+import {baseUrl} from '../utils/api_content';
+import { colors } from '../assets/colors';
 
 const ChatCom = ({receiverData, userData}: any) => {
   const {
@@ -95,6 +96,7 @@ const ChatCom = ({receiverData, userData}: any) => {
         lastMessage: text,
         timestamp: firestore.FieldValue.serverTimestamp(),
       };
+
       const receiverChatRef = firestore()
         .collection('userChats')
         .doc(receiverId);
@@ -126,8 +128,18 @@ const ChatCom = ({receiverData, userData}: any) => {
       user={{
         _id: currentUserId,
         name: currentUserName,
-        avatar: currentUserImage,
+        avatar: `${baseUrl}/${currentUserImage}`,
       }}
+      renderAvatar={props => {
+        return (
+          <Image
+            source={{uri: `${baseUrl}/${props.currentMessage?.user?.avatar}`}}
+            style={{width: 36, height: 36, borderRadius: 18}}
+          />
+        );
+      }}
+      showAvatarForEveryMessage={true}
+      showUserAvatar
       alwaysShowSend
     />
   );

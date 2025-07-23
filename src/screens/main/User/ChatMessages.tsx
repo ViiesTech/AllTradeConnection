@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import {images} from '../../../assets/images';
 import {responsiveFontSize, responsiveHeight} from '../../../utils';
@@ -13,8 +19,9 @@ import {
 } from '../../../GlobalFunctions/userMain';
 import ChatCom from '../../../components/ChatCom';
 import {useSelector} from 'react-redux';
-import Toast from 'react-native-toast-message';
+// import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../../utils/api_content';
+import {colors} from '../../../assets/colors';
 
 const ChatMessages = ({route}: any) => {
   const nav = useNavigation();
@@ -26,6 +33,7 @@ const ChatMessages = ({route}: any) => {
   //   const projectStatus = route?.params?.projectStatus;
   const userDetail = useSelector((state: RootState) => state.user);
   const [userProfile, setUserProfile] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const receiverData = {
     _id: professionalId,
@@ -34,7 +42,7 @@ const ChatMessages = ({route}: any) => {
   };
 
   const userData = {
-    _id: userDetail?.userData?._id,
+    _id: userProfile?._id,
     image: userProfile?.image,
     fullName: `${userProfile?.firstName} ${userProfile?.lastName}`,
   };
@@ -49,6 +57,7 @@ const ChatMessages = ({route}: any) => {
   };
 
   const getUserProfile = async () => {
+    setIsLoading(true);
     const res = await getUserProfileById({
       token: userDetail?.token,
       userId: userDetail?.userData?._id,
@@ -56,7 +65,10 @@ const ChatMessages = ({route}: any) => {
     });
 
     if (res.success) {
+      setIsLoading(false);
       setUserProfile(res?.data);
+    } else {
+      setIsLoading(false);
     }
   };
 
@@ -69,9 +81,8 @@ const ChatMessages = ({route}: any) => {
 
   useEffect(() => {
     getUserProfile();
-  }, [userDetail]);
+  }, [userDetail, route?.params]);
 
-  console.log({professionalSimpleImage});
   return (
     <MainContainer style={{flex: 1}}>
       <View
@@ -113,7 +124,13 @@ const ChatMessages = ({route}: any) => {
           </View>
         </View>
       </View>
-      <ChatCom userData={userData} receiverData={receiverData} />
+      {isLoading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={'large'} color={colors.primary} />
+        </View>
+      ) : (
+        <ChatCom userData={userData} receiverData={receiverData} />
+      )}
     </MainContainer>
   );
 };
