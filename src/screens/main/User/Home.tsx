@@ -20,6 +20,7 @@ import svgIcons from '../../../assets/icons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {
+  getProfessionalAllProjects,
   getUserAllProjects,
   getUserProfileById,
 } from '../../../GlobalFunctions/userMain';
@@ -97,6 +98,26 @@ const Home = () => {
     }
   };
 
+  const getAllProjectByProfessional = async token => {
+    setIsLoading(true);
+    const res = await getProfessionalAllProjects({
+      token: token,
+      status: 'Open',
+    });
+    if (res?.success) {
+      setAllProjects(res.data);
+      setIsLoading(false);
+    } else {
+      setAllProjects([]);
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch projects',
+        text2: res?.message,
+      });
+      setIsLoading(false);
+    }
+  };
+
   const getUserProfile = async () => {
     const res = await getUserProfileById({
       token: userDetail?.token,
@@ -117,13 +138,24 @@ const Home = () => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    getAllProject(userDetail?.token);
+    if (userDetail?.userData?.type === 'User') {
+      getAllProject(userDetail?.token);
+    }
+    if (userDetail?.userData?.type === 'Professional') {
+      getAllProjectByProfessional(userDetail?.token);
+    }
     getUserProfile();
     setRefreshing(false);
   };
 
   useEffect(() => {
-    getAllProject(userDetail?.token);
+    if (userDetail?.userData?.type === 'User') {
+      getAllProject(userDetail?.token);
+    }
+
+    if (userDetail?.userData?.type === 'Professional') {
+      getAllProjectByProfessional(userDetail?.token);
+    }
   }, [userDetail]);
 
   useEffect(() => {
@@ -131,7 +163,6 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetail]);
 
-  console.log(allProjects)
   return (
     <View style={{flex: 1}}>
       <MainContainer style={{flex: 1}}>
@@ -152,7 +183,7 @@ const Home = () => {
             showsVerticalScrollIndicator={false}
           />
         )}
-        {!isLoading && (
+        {!isLoading && userProfile?.type === 'User' && (
           <TouchableOpacity
             onPress={() =>
               nav.navigate('SecondaryStack', {screen: ROUTES.POST_JOB})

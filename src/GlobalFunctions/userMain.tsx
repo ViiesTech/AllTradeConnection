@@ -18,6 +18,23 @@ export const getUserAllProjects = async ({token}: any) => {
   }
 };
 
+export const getProfessionalAllProjects = async ({token, status}: any) => {
+  try {
+    const data = await axios.get(`${baseUrl}${endPoints.getAllProfessionalProjects}?status=${status}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Typical format
+      },
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
 export const getAllLocations = async ({token}: any) => {
   try {
     const data = await axios.get(
@@ -538,6 +555,32 @@ export const updateProjectStatusToInDiscussion = async ({
       {
         id: id?.toString(),
         inDiscussionPro: inDiscussionPro?.toString(),
+      },
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const createProposal = async ({
+  projectId,
+  proProfileId,
+  price,
+  proposal,
+}: any) => {
+  try {
+    const data = await axios.post(
+      `${baseUrl}${endPoints.createProposal}`,
+      {
+        projectId: projectId?.toString(),
+        proProfileId: proProfileId?.toString(),
+        price: price?.toString(),
+        proposal: proposal?.toString(),
       },
     );
 

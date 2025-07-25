@@ -711,14 +711,15 @@ interface fillProposalTypes {
 
 export const fillProposalFields: fillProposalTypes[] = [
   {
-    name: 'fixed price',
+    name: 'price',
     placeholder: '$45.00',
+    keyboardType: 'numeric',
     line: true,
   },
   {
     name: 'proposal',
-    placeholder: '',
-    keyboardType: 'numeric',
+    placeholder: 'type proposal',
+    keyboardType: 'text',
     line: true,
     textAlign: 'top',
     multiline: true,

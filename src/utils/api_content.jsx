@@ -11,6 +11,7 @@ export const endPoints = {
     resetPassword: '/api/user/setNewPassword',
     signIn: '/api/user/login',
     getAllProjects: '/api/user/getProjectByStatusOrProfileId',
+    getAllProfessionalProjects: '/api/user/getProjectByStatus',
     getAllProjectLocations: '/api/user/getLocationByProfileId',
     createProject: '/api/user/createProject',
     updateProject: '/api/user/updateProject',
@@ -29,4 +30,5 @@ export const endPoints = {
     getAllProProfile: '/api/user/getAllProProfile',
     searchProProfileByLocationAndCategory: '/api/user/getProProfileByLocationAndCategory',
     updateProjectStatusToInDiscussion: '/api/user/updateStatus',
+    createProposal: '/api/user/createProposal',
 };

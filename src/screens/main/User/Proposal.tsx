@@ -26,6 +26,12 @@ import { baseUrl } from '../../../utils/api_content';
 const Proposal = ({route}) => {
   const nav = useNavigation();
   const proposalId = route?.params?.proposalId;
+  const professionalImage = route?.params?.professionalImage;
+  const professionalSimpleImage = route?.params?.professionalSimpleImage;
+  const professionalName = route?.params?.professionalName;
+  const professionalId = route?.params?.professionalId;
+  const projectId = route?.params?.projectId;
+  const projectStatus = route?.params?.projectStatus;
   const [getPropo, setPropo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -76,7 +82,7 @@ const Proposal = ({route}) => {
 
   useEffect(() => {
     getProposal(proposalId);
-  }, [proposalId, nav]);
+  }, [proposalId, route?.params]);
 
   return (
     <>
@@ -92,6 +98,12 @@ const Proposal = ({route}) => {
             text={'Proposal'}
             messagingIcon
             subHeading={''}
+            professionalImage={professionalImage}
+            professionalSimpleImage={professionalSimpleImage}
+            professionalName={professionalName}
+            professionalId={professionalId}
+            projectId={projectId}
+            projectStatus={projectStatus}
           />
 
           <View>
@@ -121,7 +133,7 @@ const Proposal = ({route}) => {
                   <Text style={styles.ratingText}>{`$${getPropo?.price}`}</Text>
                 </View>
               </View>
-              <Text style={styles.desc}>{getPropo?.proProfileId?.bio}</Text>
+              <Text style={styles.desc}>{getPropo?.proposal}</Text>
             </View>
           </View>
 

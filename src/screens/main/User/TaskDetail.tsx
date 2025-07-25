@@ -46,6 +46,7 @@ const TaskDetail = ({route}) => {
   const [getReviews, setGetReviews] = useState({});
   const [reviewLoading, setReviewLoading] = useState({});
   const [inDiscussionData, setInDiscussionData] = useState([]);
+  const [rejectedProposal, setRejectedProposal] = useState([]);
   const [selectedProposal, setSelectedProposal] = useState({id: 0});
   const [showButtons, setShowButtons] = useState(false);
   const [getProposal, setGetProposal] = useState([]);
@@ -104,21 +105,21 @@ const TaskDetail = ({route}) => {
     />
   );
 
+  const isUser = userDetail?.userData?.type === 'User';
+  const isPro = userDetail?.userData?.type === 'Professional';
+
   const showEdit =
     getProjectDetails?.status !== 'Done' &&
     getProjectDetails?.status !== 'Canceled' &&
     getProjectDetails?.status !== 'Hired' &&
     getProjectDetails?.status !== 'In Discussion' &&
-    type === 'User';
+    isUser;
 
   const showReportButton =
     getProjectDetails?.status !== 'Hired' &&
     getProjectDetails?.status !== 'Done' &&
     getProjectDetails?.status !== 'Canceled' &&
     getProjectDetails?.status !== 'In Discussion';
-
-  const isUser = userDetail?.userData?.type === 'User';
-  const isPro = userDetail?.userData?.type === 'Professional';
 
   const getHeaderText2 = () => {
     if (
@@ -136,17 +137,20 @@ const TaskDetail = ({route}) => {
   };
 
   const getHeaderText = () => {
-    switch (getProjectDetails?.status) {
-      case 'Hired':
-        return 'Hired Tasks';
-      case 'Done':
-        return 'Done Project';
-      case 'Canceled':
-        return 'Canceled Project';
-      case 'In Discussion':
-        return 'In Discussion';
-      default:
-        return 'Open Project';
+    if (getProjectDetails?.status === 'Hired') {
+      return 'Hired Tasks';
+    } else if (getProjectDetails?.status === 'Done') {
+      return 'Done Project';
+    } else if (getProjectDetails?.status === 'Canceled') {
+      return 'Canceled Project';
+    } else if (getProjectDetails?.status === 'In Discussion') {
+      return 'In Discussion';
+    } else if (!!rejectedProposal?.length) {
+      return 'Rejected Project';
+    } else if (!!inDiscussionData?.length) {
+      return 'In Discussion';
+    } else {
+      return 'Open Project';
     }
   };
 
@@ -230,39 +234,58 @@ const TaskDetail = ({route}) => {
     }
   };
 
-  const handleHireNow = async (proposalId) => {
-      if (isUpdating) {
-        return null;
-      }
+  const getDataForRejectedProposalData = async () => {
+    const res = await getProposalsByProjectIdAndStatus({
+      projectId: getProjectDetails?._id,
+      projectStatus: 'Reject',
+    });
 
-      setIsUpdating(true);
-      const res = await updateProposalByProposalIdAndStatus({
-        proposalId: proposalId,
-        status: 'Accept',
+    const matched = res?.data?.filter(
+      item => item.proProfileId?._id === userDetail?.userData?._id,
+    );
+
+    setRejectedProposal(matched);
+  };
+
+  const handleHireNow = async proposalId => {
+    if (isUpdating) {
+      return null;
+    }
+
+    setIsUpdating(true);
+    const res = await updateProposalByProposalIdAndStatus({
+      proposalId: proposalId,
+      status: 'Accept',
+    });
+    if (res?.success) {
+      nav.navigate(ROUTES.MAIN_STACK, {screen: 'BottomStack'});
+      setIsUpdating(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Hired successfully',
+        text2: `You have successfully Accept`,
       });
-      if (res?.success) {
-        nav.navigate(ROUTES.MAIN_STACK, {screen: 'BottomStack'});
-        setIsUpdating(false);
-        Toast.show({
-          type: 'success',
-          text1: 'Hired successfully',
-          text2: `You have successfully Accept`,
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Failed to hire',
-          text2: res?.message,
-        });
-        setIsUpdating(false);
-      }
-    };
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to hire',
+        text2: res?.message,
+      });
+      setIsUpdating(false);
+    }
+  };
 
   useEffect(() => {
     getDataForInDiscussion();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getProjectDetails?.inDiscussionPro]);
 
+  useEffect(() => {
+    getDataForRejectedProposalData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getProjectDetails?.inDiscussionPro]);
+
+  console.log(getProjectDetails);
   return (
     <>
       {isLoading ? (
@@ -372,7 +395,7 @@ const TaskDetail = ({route}) => {
                       Posted {moment(getProjectDetails?.createdAt).fromNow()}
                     </Text>
                   </View>
-                  {getProjectDetails?.status === 'Reject' && (
+                  {!!rejectedProposal?.length && (
                     <>
                       <Text
                         style={[
@@ -381,7 +404,9 @@ const TaskDetail = ({route}) => {
                         ]}>
                         Email
                       </Text>
-                      <Text style={styles.detail}>exampleemail@gmail.com</Text>
+                      <Text style={styles.detail}>
+                        {getProjectDetails?.userProfileId?.email}
+                      </Text>
                       <Text
                         style={[
                           styles.heading,
@@ -389,20 +414,25 @@ const TaskDetail = ({route}) => {
                         ]}>
                         Phone Number
                       </Text>
-                      <Text style={styles.detail}>1234567890</Text>
+                      <Text style={styles.detail}>
+                        {getProjectDetails?.userProfileId?.phoneNumber}
+                      </Text>
                     </>
                   )}
                 </View>
-                {showReportButton && (
+                {showReportButton && isPro && rejectedProposal?.length === 0 ? (
                   <TouchableOpacity
                     onPress={() =>
                       nav.navigate('SecondaryStack', {
                         screen: ROUTES.REPORT_JOB,
+                        params: {
+                          professionalId: getProjectDetails?.userProfileId?._id,
+                        },
                       })
                     }>
                     <Text style={styles.reportText}>Report</Text>
                   </TouchableOpacity>
-                )}
+                ) : null}
               </View>
             )}
 
@@ -655,8 +685,8 @@ const TaskDetail = ({route}) => {
                                   nav.navigate('SecondaryStack', {
                                     screen: ROUTES.REPORT_JOB,
                                     params: {
-                                      professionalId: item?.proProfileId?._id
-                                    }
+                                      professionalId: item?.proProfileId?._id,
+                                    },
                                   })
                                 }
                                 style={{
@@ -677,7 +707,7 @@ const TaskDetail = ({route}) => {
             )}
 
             {getProjectDetails?.status === 'Open' &&
-              getProjectDetails?.userProfileId?.type === 'User' &&
+              isUser &&
               inDiscussionData?.length == 0 && (
                 <View style={{marginTop: responsiveHeight(2)}}>
                   <Text style={styles.applyTxt}>Apply For This Job</Text>
@@ -778,6 +808,13 @@ const TaskDetail = ({route}) => {
                             onPress={() =>
                               nav.navigate(ROUTES.PROPOSAL, {
                                 proposalId: item?._id,
+                                professionalImage: `${baseUrl}/${item?.proProfileId?.image}`,
+                                professionalSimpleImage:
+                                  item?.proProfileId?.image,
+                                professionalName: `${item?.proProfileId?.firstName} ${item?.proProfileId?.lastName}`,
+                                professionalId: item.proProfileId?._id,
+                                projectId: getProjectDetails?._id,
+                                projectStatus: getProjectDetails?.status,
                               })
                             }>
                             <View
@@ -827,7 +864,8 @@ const TaskDetail = ({route}) => {
                               onPress={() => {
                                 nav.navigate(ROUTES.CHAT_MESSAGES, {
                                   professionalImage: `${baseUrl}/${item?.proProfileId?.image}`,
-                                  professionalSimpleImage: item?.proProfileId?.image,
+                                  professionalSimpleImage:
+                                    item?.proProfileId?.image,
                                   professionalName: `${item?.proProfileId?.firstName} ${item?.proProfileId?.lastName}`,
                                   professionalId: item.proProfileId?._id,
                                   projectId: getProjectDetails?._id,
@@ -921,14 +959,38 @@ const TaskDetail = ({route}) => {
               </>
             )}
 
-            {isPro && getProjectDetails?.status !== 'Hired' && (
+            {isPro &&
+              getProjectDetails?.status !== 'Hired' &&
+              rejectedProposal?.length === 0 &&
+              inDiscussionData?.length === 0 && (
+                <Button
+                  style={{
+                    marginTop: responsiveHeight(3.5),
+                    width: responsiveWidth(90),
+                  }}
+                  onPress={() =>
+                    nav.navigate(ROUTES.FILL_PROPOSAL, {
+                      professionalId: userDetail?.userData?._id,
+                      projectId: getProjectDetails?._id,
+                    })
+                  }
+                  buttonText="Get Job"
+                />
+              )}
+
+            {isPro && !!inDiscussionData?.length && (
               <Button
                 style={{
                   marginTop: responsiveHeight(3.5),
                   width: responsiveWidth(90),
                 }}
-                onPress={() => nav.navigate(ROUTES.PROFESSIONALS_PAYMENTMETHOD)}
-                buttonText="Get Job"
+                onPress={() =>
+                  nav.navigate(ROUTES.FILL_PROPOSAL, {
+                    professionalId: userDetail?.userData?._id,
+                    projectId: getProjectDetails?._id,
+                  })
+                }
+                buttonText="Edit Proposal"
               />
             )}
           </View>

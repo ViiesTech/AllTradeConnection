@@ -43,7 +43,11 @@ const TaskCard = (props: taskProps) => {
           />
           <View style={{marginLeft: responsiveHeight(1.5)}}>
             <View style={styles.hiredView}>
-              <Text style={styles.hiredText}>{props?.item?.status}</Text>
+              <Text style={styles.hiredText}>
+                {props?.item?.status === 'Open'
+                  ? 'Not yet hired'
+                  : props?.item?.status}
+              </Text>
             </View>
             <Text style={styles.taskText}>{props?.title}</Text>
             <Text style={styles.desc}>{props.desc}</Text>
