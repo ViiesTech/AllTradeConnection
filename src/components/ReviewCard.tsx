@@ -10,6 +10,7 @@ import React from 'react';
 import {colors} from '../assets/colors';
 import {responsiveFontSize, responsiveHeight, responsiveWidth} from '../utils';
 import StarRating from 'react-native-star-rating-widget';
+import {images} from '../assets/images';
 
 interface reviewProps {
   image: ImageSourcePropType;

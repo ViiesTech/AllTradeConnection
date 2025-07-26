@@ -19,6 +19,7 @@ export const endPoints = {
     getProposalByProjectIdOrStatus: '/api/user/getProposalByProjectIdOrStatus',
     getProposalByProposalId: '/api/user/getProposal',
     updateProposalByProposalIdAndStatus: '/api/user/updateProposal',
+    updateProposalStatus: '/api/user/updateProposalStatus',
     updateProjectStatusById: '/api/user/updateStatus',
     reportByIdAndReason: '/api/user/reportedByUser',
     createReview: '/api/user/createReview',
@@ -31,4 +32,6 @@ export const endPoints = {
     searchProProfileByLocationAndCategory: '/api/user/getProProfileByLocationAndCategory',
     updateProjectStatusToInDiscussion: '/api/user/updateStatus',
     createProposal: '/api/user/createProposal',
+    updateProposal: '/api/user/updateProposal',
+    getProposal: '/api/user/getProposal',
 };

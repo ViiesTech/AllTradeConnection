@@ -20,11 +20,14 @@ export const getUserAllProjects = async ({token}: any) => {
 
 export const getProfessionalAllProjects = async ({token, status}: any) => {
   try {
-    const data = await axios.get(`${baseUrl}${endPoints.getAllProfessionalProjects}?status=${status}`, {
-      headers: {
-        Authorization: `Bearer ${token}`, // Typical format
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getAllProfessionalProjects}?status=${status}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Typical format
+        },
       },
-    });
+    );
 
     return data?.data;
   } catch (error) {
@@ -284,9 +287,9 @@ export const updateProposalByProposalIdAndStatus = async ({
 }: any) => {
   try {
     const data = await axios.post(
-      `${baseUrl}${endPoints.updateProposalByProposalIdAndStatus}`,
+      `${baseUrl}${endPoints.updateProposalStatus}`,
       {
-        id: proposalId?.toString(),
+        proposalId: proposalId?.toString(),
         status: status?.toString(),
       },
     );
@@ -319,7 +322,11 @@ export const updateProjectStatusById = async ({projectId, status}: any) => {
   }
 };
 
-export const reportByIdAndReason = async ({userId, professionalId, reason}: any) => {
+export const reportByIdAndReason = async ({
+  userId,
+  professionalId,
+  reason,
+}: any) => {
   try {
     const data = await axios.post(
       `${baseUrl}${endPoints.reportByIdAndReason}`,
@@ -574,14 +581,50 @@ export const createProposal = async ({
   proposal,
 }: any) => {
   try {
-    const data = await axios.post(
-      `${baseUrl}${endPoints.createProposal}`,
-      {
-        projectId: projectId?.toString(),
-        proProfileId: proProfileId?.toString(),
-        price: price?.toString(),
-        proposal: proposal?.toString(),
-      },
+    const data = await axios.post(`${baseUrl}${endPoints.createProposal}`, {
+      projectId: projectId?.toString(),
+      proProfileId: proProfileId?.toString(),
+      price: price?.toString(),
+      proposal: proposal?.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const updateProposal = async ({
+  id,
+  price,
+  proposal,
+}: any) => {
+  try {
+    const data = await axios.post(`${baseUrl}${endPoints.updateProposal}`, {
+      id: id?.toString(),
+      price: price?.toString(),
+      proposal: proposal?.toString(),
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getProposalByProjectIdAndProfessionalId = async ({
+  projectId,
+  proProfileId,
+}: any) => {
+  try {
+    const data = await axios.get(
+      `${baseUrl}${endPoints.getProposalByProjectIdOrStatus}?projectId=${projectId}&proProfileId=${proProfileId}`,
     );
 
     return data?.data;

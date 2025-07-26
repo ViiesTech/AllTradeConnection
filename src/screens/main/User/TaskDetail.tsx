@@ -32,6 +32,7 @@ import {
   getProjectById,
   getProposalsByProjectIdAndStatus,
   getReviewByUserIdAndProId,
+  updateProjectStatusById,
   updateProposalByProposalIdAndStatus,
 } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
@@ -52,6 +53,8 @@ const TaskDetail = ({route}) => {
   const [getProposal, setGetProposal] = useState([]);
   const [selectedTab, setSelectedTab] = useState('Pending');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMarkAsCompleted, setIsLoadingMarkAsCompleted] =
+    useState(false);
   const [statusLoading, setStatusLoading] = useState(false);
   // const previousData = route?.params?.type;
   const projectId = route?.params?.projectId;
@@ -133,6 +136,7 @@ const TaskDetail = ({route}) => {
       getProjectDetails?.status !== 'Done'
     )
       return 'Cancel';
+    if (isPro && getProjectDetails?.status === 'Done') return 'Give FeedBack';
     return '';
   };
 
@@ -170,6 +174,30 @@ const TaskDetail = ({route}) => {
     }
   };
 
+  const markAsCompletedOnPressHandler = async projectId => {
+    setIsLoadingMarkAsCompleted(true);
+    const res = await updateProjectStatusById({
+      projectId: projectId,
+      status: 'Done',
+    });
+    if (res?.success) {
+      setIsLoadingMarkAsCompleted(false);
+      nav.navigate(ROUTES.MAIN_STACK, {screen: 'BottomStack'});
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully Completed',
+        text2: res?.message,
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to complete',
+        text2: res?.message,
+      });
+      setIsLoadingMarkAsCompleted(false);
+    }
+  };
+
   const getProposalByProjectId = async (projectId, status) => {
     setStatusLoading(true);
     const res = await getProposalsByProjectIdAndStatus({
@@ -197,7 +225,7 @@ const TaskDetail = ({route}) => {
       setGetReviews(res?.data[0]);
       setReviewLoading(false);
     } else {
-      setGetReviews({});
+      setGetReviews(false);
       setReviewLoading(false);
     }
   };
@@ -285,7 +313,6 @@ const TaskDetail = ({route}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getProjectDetails?.inDiscussionPro]);
 
-  console.log(getProjectDetails);
   return (
     <>
       {isLoading ? (
@@ -300,11 +327,21 @@ const TaskDetail = ({route}) => {
                 getProjectDetails?.status === 'Hired' ||
                 getProjectDetails?.status === 'In Discussion'
               ) {
-                nav.navigate(ROUTES.REPORT_JOB);
+                nav.navigate('SecondaryStack', {
+                  screen: ROUTES.REPORT_JOB,
+                  params: {
+                    professionalId: getProjectDetails?.userProfileId?._id,
+                  },
+                });
               } else if (getProjectDetails?.status !== 'In Discussion') {
                 nav.navigate(ROUTES.CONGRATULATION, {
                   cancelJob: 'cancel job',
                   projectId: projectId,
+                });
+              } else if (isPro && getProjectDetails?.status === 'Done') {
+                nav.navigate(ROUTES.GIVE_REVIEW, {
+                  professionalId: getProjectDetails?.userProfileId?._id,
+                  userId: userDetail?.userData?._id,
                 });
               } else {
                 nav.goBack();
@@ -471,7 +508,17 @@ const TaskDetail = ({route}) => {
                     </View>
                     <TouchableOpacity
                       style={styles.iconWrapper}
-                      onPress={() => nav.navigate(ROUTES.CHAT_MESSAGES)}>
+                      onPress={() =>
+                        nav.navigate(ROUTES.CHAT_MESSAGES, {
+                          professionalImage: `${baseUrl}/${getProjectDetails?.asignTo?.image}`,
+                          professionalSimpleImage:
+                            getProjectDetails?.asignTo?.image,
+                          professionalName: `${getProjectDetails?.asignTo?.firstName} ${getProjectDetails?.asignTo?.lastName}`,
+                          professionalId: getProjectDetails.asignTo?._id,
+                          projectId: getProjectDetails?._id,
+                          projectStatus: getProjectDetails?.status,
+                        })
+                      }>
                       <SVGXml
                         width="17"
                         height="17"
@@ -517,17 +564,19 @@ const TaskDetail = ({route}) => {
 
                   {getProjectDetails?.status === 'Done' && (
                     <>
-                      <ReviewCard
-                        style={{
-                          marginTop: responsiveHeight(2.5),
-                          width: responsiveWidth(89),
-                        }}
-                        image={`${baseUrl}/${getReviews?.userId?.image}`}
-                        name={`${getReviews?.userId?.firstName} ${getReviews?.userId?.lastName}`}
-                        rating={getReviews?.rating}
-                        day={moment(getReviews?.createdAt).fromNow()}
-                        desc={getReviews?.comment}
-                      />
+                      {getReviews && (
+                        <ReviewCard
+                          style={{
+                            marginTop: responsiveHeight(2.5),
+                            width: responsiveWidth(89),
+                          }}
+                          image={`${baseUrl}/${getReviews?.userId?.image}`}
+                          name={`${getReviews?.userId?.firstName} ${getReviews?.userId?.lastName}`}
+                          rating={getReviews?.rating}
+                          day={moment(getReviews?.createdAt).fromNow()}
+                          desc={getReviews?.comment}
+                        />
+                      )}
                       <Button
                         onPress={() => {
                           nav.navigate(ROUTES.GIVE_REVIEW, {
@@ -550,8 +599,9 @@ const TaskDetail = ({route}) => {
                         marginTop: responsiveHeight(3.5),
                         width: responsiveWidth(90),
                       }}
-                      onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)}
-                      buttonText="Pay Now"
+                      // onPress={() => nav.navigate(ROUTES.PAYMENT_METHODS)}
+                      // buttonText="Pay Now"
+                      buttonText="Job Under Process"
                     />
                   )}
                 </>
@@ -703,6 +753,65 @@ const TaskDetail = ({route}) => {
                     );
                   }}
                 />
+              </>
+            )}
+
+            {isPro && !!inDiscussionData.length && (
+              <>
+                <TouchableOpacity
+                  style={[styles.professionalProfile]}
+                  // onPress={() => {
+                  //   setSelectedProposal({id: item?._id});
+                  //   setShowButtons(true);
+                  // }}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      alignItems: 'center',
+                    }}>
+                    <Image
+                      source={
+                        getProjectDetails?.userProfileId?.image
+                          ? {
+                              uri: `${baseUrl}/${getProjectDetails?.userProfileId.image}`,
+                            }
+                          : images.professional
+                      }
+                      style={styles.professionalImage}
+                    />
+                    <View>
+                      <Text style={styles.name}>
+                        {getProjectDetails?.userProfileId.firstName}{' '}
+                        {getProjectDetails?.userProfileId.lastName}
+                      </Text>
+                      {/* <Text style={styles.ratingText}>
+                        Rating{' '}
+                        {Number(getProjectDetails?.userProfileId.avgRating)?.toFixed(1)}
+                      </Text> */}
+                    </View>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.iconWrapper}
+                    onPress={() =>
+                      nav.navigate(ROUTES.CHAT_MESSAGES, {
+                        professionalImage: `${baseUrl}/${getProjectDetails?.userProfileId?.image}`,
+                        professionalSimpleImage:
+                          getProjectDetails?.userProfileId?.image,
+                        professionalName: `${getProjectDetails?.userProfileId?.firstName} ${getProjectDetails?.userProfileId?.lastName}`,
+                        professionalId: getProjectDetails.userProfileId?._id,
+                        projectId: getProjectDetails?._id,
+                        projectStatus: getProjectDetails?.status,
+                      })
+                    }>
+                    <SVGXml
+                      width="17"
+                      height="17"
+                      icon={svgIcons.professional}
+                    />
+                  </TouchableOpacity>
+                </TouchableOpacity>
               </>
             )}
 
@@ -900,24 +1009,35 @@ const TaskDetail = ({route}) => {
             {isPro && getProjectDetails?.status === 'Done' && (
               <>
                 <View>
-                  <View style={styles.timeRow}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      alignItems: 'center',
+                    }}>
                     <SVGXml icon={svgIcons.clock} />
-                    <Text style={styles.time}>Posted 3 days ago</Text>
+                    <Text style={styles.time}>
+                      Posted {moment(getProjectDetails?.createdAt).fromNow()}
+                    </Text>
                   </View>
                   <Text
                     style={[styles.heading, {marginTop: responsiveHeight(2)}]}>
                     Email
                   </Text>
-                  <Text style={styles.detail}>exampleemail@gmail.com</Text>
+                  <Text style={styles.detail}>
+                    {getProjectDetails?.userProfileId?.email}
+                  </Text>
                   <Text
                     style={[styles.heading, {marginTop: responsiveHeight(2)}]}>
                     Phone Number
                   </Text>
-                  <Text style={styles.detail}>1234567890</Text>
+                  <Text style={styles.detail}>
+                    {getProjectDetails?.userProfileId?.phoneNumber}
+                  </Text>
                 </View>
 
-                <View style={{paddingTop: responsiveHeight(2)}}>
-                  <View style={styles.reviewRow}>
+                {/* <View style={{paddingTop: responsiveHeight(2)}}>
+                  <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
                     <View
                       style={{
                         flexDirection: 'row',
@@ -955,12 +1075,13 @@ const TaskDetail = ({route}) => {
                     data={reviews}
                     renderItem={renderItem}
                   />
-                </View>
+                </View> */}
               </>
             )}
 
             {isPro &&
               getProjectDetails?.status !== 'Hired' &&
+              getProjectDetails?.status !== 'Done' &&
               rejectedProposal?.length === 0 &&
               inDiscussionData?.length === 0 && (
                 <Button
@@ -978,6 +1099,100 @@ const TaskDetail = ({route}) => {
                 />
               )}
 
+            {isPro && getProjectDetails?.status === 'Hired' && (
+              <>
+                <View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 10,
+                      alignItems: 'center',
+                    }}>
+                    <SVGXml icon={svgIcons.clock} />
+                    <Text style={styles.time}>
+                      Posted {moment(getProjectDetails?.createdAt).fromNow()}
+                    </Text>
+                  </View>
+                  <Text
+                    style={[styles.heading, {marginTop: responsiveHeight(2)}]}>
+                    Email
+                  </Text>
+                  <Text style={styles.detail}>
+                    {getProjectDetails?.userProfileId?.email}
+                  </Text>
+                  <Text
+                    style={[styles.heading, {marginTop: responsiveHeight(2)}]}>
+                    Phone Number
+                  </Text>
+                  <Text style={styles.detail}>
+                    {getProjectDetails?.userProfileId?.phoneNumber}
+                  </Text>
+                </View>
+                <>
+                  <TouchableOpacity
+                    style={[styles.professionalProfile]}
+                    // onPress={() => {
+                    //   setSelectedProposal({id: item?._id});
+                    //   setShowButtons(true);
+                    // }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        gap: 10,
+                        alignItems: 'center',
+                      }}>
+                      <Image
+                        source={
+                          getProjectDetails?.userProfileId?.image
+                            ? {
+                                uri: `${baseUrl}/${getProjectDetails?.userProfileId.image}`,
+                              }
+                            : images.professional
+                        }
+                        style={styles.professionalImage}
+                      />
+                      <View>
+                        <Text style={styles.name}>
+                          {getProjectDetails?.userProfileId.firstName}{' '}
+                          {getProjectDetails?.userProfileId.lastName}
+                        </Text>
+                        {/* <Text style={styles.ratingText}>
+                        Rating{' '}
+                        {Number(getProjectDetails?.userProfileId.avgRating)?.toFixed(1)}
+                      </Text> */}
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={styles.iconWrapper}
+                      onPress={() =>
+                        nav.navigate(ROUTES.CHAT_MESSAGES, {
+                          professionalImage: `${baseUrl}/${getProjectDetails?.userProfileId?.image}`,
+                          professionalSimpleImage:
+                            getProjectDetails?.userProfileId?.image,
+                          professionalName: `${getProjectDetails?.userProfileId?.firstName} ${getProjectDetails?.userProfileId?.lastName}`,
+                          professionalId: getProjectDetails.userProfileId?._id,
+                          projectId: getProjectDetails?._id,
+                          projectStatus: getProjectDetails?.status,
+                        })
+                      }>
+                      <SVGXml
+                        width="17"
+                        height="17"
+                        icon={svgIcons.professional}
+                      />
+                    </TouchableOpacity>
+                  </TouchableOpacity>
+                </>
+              </>
+            )}
+
+            {isPro && !!inDiscussionData?.length && (
+              <View style={{marginTop: responsiveHeight(2)}}>
+                <Text>Waiting for client to accept the proposal</Text>
+              </View>
+            )}
+
             {isPro && !!inDiscussionData?.length && (
               <Button
                 style={{
@@ -988,9 +1203,24 @@ const TaskDetail = ({route}) => {
                   nav.navigate(ROUTES.FILL_PROPOSAL, {
                     professionalId: userDetail?.userData?._id,
                     projectId: getProjectDetails?._id,
+                    update: true,
                   })
                 }
                 buttonText="Edit Proposal"
+              />
+            )}
+
+            {isPro && getProjectDetails?.status === 'Hired' && (
+              <Button
+                style={{
+                  marginTop: responsiveHeight(3.5),
+                  width: responsiveWidth(90),
+                }}
+                isLoading={isLoadingMarkAsCompleted}
+                onPress={() =>
+                  markAsCompletedOnPressHandler(getProjectDetails?._id)
+                }
+                buttonText="Mark As Completed"
               />
             )}
           </View>
