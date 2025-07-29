@@ -22,7 +22,10 @@ import Header from '../../../components/Header';
 import {useNavigation} from '@react-navigation/native';
 import TaskCard from '../../../components/TaskCard';
 import {useSelector} from 'react-redux';
-import {getUserAllProjects} from '../../../GlobalFunctions/userMain';
+import {
+  getProfessionalAllProjects,
+  getUserAllProjects,
+} from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 
 const MyJobs = () => {
@@ -61,8 +64,39 @@ const MyJobs = () => {
     setRefreshing(false);
   };
 
+  const getAllProjectByProfessional = async token => {
+    setIsLoading(true);
+    const res = await getProfessionalAllProjects({
+      token: token,
+      status: chooseCategory === "Open" || chooseCategory === "In Discussion" ? "Open" : chooseCategory,
+    });
+    if (res?.success) {
+      const inDiscussionData = res?.data?.filter(
+        item =>
+          Array.isArray(item?.inDiscussionPro) &&
+          item.inDiscussionPro.includes(userDetail?.userData?._id)
+      );
+      setAllProjects(chooseCategory === "In Discussion" ? inDiscussionData :  res?.data);
+      setIsLoading(false);
+    } else {
+      setAllProjects([]);
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch projects',
+        text2: res?.message,
+      });
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getAllProject(userDetail?.token);
+    if (userDetail?.userData?.type === 'User') {
+      getAllProject(userDetail?.token);
+    }
+
+    if (userDetail?.userData?.type === 'Professional') {
+      getAllProjectByProfessional(userDetail?.token);
+    }
   }, [userDetail, chooseCategory]);
 
   const renderCategory = () => {
@@ -138,7 +172,7 @@ const MyJobs = () => {
       <Header hideNotification={true} />
       <View style={styles.subContainer}>
         {renderCategory()}
-        {!!allProjects.length ? (
+        {!!allProjects?.length ? (
           isLoading ? (
             <View
               style={{

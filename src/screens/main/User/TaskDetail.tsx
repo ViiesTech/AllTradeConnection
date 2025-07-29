@@ -333,7 +333,7 @@ const TaskDetail = ({route}) => {
                     professionalId: getProjectDetails?.userProfileId?._id,
                   },
                 });
-              } else if (getProjectDetails?.status !== 'In Discussion') {
+              } else if (isUser && getProjectDetails?.status !== 'In Discussion') {
                 nav.navigate(ROUTES.CONGRATULATION, {
                   cancelJob: 'cancel job',
                   projectId: projectId,
