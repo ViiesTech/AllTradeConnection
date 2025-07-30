@@ -33,7 +33,7 @@ const ReviewCard = (props: reviewProps) => {
         <View style={{flexDirection: 'row', gap: 10}}>
           <Image
             style={styles.imageStyle}
-            source={props?.local ? props?.image : {uri: props?.image}}
+            source={props?.image ? {uri: props?.image} : images.logo}
           />
           <View>
             <Text style={styles.name}>{props?.name}</Text>

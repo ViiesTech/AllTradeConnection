@@ -24,6 +24,7 @@ const CreateProfileYourSelf = ({route}) => {
   const nav = useNavigation();
   const [allServices, setAllServices] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const profileData = route?.params?.profileData;
   const professionalProfileImage = route?.params?.image;
@@ -50,11 +51,14 @@ const CreateProfileYourSelf = ({route}) => {
   };
 
   const getServices = async () => {
+    setIsLoading(true);
     const res = await getAllServices();
     if (res?.success) {
       // console.log(typeof res)
       setAllServices(res.data);
+      setIsLoading(false);
     } else {
+      setIsLoading(false);
       Toast.show({
         type: 'error',
         text1: 'Failed to fetch services',
@@ -64,7 +68,6 @@ const CreateProfileYourSelf = ({route}) => {
   };
 
   const toggleSelection = (id: number) => {
-    console.log('idddddddddd =>>>>>>>>', id);
     setSelectedIds(prev =>
       prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id],
     );
@@ -89,6 +92,7 @@ const CreateProfileYourSelf = ({route}) => {
         data={allServices}
         toggleSelection={id => toggleSelection(id)}
         selectedIds={selectedIds}
+        isLoading={isLoading}
       />
 
       <View>

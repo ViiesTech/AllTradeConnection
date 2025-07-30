@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import {responsiveWidth} from '../utils';
 import {colors} from '../assets/colors';
@@ -17,6 +18,7 @@ const ShowServicesModal = ({
   data,
   toggleSelection,
   selectedIds,
+  isLoading,
 }: any) => {
   return (
     <Modal
@@ -27,42 +29,53 @@ const ShowServicesModal = ({
       <View style={styles.modalOverlay}>
         <View style={styles.modalBox}>
           <Text style={styles.modalText}>Select Services</Text>
-          <View>
-            <ScrollView>
-              <FlatList
-                data={data}
-                renderItem={({item}) => {
-                  const isSelected = selectedIds.includes(item?._id);
+          {isLoading ? (
+            <ActivityIndicator size={'small'} color={colors.primary} />
+          ) : (
+            <View>
+              <ScrollView>
+                <FlatList
+                  data={data}
+                  renderItem={({item}) => {
+                    const isSelected = selectedIds.includes(item?._id);
 
-                  return (
-                    <TouchableOpacity
-                      style={[
-                        styles.itemBox,
-                        {backgroundColor: isSelected ? '#d1e7ff' : '#fff'},
-                      ]}
-                      onPress={() => toggleSelection(item?._id)}>
-                      <Text style={[styles.modalText, {textAlign: 'left', marginBottom: 0}]}>
-                        {item?.name}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                }}
-              />
-            </ScrollView>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                style={styles.closeButton}>
-                <Text style={styles.buttonText}>Close</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => setModalVisible(false)}
-                style={[styles.closeButton, {backgroundColor: colors.primary}]}>
-                <Text style={styles.buttonText}>Submit</Text>
-              </TouchableOpacity>
+                    return (
+                      <TouchableOpacity
+                        style={[
+                          styles.itemBox,
+                          {backgroundColor: isSelected ? '#d1e7ff' : '#fff'},
+                        ]}
+                        onPress={() => toggleSelection(item?._id)}>
+                        <Text
+                          style={[
+                            styles.modalText,
+                            {textAlign: 'left', marginBottom: 0},
+                          ]}>
+                          {item?.name}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </ScrollView>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(false)}
+                  style={styles.closeButton}>
+                  <Text style={styles.buttonText}>Close</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(false)}
+                  style={[
+                    styles.closeButton,
+                    {backgroundColor: colors.primary},
+                  ]}>
+                  <Text style={styles.buttonText}>Submit</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
     </Modal>

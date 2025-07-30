@@ -8,6 +8,7 @@ import {
   responsiveFontSize,
   responsiveHeight,
   responsiveWidth,
+  ROUTES,
 } from '../../utils';
 import SVGXml from '../../components/SVGXml';
 import svgIcons from '../../assets/icons';
@@ -18,28 +19,15 @@ import { useNavigation } from '@react-navigation/native';
 
 const AuthProfileComplete = ({route}) => {
   const dispatch = useDispatch();
-  const token = useSelector((state: RootState) => state?.user?.token);
   const nav = useNavigation();
 
   const {type} = route?.params || {};
-  console.log('data', token);
 
   const onCompleteButtonPress = async () => {
     if (type === 'logout') {
       dispatch(clearToken());
     } else {
       nav.navigate(ROUTES.LOGIN);
-      // await AsyncStorage.getItem('type')
-      //   .then((res: any) => {
-      //     if (res === 'User') {
-      //       nav.navigate(ROUTES.DRAWER_STACK);
-      //     } else {
-      //       nav.navigate(ROUTES.SUBSCRIPTION_PACKAGES);
-      //     }
-      //   })
-      //   .catch(err => {
-      //     console.log(err, 'err');
-      //   });
     }
   };
 

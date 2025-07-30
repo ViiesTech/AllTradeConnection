@@ -36,6 +36,7 @@ import {
 } from '../../../GlobalFunctions/userMain';
 import {baseUrl} from '../../../utils/api_content';
 import {launchImageLibrary} from 'react-native-image-picker';
+import moment from 'moment';
 
 const certificates = [
   {id: 1, certicateImg: images.certi1},
@@ -56,11 +57,11 @@ const Profile = () => {
     const renderItem = ({item}) => {
       return (
         <ReviewCard
-          day={item.days}
-          image={item.image}
-          name={item.name}
+          day={moment(item?.createdAt).fromNow()}
+          image={`${baseUrl}/${item?.userId.image}`}
+          name={`${item?.userId?.firstName} ${item?.userId?.lastName}`}
           rating={item.rating}
-          desc={item.desc}
+          desc={item.comment}
           local="local"
         />
       );
@@ -83,7 +84,10 @@ const Profile = () => {
               starSize={responsiveHeight(2.3)}
               maxStars={1}
             />
-            <Text style={styles.ratingText}>4.9 (124)</Text>
+            <Text style={styles.ratingText}>
+              {Number(userProfile?.avgRating)?.toFixed(1)}{' '}
+              {`(${userProfile?.reviews?.length})`}
+            </Text>
           </View>
           <TouchableOpacity
             onPress={() => nav.navigate(ROUTES.SEE_ALL_REVIEWS)}>
@@ -102,7 +106,7 @@ const Profile = () => {
             paddingHorizontal: responsiveHeight(3),
             paddingTop: responsiveHeight(2),
           }}
-          data={reviews}
+          data={userProfile?.reviews}
           renderItem={renderItem}
         />
       </View>
@@ -164,6 +168,7 @@ const Profile = () => {
     getUserProfile();
   }, [userDetail, nav]);
 
+  console.log(userProfile);
   return (
     <MainContainer style={{paddingBottom: responsiveHeight(12)}}>
       <Header hideNotification showEdit />
@@ -184,11 +189,17 @@ const Profile = () => {
                       : `${baseUrl}/${userProfile?.image}`,
                   }}
                 />
-                <TouchableOpacity
-                  style={styles.downloadView}
-                  onPress={() => pickImage()}>
-                  <SVGXml width={'14'} height={'14'} icon={svgIcons.download} />
-                </TouchableOpacity>
+                {userDetail?.userData?.type === 'User' && (
+                  <TouchableOpacity
+                    style={styles.downloadView}
+                    onPress={() => pickImage()}>
+                    <SVGXml
+                      width={'14'}
+                      height={'14'}
+                      icon={svgIcons.download}
+                    />
+                  </TouchableOpacity>
+                )}
               </View>
             )}
             <View
@@ -200,11 +211,21 @@ const Profile = () => {
                 </Text>
                 <SVGXml width={'18'} height={'18'} icon={svgIcons.checkmark2} />
               </View>
-              <Text style={styles.detail}>{userProfile?.email}</Text>
+              {userDetail?.userData?.type === 'User' && (
+                <Text style={styles.detail}>{userProfile?.email}</Text>
+              )}
               <Text style={styles.detail}>{userProfile?.address}</Text>
-              <Text style={styles.detail}>
-                Phone: {userProfile?.phoneNumber}
-              </Text>
+              {userDetail?.userData?.type === 'User' && (
+                <Text style={styles.detail}>
+                  Phone: {userProfile?.phoneNumber}
+                </Text>
+              )}
+              <View style={{flexDirection: 'row', gap: 5}}>
+                {userDetail?.userData?.type === 'Professional' &&
+                  userProfile?.category?.map(item => (
+                    <Text style={styles.detail}>{item?.name}</Text>
+                  ))}
+              </View>
 
               {userDetail?.userData?.type === 'Professional' && (
                 <View
@@ -213,24 +234,33 @@ const Profile = () => {
                     alignItems: 'center',
                     gap: 5,
                   }}>
-                  <Text
-                    style={{
-                      fontSize: responsiveFontSize(1.5),
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    }}>
-                    Monday - Sat
-                  </Text>
+                  <View style={{flexDirection: 'row', gap: 5}}>
+                    {!!userProfile?.includingTheseDays?.length &&
+                      userProfile?.includingTheseDays?.map((item, i) => (
+                        <Text
+                          style={{
+                            fontSize: responsiveFontSize(1.5),
+                            fontWeight: 'bold',
+                            textAlign: 'center',
+                          }}>
+                          {/* Monday - Sat */}
+                          {item}{' '}
+                          {i < userProfile.includingTheseDays.length - 1
+                            ? ' - '
+                            : ''}
+                        </Text>
+                      ))}
+                  </View>
                   <Text
                     style={{
                       fontSize: responsiveFontSize(1.5),
                       color: colors.gray,
                       textAlign: 'center',
                     }}>
-                    9:00am To 9:00pm
+                    {userProfile?.startTime} To {userProfile?.endTime}
                   </Text>
 
-                  <View>
+                  {/* <View>
                     <Text
                       style={{
                         fontSize: responsiveFontSize(2),
@@ -247,7 +277,7 @@ const Profile = () => {
                       }}>
                       2000
                     </Text>
-                  </View>
+                  </View> */}
                 </View>
               )}
             </View>
@@ -261,7 +291,7 @@ const Profile = () => {
           scrambled it to make a type specimen book. It has survived not only
           five centuries,
         </Text> */}
-        <View
+       {!isLoading && <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -269,18 +299,20 @@ const Profile = () => {
           }}>
           <ProfileCard
             text="Total Project"
-            text2={userProfile?.projectLength}
+            text2={
+              userProfile?.projectLength || userProfile?.completedProject || '0'
+            }
           />
           <ProfileCard icon text="Email Address" />
-        </View>
-        {userDetail?.userData?.type === 'Professional' ? renderReviews() : null}
+        </View>}
+        {!isLoading && userDetail?.userData?.type === 'Professional' ? renderReviews() : null}
 
-        {userDetail?.userData?.type === 'Professional' ? (
+        {!isLoading && userDetail?.userData?.type === 'Professional' ? (
           <View style={{marginTop: responsiveHeight(2)}}>
             <Text style={styles.reviewHeading}>Certificates</Text>
 
             <FlatList
-              data={certificates}
+              data={userProfile?.certificate}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{gap: 20, marginTop: responsiveHeight(2)}}
@@ -288,7 +320,7 @@ const Profile = () => {
                 return (
                   <View>
                     <Image
-                      source={item.certicateImg}
+                      source={{uri: `${baseUrl}/${item}`}}
                       style={{
                         width: responsiveWidth(20),
                         height: responsiveHeight(8),
