@@ -597,11 +597,7 @@ export const createProposal = async ({
   }
 };
 
-export const updateProposal = async ({
-  id,
-  price,
-  proposal,
-}: any) => {
+export const updateProposal = async ({id, price, proposal}: any) => {
   try {
     const data = await axios.post(`${baseUrl}${endPoints.updateProposal}`, {
       id: id?.toString(),
@@ -625,6 +621,41 @@ export const getProposalByProjectIdAndProfessionalId = async ({
   try {
     const data = await axios.get(
       `${baseUrl}${endPoints.getProposalByProjectIdOrStatus}?projectId=${projectId}&proProfileId=${proProfileId}`,
+    );
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getAllNotifications = async ({token}: any) => {
+  try {
+    const data = await axios.get(`${baseUrl}${endPoints.getAllNotifications}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Typical format
+      },
+    });
+
+    return data?.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};
+
+export const getProjectByLocationAndCategory = async ({category}: any) => {
+  try {
+    const data = await axios.post(
+      `${baseUrl}${endPoints.getProjectByLocationAndCategory}`,
+      {
+        category: category,
+      },
     );
 
     return data?.data;

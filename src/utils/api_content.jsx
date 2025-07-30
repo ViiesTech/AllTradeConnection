@@ -34,4 +34,6 @@ export const endPoints = {
     createProposal: '/api/user/createProposal',
     updateProposal: '/api/user/updateProposal',
     getProposal: '/api/user/getProposal',
+    getAllNotifications: '/api/user/getAllNotifications',
+    getProjectByLocationAndCategory: '/api/user/getProjectByLocationAndCategory',
 };

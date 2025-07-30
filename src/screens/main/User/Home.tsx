@@ -26,7 +26,7 @@ import {
 } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 
-const Home = () => {
+const Home = ({route}) => {
   const nav = useNavigation();
   const userData = useSelector((state: RootState) => state.user.userData);
   const userDetail = useSelector((state: RootState) => state.user);
@@ -162,6 +162,12 @@ const Home = () => {
     getUserProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetail]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setAllProjects(route?.params?.data);
+    setIsLoading(false);
+  }, [route?.params]);
 
   return (
     <View style={{flex: 1}}>
