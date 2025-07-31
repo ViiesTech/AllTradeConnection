@@ -90,7 +90,7 @@ const Profile = () => {
             </Text>
           </View>
           <TouchableOpacity
-            onPress={() => nav.navigate(ROUTES.SEE_ALL_REVIEWS)}>
+            onPress={() => nav.navigate(ROUTES.SEE_ALL_REVIEWS, {data: userProfile})}>
             <Text
               style={[styles.ratingText, {textDecorationLine: 'underline'}]}>
               See All
@@ -106,7 +106,11 @@ const Profile = () => {
             paddingHorizontal: responsiveHeight(3),
             paddingTop: responsiveHeight(2),
           }}
-          data={userProfile?.reviews}
+          data={
+            !!userProfile?.reviews?.length
+              ? userProfile.reviews.slice(0, 2)
+              : []
+          }
           renderItem={renderItem}
         />
       </View>
@@ -291,21 +295,27 @@ const Profile = () => {
           scrambled it to make a type specimen book. It has survived not only
           five centuries,
         </Text> */}
-       {!isLoading && <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingTop: responsiveHeight(3),
-          }}>
-          <ProfileCard
-            text="Total Project"
-            text2={
-              userProfile?.projectLength || userProfile?.completedProject || '0'
-            }
-          />
-          <ProfileCard icon text="Email Address" />
-        </View>}
-        {!isLoading && userDetail?.userData?.type === 'Professional' ? renderReviews() : null}
+        {!isLoading && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              paddingTop: responsiveHeight(3),
+            }}>
+            <ProfileCard
+              text="Total Project"
+              text2={
+                userProfile?.projectLength ||
+                userProfile?.completedProject ||
+                '0'
+              }
+            />
+            <ProfileCard icon text="Email Address" />
+          </View>
+        )}
+        {!isLoading && userDetail?.userData?.type === 'Professional'
+          ? renderReviews()
+          : null}
 
         {!isLoading && userDetail?.userData?.type === 'Professional' ? (
           <View style={{marginTop: responsiveHeight(2)}}>

@@ -164,9 +164,11 @@ const Home = ({route}) => {
   }, [userDetail]);
 
   useEffect(() => {
-    setIsLoading(true);
-    setAllProjects(route?.params?.data);
-    setIsLoading(false);
+    if(route?.params?.data){
+      setIsLoading(true);
+      setAllProjects(route?.params?.data);
+      setIsLoading(false);
+    }
   }, [route?.params]);
 
   return (

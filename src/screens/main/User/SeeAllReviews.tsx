@@ -7,16 +7,20 @@ import {responsiveFontSize, responsiveHeight, reviews} from '../../../utils';
 import StarRating from 'react-native-star-rating-widget';
 import {colors} from '../../../assets/colors';
 import ReviewCard from '../../../components/ReviewCard';
+import moment from 'moment';
+import {baseUrl} from '../../../utils/api_content';
 
-const SeeAllReviews = () => {
+const SeeAllReviews = ({route}) => {
+  const data = route?.params?.data;
+
   const renderItem = ({item}) => {
     return (
       <ReviewCard
-        day={item.days}
-        image={""}
-        name={item.name}
+        day={moment(item?.createdAt).fromNow()}
+        image={`${baseUrl}/${item?.userId.image}`}
+        name={`${item?.userId?.firstName} ${item?.userId?.lastName}`}
         rating={item.rating}
-        desc={item.desc}
+        desc={item.comment}
         style={{width: '100%'}}
       />
     );
@@ -47,14 +51,17 @@ const SeeAllReviews = () => {
               starSize={responsiveHeight(2.3)}
               maxStars={1}
             />
-            <Text>4.9 (124)</Text>
+            <Text>
+              {Number(data?.avgRating)?.toFixed(1)}{' '}
+              {`(${data?.reviews?.length})`}
+            </Text>
           </View>
         </View>
 
         <View>
           <FlatList
             contentContainerStyle={{gap: 20, paddingTop: responsiveHeight(2)}}
-            data={reviews}
+            data={data?.reviews}
             renderItem={renderItem}
           />
         </View>
