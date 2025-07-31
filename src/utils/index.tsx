@@ -273,7 +273,7 @@ interface createProfileYourSelfTypes {
 export const createProfileYourSelfProfileFields: createProfileYourSelfTypes[] = [
   {
     name: 'selectservice',
-    placeholder: 'Plumbing',
+    placeholder: 'service',
     keyboardType: 'text',
     line: true,
     dropdownIcon: true,
@@ -550,16 +550,22 @@ interface editProfessionalProfileTypes {
   textAlign?: string;
   tags?: { id: number; title: string }[];
   dropdownIcon: boolean;
+  editable: boolean;
 }
 
 export const editProfessionalProfileFields: editProfessionalProfileTypes[] = [
   {
-    name: 'full name',
-    placeholder: 'john smith',
+    name: 'firstname',
+    placeholder: 'john',
     line: true,
   },
   {
-    name: 'phone number',
+    name: 'lastname',
+    placeholder: 'smith',
+    line: true,
+  },
+  {
+    name: 'number',
     placeholder: '03234234234',
     keyboardType: 'numeric',
     line: true
@@ -569,26 +575,21 @@ export const editProfessionalProfileFields: editProfessionalProfileTypes[] = [
     placeholder: 'California',
     keyboardType: 'text',
     line: true,
-    dropdownIcon: true,
+    dropdownIcon: false,
   },
   {
-    name: 'zip code',
-    placeholder: '03234234234',
-    keyboardType: 'numeric',
-    line: true
-  },
-  {
-    name: 'postal code',
+    name: 'zipcode',
     placeholder: '03234234234',
     keyboardType: 'numeric',
     line: true
   },
   {
     name: 'select service',
-    placeholder: 'Plumber',
+    placeholder: 'service',
     keyboardType: 'text',
     line: true,
     dropdownIcon: true,
+    editable: false,
     tags: [
       {id: 1, title: 'Plumbing'}, {id: 2, title: 'Plumbing'}
       ],

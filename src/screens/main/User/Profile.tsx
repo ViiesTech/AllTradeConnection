@@ -38,14 +38,14 @@ import {baseUrl} from '../../../utils/api_content';
 import {launchImageLibrary} from 'react-native-image-picker';
 import moment from 'moment';
 
-const certificates = [
-  {id: 1, certicateImg: images.certi1},
-  {id: 2, certicateImg: images.certi2},
-  {id: 3, certicateImg: images.certi3},
-  {id: 4, certicateImg: images.certi4},
-];
+// const certificates = [
+//   {id: 1, certicateImg: images.certi1},
+//   {id: 2, certicateImg: images.certi2},
+//   {id: 3, certicateImg: images.certi3},
+//   {id: 4, certicateImg: images.certi4},
+// ];
 
-const Profile = () => {
+const Profile = ({route}) => {
   const nav = useNavigation();
   const [userProfile, setUserProfile] = useState({});
   const [newImage, setNewImage] = useState('');
@@ -90,7 +90,9 @@ const Profile = () => {
             </Text>
           </View>
           <TouchableOpacity
-            onPress={() => nav.navigate(ROUTES.SEE_ALL_REVIEWS, {data: userProfile})}>
+            onPress={() =>
+              nav.navigate(ROUTES.SEE_ALL_REVIEWS, {data: userProfile})
+            }>
             <Text
               style={[styles.ratingText, {textDecorationLine: 'underline'}]}>
               See All
@@ -170,9 +172,8 @@ const Profile = () => {
 
   useEffect(() => {
     getUserProfile();
-  }, [userDetail, nav]);
+  }, [userDetail, route?.params]);
 
-  console.log(userProfile);
   return (
     <MainContainer style={{paddingBottom: responsiveHeight(12)}}>
       <Header hideNotification showEdit />
@@ -313,7 +314,9 @@ const Profile = () => {
             <ProfileCard icon text="Email Address" />
           </View>
         )}
-        {!isLoading && userDetail?.userData?.type === 'Professional'
+        {!isLoading &&
+        !!userProfile?.reviews?.length &&
+        userDetail?.userData?.type === 'Professional'
           ? renderReviews()
           : null}
 
