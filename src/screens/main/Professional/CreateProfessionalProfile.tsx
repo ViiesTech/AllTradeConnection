@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
-import {images} from '../../../assets/images';
+import { images } from '../../../assets/images';
 import {
   responsiveFontSize,
   responsiveHeight,
@@ -18,31 +18,31 @@ import {
   ROUTES,
 } from '../../../utils';
 import SVGXml from '../../../components/SVGXml';
-import {colors} from '../../../assets/colors';
+import { colors } from '../../../assets/colors';
 import svgIcons from '../../../assets/icons';
 import Button from '../../../components/Button';
-import {useNavigation} from '@react-navigation/native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { useNavigation } from '@react-navigation/native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 import DateTimePicker from './../../../../node_modules/@react-native-community/datetimepicker/src/datetimepicker';
-import {createProfessionalProfile} from '../../../GlobalFunctions/auth';
+import { createProfessionalProfile } from '../../../GlobalFunctions/auth';
 
 const certificates = [
-  {id: 1, certicateImg: images.certi1},
-  {id: 2, certicateImg: images.certi2},
-  {id: 3, certicateImg: images.certi3},
-  {id: 4, certicateImg: images.certi4},
+  { id: 1, certicateImg: images.certi1 },
+  { id: 2, certicateImg: images.certi2 },
+  { id: 3, certicateImg: images.certi3 },
+  { id: 4, certicateImg: images.certi4 },
 ];
 
-const days = [
-  {id: 1, name: 'Mon', day: 'Monday', num: 1, isChecked: false},
-  {id: 2, name: 'Tue', day: 'Tuesday', num: 2, isChecked: false},
-  {id: 3, name: 'Wed', day: 'Wednesday', num: 3, isChecked: true},
-  {id: 4, name: 'Thu', day: 'Thursday', num: 4, isChecked: false},
-  {id: 5, name: 'Fri', day: 'Friday', num: 5, isChecked: false},
-  {id: 6, name: 'Sat', day: 'Saturday', num: 6, isChecked: false},
-  {id: 7, name: 'Sun', day: 'Sunday', num: 7, isChecked: false},
-];
+// const days = [
+//   {id: 1, name: 'Mon', day: 'Monday', num: 1, isChecked: false},
+//   {id: 2, name: 'Tue', day: 'Tuesday', num: 2, isChecked: false},
+//   {id: 3, name: 'Wed', day: 'Wednesday', num: 3, isChecked: true},
+//   {id: 4, name: 'Thu', day: 'Thursday', num: 4, isChecked: false},
+//   {id: 5, name: 'Fri', day: 'Friday', num: 5, isChecked: false},
+//   {id: 6, name: 'Sat', day: 'Saturday', num: 6, isChecked: false},
+//   {id: 7, name: 'Sun', day: 'Sunday', num: 7, isChecked: false},
+// ];
 
 const formatTime = (date: Date) => {
   const hours = date.getHours().toString().padStart(2, '0');
@@ -51,11 +51,30 @@ const formatTime = (date: Date) => {
 };
 
 
-const CreateProfessionalProfile = ({route}) => {
+const CreateProfessionalProfile = ({ route }) => {
   const nav = useNavigation();
   const params = route?.params?.data;
   const [images, setImages] = useState([]);
-  const [selectedDay, setSelectedDay] = useState([]);
+  const [selectedDay, setSelectedDay] = useState([
+    { day: 'Monday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Tuesday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Wednesday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Thursday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Friday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Saturday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Sunday', isActive: false, startTime: 0, endTime: 0 },
+  ]);
+
+  const days = {
+    Monday: 'Mon',
+    Tuesday: 'Tue',
+    Wednesday: 'Wed',
+    Thursday: 'Thu',
+    Friday: 'Fri',
+    Saturday: 'Sat',
+    Sunday: 'Sun',
+  }
+
   const [startTime, setStartTime] = useState(new Date());
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -75,16 +94,7 @@ const CreateProfessionalProfile = ({route}) => {
   };
 
   const nextOnPress = async () => {
-    // nav.navigate(ROUTES.MY_LOCATION)
-    // console.log(params);
-    setSelectedDay(prev =>
-      prev.map(item => ({
-        ...item,
-        startTime: startTime?.toLocaleTimeString(),
-        endTime: endTime?.toLocaleTimeString(),
-      })),
-    );
-      setIsLoading(true);
+    setIsLoading(true);
 
     const res = await createProfessionalProfile({
       professionalProfileId: params?.professionalId,
@@ -101,7 +111,7 @@ const CreateProfessionalProfile = ({route}) => {
     });
 
     if (res?.success) {
-      nav.navigate(ROUTES.ADD_LOCATION, {professionalId: res?.data?._id});
+      nav.navigate(ROUTES.ADD_LOCATION, { professionalId: res?.data?._id });
       Toast.show({
         type: 'success',
         text1: 'Success',
@@ -119,12 +129,12 @@ const CreateProfessionalProfile = ({route}) => {
   };
 
   const times = [
-    {id: 1, time: startTime?.toLocaleTimeString(), time2: 'AM'},
-    {id: 2, time: endTime?.toLocaleTimeString(), time2: 'PM'},
+    { id: 1, time: startTime?.toLocaleTimeString(), time2: 'AM' },
+    { id: 2, time: endTime?.toLocaleTimeString(), time2: 'PM' },
   ];
 
   const pickImage = () => {
-    launchImageLibrary({mediaType: 'photo', selectionLimit: 0}, response => {
+    launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 }, response => {
       if (response.assets && response.assets.length > 0) {
         if (response?.assets.length <= 4) {
           setImages(response?.assets);
@@ -139,18 +149,45 @@ const CreateProfessionalProfile = ({route}) => {
     });
   };
 
-    const toggleDay = (dayItem) => {
-      setSelectedDay(prev => {
-        const exists = prev.find(item => item.day === dayItem.day);
-        if (exists) {
-          return prev.filter(item => item.day !== dayItem.day);
-        } else {
-          return [...prev, { day: dayItem.day, isActive: true }];
-        }
-      });
-    };
+  const toggleDay = (dayItem) => {
+    setSelectedDay(prev => {
+      const exists = prev.find(d => d.day === dayItem.day);
+  
+      const formattedStart = startTime?.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      }) || '';
+  
+      const formattedEnd = endTime?.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      }) || '';
+  
+      if (exists) {
+        return prev.map(d =>
+          d.day === dayItem.day
+            ? {
+                ...d,
+                isActive: !d.isActive,
+                startTime: !d.isActive ? formattedStart : 0,
+                endTime: !d.isActive ? formattedEnd : 0,
+              }
+            : d
+        );
+      } else {
+        return [
+          ...prev,
+          {
+            day: dayItem.day,
+            isActive: true,
+            startTime: formattedStart,
+            endTime: formattedEnd,
+          },
+        ];
+      }
+    });
+  };
 
-  // console.log(selectedDay)
   return (
     <MainContainer>
       <Header2
@@ -160,7 +197,7 @@ const CreateProfessionalProfile = ({route}) => {
         subHeading={'Enter your details to register yourself'}
       />
 
-      <View style={{padding: responsiveHeight(2.5), paddingTop: 0}}>
+      <View style={{ padding: responsiveHeight(2.5), paddingTop: 0 }}>
         <TouchableOpacity
           style={{
             borderWidth: 1,
@@ -189,12 +226,12 @@ const CreateProfessionalProfile = ({route}) => {
             data={images}
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{gap: 20, marginTop: responsiveHeight(2)}}
-            renderItem={({item}) => {
+            contentContainerStyle={{ gap: 20, marginTop: responsiveHeight(2) }}
+            renderItem={({ item }) => {
               return (
                 <View>
                   <Image
-                    source={{uri: item?.uri}}
+                    source={{ uri: item?.uri }}
                     style={{
                       width: responsiveWidth(20),
                       height: responsiveHeight(8),
@@ -227,7 +264,7 @@ const CreateProfessionalProfile = ({route}) => {
         </Text>
 
         <FlatList
-          data={days}
+          data={selectedDay}
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
@@ -239,7 +276,7 @@ const CreateProfessionalProfile = ({route}) => {
             borderColor: colors.line_color,
             marginTop: responsiveHeight(2),
           }}
-          renderItem={({item}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity
                 style={{
@@ -247,7 +284,7 @@ const CreateProfessionalProfile = ({route}) => {
                   borderRadius: 10,
                   paddingHorizontal: responsiveWidth(2.5),
                   paddingVertical: responsiveWidth(2.5),
-                  backgroundColor: selectedDay.some(d => d.day === item.day)
+                  backgroundColor: item.isActive
                     ? colors.primary
                     : colors.secondary,
                 }}
@@ -255,20 +292,20 @@ const CreateProfessionalProfile = ({route}) => {
                 <Text
                   style={{
                     fontSize: responsiveFontSize(2),
-                    color: selectedDay.some(d => d.day === item.day)
+                    color: item.isActive
                       ? colors.secondary
                       : colors.gray,
                   }}>
-                  {item.name}
+                  {days[item.day]}
                 </Text>
                 <Text
                   style={{
                     fontSize: responsiveFontSize(2),
-                    color: selectedDay.some(d => d.day === item.day)
+                    color: item.isActive
                       ? colors.secondary
                       : colors.black,
                   }}>
-                  {item.num}
+                  {index + 1}
                 </Text>
               </TouchableOpacity>
             );
@@ -292,7 +329,7 @@ const CreateProfessionalProfile = ({route}) => {
             justifyContent: 'space-between',
           }}
           horizontal
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return (
               <TouchableOpacity
                 style={{
@@ -312,7 +349,7 @@ const CreateProfessionalProfile = ({route}) => {
                   }
                 }}>
                 <View
-                  style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                   <SVGXml
                     width={'17'}
                     height={'17'}
@@ -321,7 +358,7 @@ const CreateProfessionalProfile = ({route}) => {
                   <Text>{item.time}</Text>
                 </View>
                 <View
-                  style={{flexDirection: 'row', alignItems: 'center', gap: 12}}>
+                  style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
                   <SVGXml
                     width={'14'}
                     height={'14'}
@@ -354,7 +391,7 @@ const CreateProfessionalProfile = ({route}) => {
         )}
 
         <Button
-          style={{marginTop: responsiveHeight(2), width: responsiveWidth(90)}}
+          style={{ marginTop: responsiveHeight(2), width: responsiveWidth(90) }}
           buttonText={'Next'}
           onPress={() => nextOnPress()}
           isLoading={isLoading}

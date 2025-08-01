@@ -666,3 +666,65 @@ export const getProjectByLocationAndCategory = async ({category}: any) => {
     };
   }
 };
+
+export const updateProfessionalProfile = async ({
+  professionalProfileId,
+  firstName,
+  lastName,
+  phoneNumber,
+  address,
+  type,
+  category,
+  certificate,
+  image,
+  workingDays,
+  bio,
+}: any) => {
+  try {
+    let fields = new FormData();
+    fields.append('id', professionalProfileId);
+    fields.append('firstName', firstName);
+    fields.append('lastName', lastName);
+    fields.append('phoneNumber', phoneNumber);
+    fields.append('bio', bio);
+    fields.append('address', address);
+    fields.append('category', JSON.stringify(category));
+    fields.append('type', type);
+    fields.append('workingDays', workingDays);
+    fields.append('image', {
+      uri: image,
+      name: 'image.jpg',
+      type: 'image/jpeg',
+    });
+
+    // console.log('hhhh',fields)
+    certificate.forEach((img: any) => {
+      fields.append('certificate', {
+        uri: img?.uri,
+        name: 'image.jpg',
+        type: 'image/jpeg',
+      });
+    });
+
+    // return console.log('gfields',typeof category)
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${baseUrl}${endPoints.createProfessionalProfile}`,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      data: fields,
+    };
+
+    const data = await axios.request(config);
+
+    return data.data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error?.response?.data?.message || error.message,
+    };
+  }
+};

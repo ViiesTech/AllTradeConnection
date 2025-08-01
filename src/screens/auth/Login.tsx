@@ -29,7 +29,6 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSecured, setIsSecured] = useState(true);
   const dispatch = useDispatch();
-  const type = useRoute()?.params?.type;
 
   const handleLogin = async (values: string) => {
     if (!isLoading) {
@@ -90,7 +89,7 @@ const Login = () => {
       </View>
       <View style={styles.authTextContainer}>
         <AuthenticationText
-          onPress={() => nav.navigate(ROUTES.SIGNUP, {type})}
+          onPress={() => nav.navigate(ROUTES.SELECT_EXPERIENCE)}
           text="Not"
           text2="Sign up"
         />

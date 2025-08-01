@@ -243,6 +243,7 @@ const DrawerStack: React.FC = () => {
       />
       <Drawer.Screen name={ROUTES.PROFILE} component={Profile} />
       <Drawer.Screen name={ROUTES.CHAT_MESSAGES} component={ChatMessages} />
+      <Drawer.Screen name={ROUTES.MESSAGE} component={Message} />
       <Drawer.Screen name={ROUTES.WALLET} component={Wallet} />
       <Drawer.Screen name={ROUTES.EDIT_PROFILE} component={EditProfile} />
       <Drawer.Screen name={ROUTES.CHANGE_PASSWORD} component={ChangePassword} />

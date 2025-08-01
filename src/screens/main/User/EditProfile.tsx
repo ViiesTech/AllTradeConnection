@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
@@ -21,41 +21,43 @@ import {
   ROUTES,
 } from '../../../utils';
 import CustomInputForm from '../../../components/InputField';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {images} from '../../../assets/images';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { images } from '../../../assets/images';
 import svgIcons from '../../../assets/icons';
 import SVGXml from '../../../components/SVGXml';
-import {colors} from '../../../assets/colors';
+import { colors } from '../../../assets/colors';
 import Button from '../../../components/Button';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   getUserProfileById,
+  updateProfessionalProfile,
   updateProfile,
 } from '../../../GlobalFunctions/userMain';
 import Toast from 'react-native-toast-message';
 import * as Yup from 'yup';
-import {baseUrl} from '../../../utils/api_content';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { baseUrl } from '../../../utils/api_content';
+import { launchImageLibrary } from 'react-native-image-picker';
 import ShowServicesModal from '../../../components/ShowServicesModal';
-import {getAllServices} from '../../../GlobalFunctions/auth';
+import { getAllServices } from '../../../GlobalFunctions/auth';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment';
 
 const certificates = [
-  {id: 1, certicateImg: images.certi1},
-  {id: 2, certicateImg: images.certi2},
-  {id: 3, certicateImg: images.certi3},
-  {id: 4, certicateImg: images.certi4},
+  { id: 1, certicateImg: images.certi1 },
+  { id: 2, certicateImg: images.certi2 },
+  { id: 3, certicateImg: images.certi3 },
+  { id: 4, certicateImg: images.certi4 },
 ];
 
-const days = [
-  {id: 1, name: 'Mon', day: 'Monday', num: 1, isChecked: false},
-  {id: 2, name: 'Tue', day: 'Tuesday', num: 2, isChecked: false},
-  {id: 3, name: 'Wed', day: 'Wednesday', num: 3, isChecked: true},
-  {id: 4, name: 'Thu', day: 'Thursday', num: 4, isChecked: false},
-  {id: 5, name: 'Fri', day: 'Friday', num: 5, isChecked: false},
-  {id: 6, name: 'Sat', day: 'Saturday', num: 6, isChecked: false},
-  {id: 7, name: 'Sun', day: 'Sunday', num: 7, isChecked: false},
-];
+// const days = [
+//   { id: 1, name: 'Mon', day: 'Monday', isActive: false, startTime: 0, endTime: 0 },
+//   { id: 2, name: 'Tue', day: 'Tuesday', isActive: false, startTime: 0, endTime: 0 },
+//   { id: 3, name: 'Wed', day: 'Wednesday', isActive: false, startTime: 0, endTime: 0 },
+//   { id: 4, name: 'Thu', day: 'Thursday', isActive: false, startTime: 0, endTime: 0 },
+//   { id: 5, name: 'Fri', day: 'Friday', isActive: false, startTime: 0, endTime: 0 },
+//   { id: 6, name: 'Sat', day: 'Saturday', isActive: false, startTime: 0, endTime: 0 },
+//   { id: 7, name: 'Sun', day: 'Sunday', isActive: false, startTime: 0, endTime: 0 },
+// ];
 
 interface editProfessionalProfileTypes {
   name: string;
@@ -65,7 +67,7 @@ interface editProfessionalProfileTypes {
   height?: number;
   multiline?: boolean;
   textAlign?: string;
-  tags?: {id: number; title: string}[];
+  tags?: { id: number; title: string }[];
   dropdownIcon?: boolean;
   editable?: boolean;
   dropdownOnPress?: () => void;
@@ -88,7 +90,7 @@ const validationSchema = Yup.object().shape({
   address: Yup.string(),
 });
 
-const EditProfile = ({route}) => {
+const EditProfile = ({ route }) => {
   const nav = useNavigation();
   const userDetail = useSelector((state: RootState) => state.user);
   const [userProfile, setUserProfile] = useState({});
@@ -100,10 +102,29 @@ const EditProfile = ({route}) => {
   const [allServices, setAllServices] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const openModal = useCallback(() => setModalVisible(true), []);
-  const [selectedDay, setSelectedDay] = useState([]);
+  const [selectedDay, setSelectedDay] = useState([
+    { day: 'Monday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Tuesday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Wednesday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Thursday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Friday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Saturday', isActive: false, startTime: 0, endTime: 0 },
+    { day: 'Sunday', isActive: false, startTime: 0, endTime: 0 },
+  ]);
+
+  const days = {
+    Monday: 'Mon',
+    Tuesday: 'Tue',
+    Wednesday: 'Wed',
+    Thursday: 'Thu',
+    Friday: 'Fri',
+    Saturday: 'Sat',
+    Sunday: 'Sun',
+  }
+
   const [show, setShow] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
-  const [getStartTimeAndEndTime, setGetStartTimeAndEndTime] = useState({startTime: '', endTime: ''});
+  const [getStartTimeAndEndTime, setGetStartTimeAndEndTime] = useState({ startTime: '', endTime: '' });
 
   const [endTime, setEndTime] = useState(new Date());
   const [endTimeshow, setEndTimeShow] = useState(false);
@@ -147,8 +168,8 @@ const EditProfile = ({route}) => {
         dropdownIcon: true,
         editable: false,
         tags: [
-          {id: 1, title: 'Plumbing'},
-          {id: 2, title: 'Flooring'},
+          { id: 1, title: 'Plumbing' },
+          { id: 2, title: 'Flooring' },
         ],
         dropdownOnPress: openModal,
       },
@@ -173,23 +194,23 @@ const EditProfile = ({route}) => {
 
   const onChange = (event: any, selectedDate?: Date) => {
     setShow(Platform.OS === 'ios'); // keep open on iOS
-    if (selectedDate){
+    if (selectedDate) {
       setStartTime(selectedDate);
-      setGetStartTimeAndEndTime(prev => ({...prev, startTime: ''}));
+      setGetStartTimeAndEndTime(prev => ({ ...prev, startTime: '' }));
     }
   };
 
   const endTimeOnChange = (event: any, selectedDate?: Date) => {
     setEndTimeShow(Platform.OS === 'ios'); // keep open on iOS
-    if (selectedDate){
+    if (selectedDate) {
       setEndTime(selectedDate);
-      setGetStartTimeAndEndTime(prev => ({...prev, endTime: ''}));
+      setGetStartTimeAndEndTime(prev => ({ ...prev, endTime: '' }));
     }
   };
 
   const times = [
-    {id: 1, time: getStartTimeAndEndTime?.startTime ? getStartTimeAndEndTime?.startTime : startTime?.toLocaleTimeString(), time2: 'AM'},
-    {id: 2, time: getStartTimeAndEndTime?.endTime ? getStartTimeAndEndTime?.endTime : endTime?.toLocaleTimeString(), time2: 'PM'},
+    { id: 1, time: getStartTimeAndEndTime?.startTime ? getStartTimeAndEndTime?.startTime : startTime?.toLocaleTimeString(), time2: 'AM' },
+    { id: 2, time: getStartTimeAndEndTime?.endTime ? getStartTimeAndEndTime?.endTime : endTime?.toLocaleTimeString(), time2: 'PM' },
   ];
 
   const getUserProfile = async () => {
@@ -278,7 +299,7 @@ const EditProfile = ({route}) => {
   };
 
   const pickImage = () => {
-    launchImageLibrary({mediaType: 'photo'}, response => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
       if (response.assets && response.assets.length > 0) {
         if (response.assets && response.assets.length > 0) {
           setProfImg(response?.assets[0]);
@@ -320,19 +341,32 @@ const EditProfile = ({route}) => {
     }
   };
 
-  const toggleDay = dayItem => {
+  const toggleDay = (dayItem) => {
     setSelectedDay(prev => {
-      const exists = prev.find(item => item.day === dayItem.day);
+      const exists = prev.find(d => d.day === dayItem.day);
       if (exists) {
-        return prev.filter(item => item.day !== dayItem.day);
+        return prev.map(d =>
+          d.day === dayItem.day
+            ? {
+              ...d,
+              isActive: !d.isActive,
+            }
+            : d
+        );
       } else {
-        return [...prev, {day: dayItem.day, isActive: true}];
+        return [
+          ...prev,
+          {
+            day: dayItem.day,
+            isActive: true,
+          },
+        ];
       }
     });
   };
 
   const pickCertificates = () => {
-    launchImageLibrary({mediaType: 'photo', selectionLimit: 0}, response => {
+    launchImageLibrary({ mediaType: 'photo', selectionLimit: 0 }, response => {
       if (response.assets && response.assets.length > 0) {
         if (response?.assets.length <= 4) {
           setNewImages(response?.assets);
@@ -347,9 +381,65 @@ const EditProfile = ({route}) => {
     });
   };
 
+  const updateOnPressHandler = async (values) => {
+    setSelectedDay(prev =>
+      prev.map(item =>
+        item.isActive
+          ? {
+              ...item,
+              startTime: startTime?.toLocaleTimeString(),
+              endTime: endTime?.toLocaleTimeString(),
+            }
+          : item
+      )
+    );
+
+    setIsUpdating(true);
+
+    const res = await updateProfessionalProfile({
+      professionalProfileId: userDetail?.userData?._id,
+      firstName: values?.firstname,
+      lastName: values?.lastname,
+      phoneNumber: values?.number,
+      address: values?.address,
+      type: 'Professional',
+      image: profImg?.uri,
+      certificate: newImages,
+      category: selectedIds,
+      workingDays: JSON.stringify(selectedDay),
+      bio: values?.bio,
+    })
+
+    console.log(res)
+
+    if(res?.success){
+      console.log(res?.data);
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Profile Updated Successfully',
+      });
+      setIsUpdating(false);
+    }else {
+      Toast.show({
+        type: 'error',
+        text1: 'Update Profile failed',
+        text2: res?.message,
+      });
+      setIsUpdating(false);
+    }
+
+    console.log(selectedDay)
+  }
+
   useEffect(() => {
     const id = userProfile?.category?.map(item => item._id);
-    setGetStartTimeAndEndTime({startTime: userProfile?.startTime, endTime: userProfile?.endTime})
+    setGetStartTimeAndEndTime({ startTime: userProfile?.startTime, endTime: userProfile?.endTime })
+    // const selected = days.filter(day =>
+    //   userProfile?.includingTheseDays?.includes(day.name)
+    // );
+    // setSelectedDay(selected);
+    setNewImages(userProfile?.certificate)
     setSelectedIds(id);
   }, [userProfile]);
 
@@ -370,16 +460,16 @@ const EditProfile = ({route}) => {
         selectedIds={selectedIds}
       />
 
-      <View style={{padding: responsiveHeight(2), paddingTop: 0}}>
+      <View style={{ padding: responsiveHeight(2), paddingTop: 0 }}>
         {userDetail?.userData?.type === 'User' &&
           (isLoading ? (
             <ActivityIndicator size={'large'} color={colors.primary} />
           ) : (
             <CustomInputForm
-              inputContainer={{width: responsiveWidth(90)}}
-              buttonStyle={{width: responsiveWidth(90)}}
-              inputStyle={{color: 'black'}}
-              inputContainerStyle={{marginTop: responsiveHeight(0)}}
+              inputContainer={{ width: responsiveWidth(90) }}
+              buttonStyle={{ width: responsiveWidth(90) }}
+              inputStyle={{ color: 'black' }}
+              inputContainerStyle={{ marginTop: responsiveHeight(0) }}
               onSubmit={values => onSubmitHandler(values)}
               initialValues={{
                 firstname: userProfile?.firstName,
@@ -395,7 +485,7 @@ const EditProfile = ({route}) => {
           ))}
 
         {userDetail?.userData?.type === 'Professional' &&
-          (false ? (
+          (isLoading ? (
             <ActivityIndicator size={'large'} color={colors.primary} />
           ) : (
             <View>
@@ -416,15 +506,16 @@ const EditProfile = ({route}) => {
                   </TouchableOpacity>
                 </View>
 
-                <View style={{marginTop: responsiveHeight(2)}}>
+                <View style={{ marginTop: responsiveHeight(2) }}>
                   <CustomInputForm
                     hideButton={false}
-                    childrenStyle={{flex: 1}}
-                    inputContainer={{width: responsiveWidth(90)}}
-                    buttonStyle={{width: responsiveWidth(90)}}
-                    inputStyle={{color: 'black'}}
-                    inputContainerStyle={{marginTop: responsiveHeight(3)}}
-                    onSubmit={values => nav.navigate(ROUTES.PROFILE)}
+                    childrenStyle={{ height: responsiveHeight(60) }}
+                    inputContainer={{ width: responsiveWidth(90) }}
+                    buttonStyle={{ width: responsiveWidth(90) }}
+                    inputStyle={{ color: 'black' }}
+                    inputContainerStyle={{ marginTop: responsiveHeight(3), alignItems: 'flex-start', }}
+                    onSubmit={values => updateOnPressHandler(values)}
+                    isLoading={isUpdating}
                     initialValues={{
                       firstname: userProfile?.firstName,
                       lastname: userProfile?.lastName,
@@ -438,7 +529,7 @@ const EditProfile = ({route}) => {
                     buttonText="Update"
                     fields={editProfessionalProfileFields}>
                     <View
-                      style={{padding: responsiveHeight(0.7), paddingTop: 0}}>
+                      style={{ padding: responsiveHeight(0.7), paddingTop: 0 }}>
                       <TouchableOpacity
                         onPress={() => pickCertificates()}
                         style={{
@@ -475,11 +566,11 @@ const EditProfile = ({route}) => {
                             gap: 20,
                             marginTop: responsiveHeight(2),
                           }}
-                          renderItem={({item}) => {
+                          renderItem={({ item }) => {
                             return (
                               <View>
                                 <Image
-                                  source={{uri: item?.uri}}
+                                  source={item?.uri ? { uri: item?.uri } : {uri: `${baseUrl}/${item}`}}
                                   style={{
                                     width: responsiveWidth(20),
                                     height: responsiveHeight(8),
@@ -502,7 +593,7 @@ const EditProfile = ({route}) => {
 
                       <View>
                         <FlatList
-                          data={days}
+                          data={selectedDay}
                           horizontal
                           showsHorizontalScrollIndicator={false}
                           contentContainerStyle={{
@@ -514,7 +605,7 @@ const EditProfile = ({route}) => {
                             borderColor: colors.line_color,
                             marginTop: responsiveHeight(2),
                           }}
-                          renderItem={({item}) => {
+                          renderItem={({ item, index }) => {
                             return (
                               <TouchableOpacity
                                 onPress={() => toggleDay(item)}
@@ -523,33 +614,27 @@ const EditProfile = ({route}) => {
                                   borderRadius: 10,
                                   paddingHorizontal: responsiveWidth(2.5),
                                   paddingVertical: responsiveWidth(2.5),
-                                  backgroundColor: selectedDay.some(
-                                    d => d.day === item.day,
-                                  )
+                                  backgroundColor: item.isActive
                                     ? colors.primary
                                     : colors.secondary,
                                 }}>
                                 <Text
                                   style={{
                                     fontSize: responsiveFontSize(2),
-                                    color: selectedDay.some(
-                                      d => d.day === item.day,
-                                    )
+                                    color: item.isActive
                                       ? colors.secondary
                                       : colors.gray,
                                   }}>
-                                  {item.name}
+                                  {days[item.day]}
                                 </Text>
                                 <Text
                                   style={{
                                     fontSize: responsiveFontSize(2),
-                                    color: selectedDay.some(
-                                      d => d.day === item.day,
-                                    )
+                                    color: item.isActive
                                       ? colors.secondary
                                       : colors.black,
                                   }}>
-                                  {item.num}
+                                  {index + 1}
                                 </Text>
                               </TouchableOpacity>
                             );
@@ -575,7 +660,7 @@ const EditProfile = ({route}) => {
                             justifyContent: 'space-between',
                           }}
                           horizontal
-                          renderItem={({item}) => {
+                          renderItem={({ item }) => {
                             return (
                               <TouchableOpacity
                                 onPress={() => {
@@ -625,25 +710,28 @@ const EditProfile = ({route}) => {
                         />
                       </View>
 
-                      {show && (
-                        <DateTimePicker
-                          value={startTime}
-                          mode="time"
-                          display="default"
-                          is24Hour={false}
-                          onChange={onChange}
-                        />
-                      )}
-
-                      {endTimeshow && (
-                        <DateTimePicker
-                          value={endTime}
-                          mode="time"
-                          display="default"
-                          is24Hour={false}
-                          onChange={endTimeOnChange}
-                        />
-                      )}
+                      <View>
+                        {show && (
+                          <DateTimePicker
+                            value={startTime}
+                            mode="time"
+                            display="default"
+                            is24Hour={false}
+                            onChange={onChange}
+                          />
+                        )}
+                      </View>
+                      <View>
+                        {endTimeshow && (
+                          <DateTimePicker
+                            value={endTime}
+                            mode="time"
+                            display="default"
+                            is24Hour={false}
+                            onChange={endTimeOnChange}
+                          />
+                        )}
+                      </View>
                     </View>
                   </CustomInputForm>
                 </View>

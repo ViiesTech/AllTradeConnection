@@ -1011,7 +1011,7 @@ export const drawerItems: drawerItemsTypes[] = [
     id: 5,
     title: 'Chat',
     icon: svgIcons.drawer_chat,
-    navTo: '',
+    navTo: ROUTES.MESSAGE,
   },
   {
     id: 6,

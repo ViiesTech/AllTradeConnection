@@ -36,7 +36,7 @@ const SelectServiceAddinal = ({route}) => {
   const [openStartTimePicker, setOpenStartTimePicker] = useState(false);
   const [openEndTimePicker, setOpenEndTimePicker] = useState(false);
   const [additional, setAdditional] = useState('');
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>('');
   const [date, setDate] = useState<any>(new Date());
   const [startTime, setStartTime] = useState<any>(new Date());
   const [endTime, setEndTime] = useState<any>(new Date());
@@ -134,6 +134,8 @@ const SelectServiceAddinal = ({route}) => {
       zipCode: myLocationDetails?.zipCode,
     });
 
+    console.log(res)
+
     if (res?.success) {
       nav.navigate(ROUTES.CONGRATULATION, {additional: true});
       Toast.show({
@@ -165,9 +167,7 @@ const SelectServiceAddinal = ({route}) => {
   };
 
   const toggleSelection = useCallback((id: number) => {
-    setSelectedIds(prev =>
-      prev.includes(id) ? prev.filter(itemId => itemId !== id) : [...prev, id],
-    );
+    setSelectedIds(id);
   }, []);
 
   const getServices = async () => {

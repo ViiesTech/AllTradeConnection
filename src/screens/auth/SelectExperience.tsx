@@ -25,7 +25,7 @@ const SelectExperience = () => {
     //   .catch(err => {
     //     console.log(err);
     //   });
-    nav.navigate(ROUTES.LOGIN, {
+    nav.navigate(ROUTES.SIGNUP, {
       type: chooseExperience === 'Pro' ? 'Professional' : 'User',
     });
   };
