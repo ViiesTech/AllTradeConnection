@@ -55,7 +55,7 @@ const OTP = ({route}) => {
         setIsLoading(true);
         const res = await verifyOtp({
           email: data.email,
-          otp: data.otp,
+          otp: OTPCode,
           addSignUpToken: accessToken,
           type: data.type,
         });
@@ -85,7 +85,7 @@ const OTP = ({route}) => {
         setIsLoading(true);
         const res = await verifyOtpForResetPassword({
           email: data.email,
-          otp: data.Otp,
+          otp: OTPCode,
         });
         if (res?.success) {
           navigation.navigate(ROUTES.RESET_PASSWORD, {data});

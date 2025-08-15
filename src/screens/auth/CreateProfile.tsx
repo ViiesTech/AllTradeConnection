@@ -1,22 +1,22 @@
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useState} from 'react';
+import { Image, StyleSheet, TouchableOpacity, KeyboardAvoidingView, View } from 'react-native';
+import React, { useState } from 'react';
 import Container from '../../components/Container';
 import AuthHeader from '../../components/AuthHeader';
-import {images} from '../../assets/images';
+import { images } from '../../assets/images';
 import {
   createProfileFields,
   responsiveHeight,
   responsiveWidth,
   ROUTES,
 } from '../../utils';
-import {colors} from '../../assets/colors';
+import { colors } from '../../assets/colors';
 import SVGXml from '../../components/SVGXml';
 import svgIcons from '../../assets/icons';
 import CustomInputForm from '../../components/InputField';
 import * as Yup from 'yup';
-import {useNavigation} from '@react-navigation/native';
-import {launchImageLibrary} from 'react-native-image-picker';
-import {createProfile} from '../../GlobalFunctions/auth';
+import { useNavigation } from '@react-navigation/native';
+import { launchImageLibrary } from 'react-native-image-picker';
+import { createProfile } from '../../GlobalFunctions/auth';
 import Toast from 'react-native-toast-message';
 
 const validationSchema = Yup.object().shape({
@@ -38,7 +38,7 @@ const validationSchema = Yup.object().shape({
     .required(),
 });
 
-const CreateProfile = ({route}) => {
+const CreateProfile = ({ route }) => {
   const nav = useNavigation();
   const id = route?.params?.userId;
   const type = route?.params?.type;
@@ -58,7 +58,7 @@ const CreateProfile = ({route}) => {
         image: profImg?.uri,
       });
       if (res?.success) {
-        nav.navigate(ROUTES.ADD_LOCATION, {userId: res?.data?._id});
+        nav.navigate(ROUTES.ADD_LOCATION, { userId: res?.data?._id });
         Toast.show({
           type: 'success',
           text1: 'Success',
@@ -94,7 +94,7 @@ const CreateProfile = ({route}) => {
   };
 
   const pickImage = () => {
-    launchImageLibrary({mediaType: 'photo'}, response => {
+    launchImageLibrary({ mediaType: 'photo' }, response => {
       if (response.assets && response.assets.length > 0) {
         setProfImg({
           uri: response.assets?.[0]?.uri,
@@ -106,37 +106,39 @@ const CreateProfile = ({route}) => {
   };
 
   return (
-    <Container>
-      <AuthHeader text="Create Profile" desc="Please enter your details" />
-      <View style={styles.imageWrapper}>
-        <View>
-          <Image
-            source={profImg ? {uri: profImg?.uri} : images.exp1}
-            style={styles.imageStyle}
-          />
-          <TouchableOpacity
-            style={styles.uploadView}
-            onPress={() => pickImage()}>
-            <SVGXml icon={svgIcons.upload} width={'11'} />
-          </TouchableOpacity>
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+      <Container style={{ flexGrow: 1 }}>
+        <AuthHeader text="Create Profile" desc="Please enter your details" />
+        <View style={styles.imageWrapper}>
+          <View>
+            <Image
+              source={profImg ? { uri: profImg?.uri } : images.exp1}
+              style={styles.imageStyle}
+            />
+            <TouchableOpacity
+              style={styles.uploadView}
+              onPress={() => pickImage()}>
+              <SVGXml icon={svgIcons.upload} width={'11'} />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <CustomInputForm
-        inputContainerStyle={{marginTop: responsiveHeight(3)}}
-        onSubmit={values => {
-          if (type === 'User') {
-            handleCreateProfile(values);
-          } else {
-            handleCreateProfessionalProfile(values);
-          }
-        }}
-        initialValues={{firstname: '', lastname: '', number: '', address: ''}}
-        validationSchema={validationSchema}
-        buttonText="Continue"
-        isLoading={isLoading}
-        fields={createProfileFields}
-      />
-    </Container>
+        <CustomInputForm
+          inputContainerStyle={{ marginTop: responsiveHeight(3) }}
+          onSubmit={values => {
+            if (type === 'User') {
+              handleCreateProfile(values);
+            } else {
+              handleCreateProfessionalProfile(values);
+            }
+          }}
+          initialValues={{ firstname: '', lastname: '', number: '', address: '' }}
+          validationSchema={validationSchema}
+          buttonText="Continue"
+          isLoading={isLoading}
+          fields={createProfileFields}
+        />
+      </Container>
+    </KeyboardAvoidingView>
   );
 };
 

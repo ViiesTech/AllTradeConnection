@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, KeyboardAvoidingView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import MainContainer from '../../../components/MainContainer';
 import Header2 from '../../../components/Header2';
@@ -70,14 +70,14 @@ const SelectServiceAddinal = ({route}) => {
       },
       {
         name: 'date',
-        placeholder: 'date',
+        placeholder: moment(date).format('YYYY-MM-DD') || 'date',
         line: true,
         keyboardType: 'time',
         dropdownIcon: true,
         dropdownOnPress: openDate,
       },
     ],
-    [openModal, openDate],
+    [openModal, openDate, date],
   );
 
   const onSubmitHandler = async values => {
@@ -123,18 +123,16 @@ const SelectServiceAddinal = ({route}) => {
       endTime: moment(endTime).format('hh:mm A'),
       price: values?.price,
       address: myLocationDetails?.address,
-      appartmentNo: myLocationDetails?.appartment,
+      appartmentNo: myLocationDetails?.apartment,
       professionalType: isProfessional,
-      locationName: 'Alaska, United States',
+      locationName: myLocationDetails?.city,
       longitude: -153.369141,
       latitude: 66.160507,
       // state:null,
       additionalNote: additional,
       city: myLocationDetails?.city,
-      zipCode: myLocationDetails?.zipCode,
+      zipCode: myLocationDetails?.zipcode,
     });
-
-    console.log(res)
 
     if (res?.success) {
       nav.navigate(ROUTES.CONGRATULATION, {additional: true});
@@ -213,7 +211,8 @@ const SelectServiceAddinal = ({route}) => {
   }, []);
 
   return (
-    <MainContainer>
+     <KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+      <MainContainer style={{flexGrow: 1}}>
       <Header2
         headerText3="Select A Service"
         hideCancel
@@ -239,7 +238,7 @@ const SelectServiceAddinal = ({route}) => {
         />
       )}
 
-      <View style={{padding: responsiveHeight(2.5), paddingTop: 0}}>
+      <View style={{paddingHorizontal: responsiveHeight(1), paddingTop: 0}}>
         <CustomInputForm
           hideTags={isProfessional || isPrevProfessional}
           inputContainer={{width: responsiveWidth(90)}}
@@ -255,7 +254,7 @@ const SelectServiceAddinal = ({route}) => {
           initialValues={{
             category: '',
             price: '',
-            date: moment(date).format('YYYY-MM-DD') || '',
+            date: '',
           }}
           isLoading={isLoading}
           // dropdownOnPress={() => setModalVisible(true)}
@@ -278,6 +277,7 @@ const SelectServiceAddinal = ({route}) => {
         </CustomInputForm>
       </View>
     </MainContainer>
+    </KeyboardAvoidingView>
   );
 };
 

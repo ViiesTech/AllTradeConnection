@@ -1,5 +1,5 @@
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { Image, KeyboardAvoidingView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import Container from '../../components/Container';
 import AuthHeader from '../../components/AuthHeader';
 import CustomInputForm from '../../components/InputField';
@@ -12,14 +12,14 @@ import {
   responsiveWidth,
   ROUTES,
 } from '../../utils';
-import {images} from '../../assets/images';
-import {colors} from '../../assets/colors';
+import { images } from '../../assets/images';
+import { colors } from '../../assets/colors';
 import SVGXml from '../../components/SVGXml';
 import svgIcons from '../../assets/icons';
 import LocationCard from '../../components/LocationCard';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import {createLocation} from '../../GlobalFunctions/auth';
+import { createLocation } from '../../GlobalFunctions/auth';
 import { useDispatch } from 'react-redux';
 import { clearToken } from '../../redux/Slices';
 
@@ -42,7 +42,7 @@ const locationBottomFieldsSchema = Yup.object().shape({
   state: Yup.string().required('Location is required'),
 });
 
-const AddLocation = ({route}) => {
+const AddLocation = ({ route }) => {
   const userId = route?.params?.userId;
   const professionalId = route?.params?.professionalId;
   const nav = useNavigation();
@@ -64,7 +64,7 @@ const AddLocation = ({route}) => {
         zipCode: values?.zipcode,
         city: values?.city,
       });
-      
+
       if (res?.success) {
         nav.navigate(ROUTES.AUTH_INTRO);
         Toast.show({
@@ -89,24 +89,25 @@ const AddLocation = ({route}) => {
   }, []);
 
   return (
-    <Container style={{paddingBottom: responsiveHeight(2.5)}}>
-      <AuthHeader contentStyle={{paddingTop: 0}} />
-      <CustomInputForm
-        inputContainerStyle={{padding: 0}}
-        childrenStyle={{marginBottom: responsiveHeight(3)}}
-        // onSubmit={values => onSaveLocation(values)}
-        buttonText="Add Now"
-        hideButton={true}
-        fields={locationField}
-        validationSchema={locationValidationSchema}
-        initialValues={{location: 'Search Locations'}}>
-        <View>
-          <Image source={images.map} style={styles.mapStyle} />
-          <TouchableOpacity style={styles.locationCard}>
-            <SVGXml icon={svgIcons.gps} />
-          </TouchableOpacity>
-        </View>
-        {/* {locationData.map(item => (
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior='height'>
+      <Container style={{ flexGrow: 1, paddingBottom: responsiveHeight(2.5) }}>
+        <AuthHeader contentStyle={{ paddingTop: 0 }} />
+        <CustomInputForm
+          inputContainerStyle={{ padding: 0 }}
+          childrenStyle={{ marginBottom: responsiveHeight(3) }}
+          // onSubmit={values => onSaveLocation(values)}
+          buttonText="Add Now"
+          hideButton={true}
+          fields={locationField}
+          validationSchema={locationValidationSchema}
+          initialValues={{ location: 'Search Locations' }}>
+          <View>
+            <Image source={images.map} style={styles.mapStyle} />
+            <TouchableOpacity style={styles.locationCard}>
+              <SVGXml icon={svgIcons.gps} />
+            </TouchableOpacity>
+          </View>
+          {/* {locationData.map(item => (
           <LocationCard
             cardStyle={{
               marginTop: responsiveHeight(2),
@@ -117,44 +118,45 @@ const AddLocation = ({route}) => {
           />
         ))} */}
 
-        <CustomInputForm
-          inputContainerStyle={{padding: 0, marginTop: responsiveHeight(2)}}
-          childrenStyle={{marginBottom: responsiveHeight(3)}}
-          onSubmit={values => onSaveLocation(values)}
-          buttonText="Add Now"
-          fields={locationBottomFields}
-          isLoading={isLoading}
-          validationSchema={locationBottomFieldsSchema}
-          initialValues={{
-            locationname: '',
-            address: '',
-            zipcode: '',
-            state: '',
-            city: '',
-          }}
-        />
-      </CustomInputForm>
-    </Container>
-  );
+          <CustomInputForm
+            inputContainerStyle={{ padding: 0, marginTop: responsiveHeight(2) }}
+            childrenStyle={{ marginBottom: responsiveHeight(3) }}
+            onSubmit={values => onSaveLocation(values)}
+            buttonText="Add Now"
+            fields={locationBottomFields}
+            isLoading={isLoading}
+            validationSchema={locationBottomFieldsSchema}
+            initialValues={{
+              locationname: '',
+              address: '',
+              zipcode: '',
+              state: '',
+              city: '',
+            }}
+          />
+        </CustomInputForm>
+      </Container>
+      </KeyboardAvoidingView>
+      );
 };
 
-export default AddLocation;
+      export default AddLocation;
 
-const styles = StyleSheet.create({
-  mapStyle: {
-    height: responsiveHeight(40),
-    borderRadius: 10,
-    width: responsiveWidth(80),
+      const styles = StyleSheet.create({
+        mapStyle: {
+        height: responsiveHeight(40),
+      borderRadius: 10,
+      width: responsiveWidth(80),
   },
-  locationCard: {
-    backgroundColor: colors.primary,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    bottom: 15,
-    right: 15,
-    height: responsiveHeight(5),
-    width: responsiveHeight(5),
-    borderRadius: 5,
+      locationCard: {
+        backgroundColor: colors.primary,
+      position: 'absolute',
+      alignItems: 'center',
+      justifyContent: 'center',
+      bottom: 15,
+      right: 15,
+      height: responsiveHeight(5),
+      width: responsiveHeight(5),
+      borderRadius: 5,
   },
 });

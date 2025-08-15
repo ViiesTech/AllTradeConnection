@@ -429,7 +429,7 @@ export const myLocationFields: myLocationTypes[] = [
     line: true,
   },
   {
-    name: 'apartment/Suite#',
+    name: 'apartment',
     placeholder: 'Apartment/Suite#',
     keyboardType: 'text',
     line: true
@@ -441,7 +441,7 @@ export const myLocationFields: myLocationTypes[] = [
     keyboardType: 'text',
   },
   {
-    name: 'zip code',
+    name: 'zipcode',
     placeholder: '1234434322',
     line: true,
     keyboardType: 'numeric',

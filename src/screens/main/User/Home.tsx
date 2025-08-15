@@ -36,7 +36,7 @@ const Home = ({route}) => {
   const [userProfile, setUserProfile] = useState({});
 
   const renderItem = ({item}) => {
-    if (allProjects.length !== 0) {
+    if (!!allProjects.length) {
       return (
         <TaskCard
           onPress={() =>
@@ -85,7 +85,7 @@ const Home = ({route}) => {
     setIsLoading(true);
     const res = await getUserAllProjects({token: token});
     if (res?.success) {
-      setAllProjects(res.data);
+      setAllProjects(res.data ? res.data : []);
       setIsLoading(false);
     } else {
       setAllProjects([]);
@@ -105,7 +105,7 @@ const Home = ({route}) => {
       status: 'Open',
     });
     if (res?.success) {
-      setAllProjects(res.data);
+      setAllProjects(res.data ? res.data : []);
       setIsLoading(false);
     } else {
       setAllProjects([]);

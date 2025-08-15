@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {
   ActivityIndicator,
   Image,
+  KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   Text,
@@ -296,7 +297,8 @@ const PostJob = ({route}: any) => {
           <ActivityIndicator size={'large'} color={colors.primary} />
         </View>
       ) : (
-        <MainContainer>
+        <KeyboardAvoidingView style={{flex: 1}} behavior='height'>
+        <MainContainer style={{flexGrow: 1}}>
           <Header2
             headerText3="Who Are You"
             hideCancel
@@ -348,9 +350,9 @@ const PostJob = ({route}: any) => {
                 buttonStyle={{width: responsiveWidth(90)}}
                 inputContainerStyle={{marginTop: responsiveHeight(3)}}
                 initialValues={{
-                  fullname: 'Name',
-                  email: 'loremipsum@gmail.com',
-                  number: '02302402910',
+                  fullname: '',
+                  email: '',
+                  number: '',
                 }}
                 validationSchema={validationSchema}
                 buttonText="Next"
@@ -425,6 +427,7 @@ const PostJob = ({route}: any) => {
             ) : null}
           </View>
         </MainContainer>
+        </KeyboardAvoidingView>
       )}
     </>
   );
